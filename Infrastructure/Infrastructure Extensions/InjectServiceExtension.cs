@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Infrastructure.DB.SQLDbContext;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -12,6 +14,12 @@ namespace Infrastructure.Infrastructure_Extensions
     {
         public static IServiceCollection InfrastructureInjectServices(this IServiceCollection service, IConfiguration configuration)
         {
+            service.AddDbContext<ApplicationDBContext>(optionsAction =>
+            {
+                optionsAction.UseSqlServer("");
+            });
+
+
             return service;
         }
     }
