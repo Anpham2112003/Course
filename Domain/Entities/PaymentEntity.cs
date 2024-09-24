@@ -12,7 +12,7 @@ namespace Domain.Entities
     {
         public Guid Id { get; set; }
         public Guid UserId { get; set; }
-        public Guid CourseId { get; set; }
+        public Guid? CourseId { get; set; }
         public float Amount { get; set; }
         public string? BankTransactionId {  get; set; }
         public EnumPaymentMethod PaymentMethod { get; set; }

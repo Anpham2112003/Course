@@ -10,7 +10,6 @@ namespace Domain.Entities
     public class PermissionEntity : BaseEntity<int>
     {
         public int Id { get; set; }
-        public int RoleId {  get; set; }
         public string? Route { get; set;}
         public bool State {  get; set; }
 

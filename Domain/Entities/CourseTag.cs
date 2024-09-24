@@ -11,5 +11,9 @@ namespace Domain.Entities
         public Guid CourseId { get; set; }
         public int TagId {  get; set; }
         
+       /////////////////////
+       
+        public CourseEntity?  courseEntity { get; set; }
+        public TagEntity? tagEntity { get; set; }
     }
 }

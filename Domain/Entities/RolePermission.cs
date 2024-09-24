@@ -11,9 +11,12 @@ namespace Domain.Entities
     {
         public int RoleId { get; set; }
         public int PermissionId { get; set; }
-        public bool Active {  get; set; }
 
+       
 
         /////////////////////////////////////////
+        
+        public RoleEntity? roleEntity { get; set; }
+        public PermissionEntity? permissionEntity { get; set; }
     }
 }

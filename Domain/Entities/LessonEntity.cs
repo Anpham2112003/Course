@@ -14,15 +14,17 @@ namespace Domain.Entities
         public Guid CategoryLessonId { get; set; }
         public string? Title { get; set; }
         public string? Url { get; set; }
-        public int Duration {  get; set; }
+        public float Duration {  get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
         public bool IsDeleted { get; set; }
         public DateTime DeletedAt { get; set; }
 
         ////////////////////////////////////////
-        public UserEntity? UserEntity { get; set; }
-        public CategoryLesson? CategoryLesson { get; set; }
+        public UserEntity? userEntity { get; set; }
+        public CategoryLessonEntity? categoryLesson { get; set; }
+        public List<ReportEntity> reportEntities { get; } = new List<ReportEntity>();
+        public List<ExerciseEntity> exerciseEntities { get; set; } = new List<ExerciseEntity>();
         
     }
 }

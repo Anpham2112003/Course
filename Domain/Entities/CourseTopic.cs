@@ -11,5 +11,10 @@ namespace Domain.Entities
         public Guid CourseId { get; set; }
         public int TopicId { get;set; }
         
+
+        //////////////////
+        
+        public CourseEntity? courseEntity { get; set; }
+        public TopicEntity? topicEntity { get; set; }
     }
 }

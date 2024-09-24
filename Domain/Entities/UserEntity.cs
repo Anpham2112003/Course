@@ -26,14 +26,20 @@ namespace Domain.Entities
 
 
         /////////////////////////////////////////////
-        public AccountEntity? account { get; set; }
-        public List<CourseEntity> courses { get; } = new List<CourseEntity>();
+        public AccountEntity? accountEntity { get; set; }
+        public List<CourseEntity> courseEntities { get; } = new List<CourseEntity>();
         public List<PurchaseEntity> purchaseEntities { get; } = new List<PurchaseEntity>();
         public List<ConversationEntity> conversationEntities { get; } = new List<ConversationEntity>();
         public List<UserConversation> userConversations { get; } = new List<UserConversation>();
         public List<DocumentEntity> documentEntities {  get; } = new List<DocumentEntity>();
         public List<ExerciseEntity> exerciseEntities { get; } = new List<ExerciseEntity>();
         public List<NotificationEntity> notificationEntities {  get; } = new List<NotificationEntity>();     
-
+        public List<CartEntity> cartEntities { get; } =new List<CartEntity>();
+        public List<ReportEntity> reportEntities { get; }=new List<ReportEntity>();
+        public List<CommentEntity> commentEntities { get; } = new List<CommentEntity>();
+        public List<PaymentEntity> paymentEntities { get; } = new List<PaymentEntity>();
+        public List<CategoryLessonEntity> categoryLessonsEntities { get; } = new List<CategoryLessonEntity>();
+        public List<LessonEntity> lessonsEntities { get; } = new List<LessonEntity>();
+        public List<MessageEntity> messageEntities { get; } = new List<MessageEntity> ();
     }
 }

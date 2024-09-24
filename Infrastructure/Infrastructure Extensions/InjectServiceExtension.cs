@@ -16,7 +16,13 @@ namespace Infrastructure.Infrastructure_Extensions
         {
             service.AddDbContext<ApplicationDBContext>(optionsAction =>
             {
-                optionsAction.UseSqlServer("");
+                var connection = configuration.GetConnectionString("SQL");
+
+                optionsAction.UseSqlServer(connection!, op =>
+                {
+                    op.MigrationsAssembly(typeof(ApplicationDBContext).Assembly.FullName);
+                });
+
             });
 
 

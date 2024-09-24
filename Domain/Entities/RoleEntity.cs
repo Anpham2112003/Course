@@ -23,6 +23,6 @@ namespace Domain.Entities
         
         public List<AccountEntity> accountEntities { get;  }=new List<AccountEntity>();
         public List<PermissionEntity> permissionEntities { get; }= new List<PermissionEntity>();
-        public List<RolePermission>? RolePermission { get; set; } 
+        public List<RolePermission>? rolePermission { get; }  = new List<RolePermission>();
     }
 }
