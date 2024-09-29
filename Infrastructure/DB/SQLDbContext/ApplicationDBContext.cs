@@ -16,6 +16,10 @@ namespace Infrastructure.DB.SQLDbContext
            
         }
 
+        public ApplicationDBContext()
+        {
+        }
+
         public DbSet<AccountEntity> Accounts {  get; set; }
         public DbSet<CartEntity> Carts { get; set; }
         public DbSet<CategoryLessonEntity> CategoriesLessons { get; set; }

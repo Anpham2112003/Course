@@ -1,4 +1,5 @@
 ﻿using Infrastructure.DB.SQLDbContext;
+using Infrastructure.Services.UnitOfWorkService;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -24,6 +25,10 @@ namespace Infrastructure.Infrastructure_Extensions
                 });
 
             });
+
+
+            service.AddScoped<IUnitOfWork, UnitOfWork>();
+
 
 
             return service;

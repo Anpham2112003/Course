@@ -5,10 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Interfaces.EntityBase
+namespace ApplicationCore.Interfaces.RepositoryBase
 {
-    public interface BaseEntity<T>:IEntity
+    public interface IAccountRepository<TEnity>:IRepository<TEnity> where TEnity : class,IEntity
     {
-        public T Id { get; set; }
     }
 }

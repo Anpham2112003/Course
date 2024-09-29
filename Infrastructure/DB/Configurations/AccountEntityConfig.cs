@@ -33,6 +33,7 @@ namespace Infrastructure.DB.Configurations
                    .ValueGeneratedOnUpdate();
 
             builder.Property(x=>x.IsDeleted)
+               
                     .HasDefaultValue(false);
 
             /////////////*****Index*******/////////////
