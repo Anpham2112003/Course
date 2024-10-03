@@ -14,7 +14,7 @@ namespace Domain.Entities
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
 
-        public List<CourseEntity> courseEntities { get; } = new List<CourseEntity>();
-        public List<CourseTopic> courseTopics { get; }=new List<CourseTopic>();
+        public List<CourseEntity> courseEntities { get; set; } = new List<CourseEntity>();
+        public List<CourseTopic> courseTopics { get; set; } =new List<CourseTopic>();
     }
 }

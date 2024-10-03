@@ -26,14 +26,7 @@ namespace Infrastructure.DB.Configurations
             builder.Property(x=>x.IsSale)
                    .HasDefaultValue(false);
 
-            builder.Property(x => x.CreatedAt)
-                   .ValueGeneratedOnAdd();
-
-            builder.Property(x => x.UpdatedAt)
-                   .ValueGeneratedOnUpdate();
-
-            builder.Property(x=>x.IsDeleted)
-                   .HasDefaultValue(false);
+           
 
             ///////*******Index********///////////
             

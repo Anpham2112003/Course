@@ -17,11 +17,22 @@ namespace ApplicationCore.Interfaces.RepositoryBase
         public void AddOne(TEntity entity);
 
 
+
+        /// <summary>
+        /// Add one Entity to Database
+        /// </summary>
+        /// <param name="entity"></param>
+        public Task AddOneAsync(TEntity entity);
+
+
         /// <summary>
         /// Add one Entity to Database
         /// </summary>
         /// <param name="entity"></param>
         public Task AddOneAsync(TEntity entity, CancellationToken cancellationToken);
+
+
+
 
         /// <summary>
         /// Add many Entity to Database
@@ -29,12 +40,22 @@ namespace ApplicationCore.Interfaces.RepositoryBase
         /// <param name="entities"></param>
         public void AddMany(ICollection<TEntity> entities);
 
+
+        /// <summary>
+        /// Add many Entity to Database Async
+        /// </summary>
+        /// <param name="entities"></param>
+        /// <returns></returns>
+
+        public Task AddManyAsync(ICollection<TEntity> entities);
+
         /// <summary>
         /// Add many Entity to Database Async
         /// </summary>
         /// <param name="entities"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
+
         public Task AddManyAsync(ICollection<TEntity> entities, CancellationToken cancellationToken);
 
         /// <summary>
@@ -51,7 +72,18 @@ namespace ApplicationCore.Interfaces.RepositoryBase
         /// <typeparam name="Id">id type Guid ,int ,string</typeparam>
         /// <param name="id">Id type Guid, int ,string</param>
         /// <returns> Entity if exists or null</returns>
+        /// 
+
         public Task<TEntity?> FindOneAsync<Id>(Id id);
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns>IQuryable</returns>
+        public IQueryable<TEntity> EntityQueryable();
+
+
 
         /// <summary>
         /// Find by id

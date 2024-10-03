@@ -14,8 +14,8 @@ namespace Domain.Entities
         public bool State {  get; set; }
 
         //////////////////////////////////
-        public List<RoleEntity> roleEntities { get; } = new List<RoleEntity>();
-        public List<RolePermission> rolePermissions { get; } = new List<RolePermission>(); 
+        public List<RoleEntity> roleEntities { get; set; } = new List<RoleEntity>();
+        public List<RolePermission> rolePermissions { get; set; } = new List<RolePermission>(); 
     
     }
 }

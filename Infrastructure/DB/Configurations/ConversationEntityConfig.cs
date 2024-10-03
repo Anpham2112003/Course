@@ -19,12 +19,6 @@ namespace Infrastructure.DB.Configurations
 
            
 
-            builder.Property(x => x.CreatedAt)
-                   .ValueGeneratedOnAdd();
-
-            builder.Property(x => x.IsDeleted)
-                   .HasDefaultValue(false);
-
             ///////////////**********Index*********/////////////
             
             builder.HasIndex(x => x.Id)

@@ -30,15 +30,15 @@ namespace Domain.Entities
 
         ////////////////////////////////////////
         public UserEntity? userEntity { get; set; }
-        public List<CategoryLessonEntity> categoryLessons { get; }=new List<CategoryLessonEntity>();
-        public List<DocumentEntity> documentEntities { get; }=new List<DocumentEntity>();
-        public List<TopicEntity> topicEntities { get; } = new List<TopicEntity>();  
-        public List<CourseTopic> courseTopics { get; } = new List<CourseTopic>();
-        public List<TagEntity> tagEntities { get; } = new List<TagEntity>();
-        public List<CourseTag> courseTags { get; } = new List<CourseTag>();
-        public List<CartEntity> cartEntities { get; } = new List<CartEntity>();
-        public List<CommentEntity> commentEntities { get; } =new List<CommentEntity>();
-        public List<PaymentEntity> paymentEntities { get; } = new List<PaymentEntity>();
+        public List<CategoryLessonEntity> categoryLessons { get; set; } =new List<CategoryLessonEntity>();
+        public List<DocumentEntity> documentEntities { get; set; } =new List<DocumentEntity>();
+        public List<TopicEntity> topicEntities { get; set; } = new List<TopicEntity>();  
+        public List<CourseTopic> courseTopics { get; set; } = new List<CourseTopic>();
+        public List<TagEntity> tagEntities { get; set; } = new List<TagEntity>();
+        public List<CourseTag> courseTags { get; set; } = new List<CourseTag>();
+        public List<CartEntity> cartEntities { get; set; } = new List<CartEntity>();
+        public List<CommentEntity> commentEntities { get; set; } =new List<CommentEntity>();
+        public List<PaymentEntity> paymentEntities { get; set; } = new List<PaymentEntity>();
         public List<PurchaseEntity> purchaseEntities { get; }= new List<PurchaseEntity>();
     }
 }

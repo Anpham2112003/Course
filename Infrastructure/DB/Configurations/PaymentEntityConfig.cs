@@ -17,8 +17,6 @@ namespace Infrastructure.DB.Configurations
             
             builder.HasKey(x => x.Id);
 
-            builder.Property(x => x.CreatedAt)
-                   .ValueGeneratedOnAdd();
 
             /////////////*********Index*******/////////////
             

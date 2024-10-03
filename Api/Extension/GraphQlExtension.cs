@@ -3,6 +3,7 @@ using Api.Mutation;
 using Api.Query;
 using HotChocolate.Execution.Configuration;
 using HotChocolate.Types;
+using Infrastructure.DB.SQLDbContext;
 
 namespace Api.Extension
 {
@@ -12,8 +13,13 @@ namespace Api.Extension
         {
             builder.AddQueryType<Queries>()
                 .AddMutationType<Mutations>()
+                .RegisterDbContext<ApplicationDBContext>()
+                .AddProjections()
+                .AddFiltering()
+                .AddType(new UuidType())
                 .AddTypeExtension<AccountQuery>()
-                .AddTypeExtension<AccountMutation>();
+                .AddTypeExtension<AccountMutation>()
+                .AddTypeExtension<SeedData>();
                 
 
             return builder;

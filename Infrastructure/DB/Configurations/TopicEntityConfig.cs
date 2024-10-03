@@ -18,11 +18,7 @@ namespace Infrastructure.DB.Configurations
             builder.Property(x => x.Name)
                    .HasMaxLength(255);
 
-            builder.Property(x => x.CreatedAt)
-                   .ValueGeneratedOnAdd();
-
-            builder.Property(x=>x.UpdatedAt)
-                   .ValueGeneratedOnUpdate();
+            
         }
     }
 }

@@ -23,7 +23,7 @@ namespace Domain.Entities
         ////////////////////////////////////////
         public UserEntity? userEntity { get; set; }
         public CategoryLessonEntity? categoryLesson { get; set; }
-        public List<ReportEntity> reportEntities { get; } = new List<ReportEntity>();
+        public List<ReportEntity> reportEntities { get; set; } = new List<ReportEntity>();
         public List<ExerciseEntity> exerciseEntities { get; set; } = new List<ExerciseEntity>();
         
     }

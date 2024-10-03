@@ -20,8 +20,6 @@ namespace Infrastructure.DB.Configurations
             builder.Property(x => x.Content)
                    .HasMaxLength(255);
 
-            builder.Property(x => x.CreatedAt)
-                   .ValueGeneratedOnAdd();
 
             //////////*********Index*******///////////
             

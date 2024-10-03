@@ -17,11 +17,7 @@ namespace Infrastructure.DB.Configurations
             
             builder.HasKey(x=> x.Id);
 
-            builder.Property(x => x.CreatedAt)
-                   .ValueGeneratedOnAdd();
-
-            builder.Property(x=>x.UpdatedAt)
-                   .ValueGeneratedOnUpdate();
+           
 
             builder.Property(x => x.IsDeleted)
                    .HasDefaultValue(false);

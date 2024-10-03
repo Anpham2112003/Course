@@ -2,6 +2,7 @@
 using Domain.Entities;
 using Infrastructure.DB.SQLDbContext;
 using Infrastructure.Services.RepositoryService;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Storage;
 using System;
 using System.Collections.Generic;
@@ -36,6 +37,8 @@ namespace Infrastructure.Services.UnitOfWorkService
        
         public async Task<int> SaveChanges(CancellationToken cancellationToken)
         {
+            
+
            return await _dbContext.SaveChangesAsync(cancellationToken);
         }
 
@@ -49,11 +52,20 @@ namespace Infrastructure.Services.UnitOfWorkService
 
         }
 
+        public ApplicationDBContext GetContext()
+        {
+            return _dbContext;
+        }
+
 
         //////////////////////////*****************/////////////////////////
 
         public IAccountRepository<AccountEntity> accountRepository 
 
             =>  new AccountRepostitory(_dbContext);
+
+        public IUserRepository<UserEntity> userRepository
+
+            => new UserRepository(_dbContext);
     }
 }

@@ -20,9 +20,7 @@ namespace Infrastructure.DB.Configurations
             builder.Property(x => x.Url)
                    .HasMaxLength(255);
 
-            builder.Property(x => x.UpdatedAt)
-                   .ValueGeneratedOnAdd();
-
+           
             /////////////****Index*******////////////
             
             builder.HasIndex(x => x.Id)

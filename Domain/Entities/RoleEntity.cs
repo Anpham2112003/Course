@@ -12,17 +12,13 @@ namespace Domain.Entities
         public int Id { get; set; }
         public string? RoleName { get; set; }
 
-        public RoleEntity(int id, string? roleName)
-        {
-            Id = id;
-            RoleName = roleName;
-        }
+        
 
 
         //////////////
         
-        public List<AccountEntity> accountEntities { get;  }=new List<AccountEntity>();
-        public List<PermissionEntity> permissionEntities { get; }= new List<PermissionEntity>();
-        public List<RolePermission>? rolePermission { get; }  = new List<RolePermission>();
+        public List<AccountEntity> accountEntities { get; set; } =new List<AccountEntity>();
+        public List<PermissionEntity> permissionEntities { get; set; } = new List<PermissionEntity>();
+        public List<RolePermission>? rolePermission { get; set; }  = new List<RolePermission>();
     }
 }

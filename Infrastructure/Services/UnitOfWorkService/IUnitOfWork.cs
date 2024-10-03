@@ -1,5 +1,7 @@
 ﻿using ApplicationCore.Interfaces.RepositoryBase;
 using Domain.Entities;
+using Infrastructure.DB.SQLDbContext;
+using Infrastructure.Services.RepositoryService;
 using Microsoft.EntityFrameworkCore.Storage;
 using System;
 using System.Collections.Generic;
@@ -11,6 +13,7 @@ namespace Infrastructure.Services.UnitOfWorkService
 {
     public interface IUnitOfWork:IDisposable
     {
+        public ApplicationDBContext GetContext();
         public Task<IDbContextTransaction> BeginTransactionAsync();
         public Task< IDbContextTransaction> BeginTransactionAsync(CancellationToken cancellationToken);
         public Task<int> SaveChanges();
@@ -19,5 +22,6 @@ namespace Infrastructure.Services.UnitOfWorkService
 
 
         public IAccountRepository<AccountEntity> accountRepository { get; }
+        public IUserRepository<UserEntity> userRepository { get; }
     }
 }

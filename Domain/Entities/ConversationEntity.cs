@@ -15,8 +15,8 @@ namespace Domain.Entities
         public DateTime DeletedAt { get; set; }
        
         ////////////////////////////////
-        public List<UserEntity> userEntities { get; } = new List<UserEntity>();
-        public List<UserConversation> userConversations { get; } = new List<UserConversation>();
-        public List<MessageEntity> messageEntities { get; } = new List<MessageEntity>();
+        public List<UserEntity> userEntities { get; set; } = new List<UserEntity>();
+        public List<UserConversation> userConversations { get; set; } = new List<UserConversation>();
+        public List<MessageEntity> messageEntities { get; set; } = new List<MessageEntity>();
     }
 }
