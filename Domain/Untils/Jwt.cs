@@ -52,5 +52,42 @@ namespace Domain.Untils
 
             return token;
         }
+
+        public static bool ValidateRefreshToken(string token,IOptionsMonitor<JwtOption> options,out ClaimsPrincipal claims)
+        {
+
+            try
+            {
+                var tokenPrameter = new TokenValidationParameters
+                {
+                    ValidateLifetime = true,
+                    ValidIssuer = options.CurrentValue.Issuer,
+                    ValidAudience = options.CurrentValue.Audience,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(options.CurrentValue.Refreshkey!)),
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateIssuerSigningKey = true,
+                };
+
+
+                var tokenHanler = new JwtSecurityTokenHandler();
+
+                var tokenCliams = tokenHanler.ValidateToken(token, tokenPrameter, out var valid);
+
+                claims = tokenCliams;
+
+                return true;
+            }
+            catch (Exception)
+            {
+                claims = new ClaimsPrincipal();
+
+                return false;
+
+            }
+
+           
+            
+        }
     }
 }

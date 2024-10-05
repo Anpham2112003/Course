@@ -23,7 +23,9 @@ namespace Application.Account
     public class LoginAccountRequestHandler : IRequestHandler<LoginAccountRequest, LoginResponse>
     {
         private readonly IUnitOfWork _unitOfWork;
+
         private readonly IOptionsMonitor<JwtOption> _options;
+
         public LoginAccountRequestHandler(IUnitOfWork unitOfWork, IOptionsMonitor<JwtOption> options)
         {
             _unitOfWork = unitOfWork;
@@ -34,27 +36,45 @@ namespace Application.Account
         {
             try
             {
-                var account = await _unitOfWork.accountRepository.EntityQueryable()
-                    .Where(x => x.Email == request.Email)
-                    .Include(x => x.roleEntity)
-                    .ThenInclude(x => x.permissionEntities)
-                    .Select(x=> new AccountEntity
-                    {
-                        Id = x.Id,
-                        Email = x.Email,
-                        HashPassword = x.HashPassword,
-                        IsDeleted = x.IsDeleted,
-                        roleEntity=x.roleEntity
-                    })
-                    .FirstOrDefaultAsync(cancellationToken);
+                var account = await _unitOfWork.accountRepository.FindAccountAndRoleAsync(x=>x.Email==request.Email);
 
                 if (account is null || Hash.VerifyHash(account.HashPassword!, request.Password!) is false)
                 {
                     throw new GraphQLException(AccountErrors.AccountOrPassowrdError());
                 }
 
-                
+                var permissions = account.roleEntity!.permissionEntities.Select(x=> new
+                {
+                    route =x.Route,
+                    state = x.State,
+                });
 
+                var jsonPermission = JsonSerializer.Serialize(permissions);
+
+                var Claims = new Claim[]
+                {
+                    new Claim(ClaimTypes.PrimarySid,account.Id.ToString()),
+                    new Claim(ClaimTypes.Email,account.Email!),
+                    new Claim(ClaimTypes.Role,account.roleEntity.RoleName!),
+                    new Claim("permssions",jsonPermission)
+                };
+
+                var accesstoken = Jwt.GenerateAccessToken(_options, Claims);
+
+                var refreshtoken = Jwt.GenerateRefreshToken(_options, Claims);
+
+                account.RefreshToken = refreshtoken;
+
+                _unitOfWork.accountRepository.UpdateOne(account);
+
+                await _unitOfWork.SaveChanges(cancellationToken);
+
+                return new LoginResponse
+                {
+                    Id = account.Id,
+                    Accesstoken = accesstoken,
+                    Refreshtoken = refreshtoken,
+                };
                
             }
             catch (Exception )

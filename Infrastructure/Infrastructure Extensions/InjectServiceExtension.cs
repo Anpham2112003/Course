@@ -1,5 +1,7 @@
 ﻿using Infrastructure.DB.SQLDbContext;
+using Infrastructure.Services.MailService;
 using Infrastructure.Services.UnitOfWorkService;
+using MailKit;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -29,7 +31,7 @@ namespace Infrastructure.Infrastructure_Extensions
 
             service.AddScoped<IUnitOfWork, UnitOfWork>();
 
-
+            service.AddScoped<IMailerService,MailerService>();
 
             return service;
         }

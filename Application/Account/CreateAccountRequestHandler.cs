@@ -60,7 +60,7 @@ namespace Application.Account
 
                 await _unitOfWork.SaveChanges();
 
-                await transaction.CommitAsync();
+                await transaction.CommitAsync(cancellationToken);
 
                 return request;
 

@@ -8,6 +8,8 @@ namespace Api.Extension
         {
             services.Configure<JwtOption>(configuration.GetSection(JwtOption.Jwt));
 
+            services.Configure<MailOption>(configuration.GetSection(MailOption.Mail));
+
             return services;
         }
     }
