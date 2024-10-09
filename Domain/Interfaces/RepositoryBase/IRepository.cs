@@ -3,6 +3,7 @@ using Domain.Interfaces.EntityBase;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -65,6 +66,14 @@ namespace ApplicationCore.Interfaces.RepositoryBase
         /// <param name="id">Id type Guid, int ,string</param>
         /// <returns> Entity if exists or null</returns>
         public TEntity? FindOne<Id>(Id id);
+
+        /// <summary>
+        /// Find first Entity
+        /// </summary>
+        /// <param name="expression"></param>
+        /// <param name="cancellation"></param>
+        /// <returns>Return find first Entity or null</returns>
+        public Task<TEntity?> FirstAsync(Expression<Func<TEntity, bool>> expression, CancellationToken cancellation = default);
 
         /// <summary>
         /// Find Entity by Id

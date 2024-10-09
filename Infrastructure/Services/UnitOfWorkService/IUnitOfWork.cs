@@ -17,7 +17,7 @@ namespace Infrastructure.Services.UnitOfWorkService
         public Task<IDbContextTransaction> BeginTransactionAsync();
         public Task< IDbContextTransaction> BeginTransactionAsync(CancellationToken cancellationToken);
         public Task<int> SaveChanges();
-        public Task<int> SaveChanges(CancellationToken cancellationToken);
+        public Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 
 
 

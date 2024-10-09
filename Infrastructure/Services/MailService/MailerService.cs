@@ -4,6 +4,7 @@ using Microsoft.Extensions.Options;
 using MimeKit;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -37,6 +38,7 @@ namespace Infrastructure.Services.MailService
 
                 message.Body = body.ToMessageBody();
 
+                Debug.WriteLine(Thread.CurrentThread.ManagedThreadId);
 
                 using (var smtp = new SmtpClient())
                 {
@@ -45,6 +47,8 @@ namespace Infrastructure.Services.MailService
                     await smtp.AuthenticateAsync(_options.CurrentValue.Account, _options.CurrentValue.Password, cancellationToken);
 
                     await smtp.SendAsync(message);
+
+                    Debug.WriteLine(Thread.CurrentThread.ManagedThreadId);
 
                     await smtp.DisconnectAsync(true);
                 }

@@ -1,9 +1,12 @@
 using Api.Extension;
-using Api.Query;
 using Application.Account;
+using Domain.Errors;
+using HotChocolate;
+using HotChocolate.Execution;
+using Infrastructure;
 using Infrastructure.DB.SQLDbContext;
-using Infrastructure.Infrastructure_Extensions;
 using Infrastructure.SeedData;
+using MediatR.NotificationPublishers;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
@@ -18,7 +21,10 @@ builder.Services.InfrastructureInjectServices(builder.Configuration);
 
 builder.Services
    .AddGraphQLServer()
-   .AddGraphExtension() ;
+   .AddGraphExtension();
+
+builder.Services.AddSingleton(cg => new RequestExecutorProxy(cg.GetRequiredService<IRequestExecutorResolver>(), Schema.DefaultName));
+  
 
 builder.Services.AddOptions(builder.Configuration);
 
@@ -28,6 +34,9 @@ builder.Services.AddMediatR(config =>
     
     config.RegisterServicesFromAssembly(typeof(CreateAccountRequest).Assembly);
 
+    config.NotificationPublisher = new TaskWhenAllPublisher();
+
+    config.NotificationPublisherType=typeof(TaskWhenAllPublisher);
 });
 
 builder.Services.AddAuthentication()
@@ -69,7 +78,11 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.MapGraphQL();
+app.MapGraphQL().WithOptions(new HotChocolate.AspNetCore.GraphQLServerOptions
+{
+    EnableBatching = true,
+});
 
 app.Run();
 
+public partial class Program { }

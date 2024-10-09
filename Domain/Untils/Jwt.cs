@@ -18,14 +18,14 @@ namespace Domain.Untils
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(options.CurrentValue.Accesskey!));
 
-            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.Sha256);
+            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256Signature);
 
             var createToken = new JwtSecurityToken(
                     issuer: options.CurrentValue.Issuer,
                     audience: options.CurrentValue.Audience,
                     claims: claims,
-                    expires: DateTime.Now.AddMinutes(options.CurrentValue.AccesskeyExprire)
-
+                    expires: DateTime.Now.AddMinutes(options.CurrentValue.AccesskeyExprire),
+                    signingCredentials:credentials
             );
 
             var token = new JwtSecurityTokenHandler().WriteToken(createToken);
@@ -38,14 +38,15 @@ namespace Domain.Untils
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(options.CurrentValue.Refreshkey!));
 
-            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.Sha256);
+            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256Signature);
 
             var createToken = new JwtSecurityToken(
                     issuer: options.CurrentValue.Issuer,
                     audience: options.CurrentValue.Audience,
                     claims: claims,
-                    expires: DateTime.Now.AddDays(options.CurrentValue.RefreshkeyExprire)
-
+                    expires: DateTime.Now.AddDays(options.CurrentValue.RefreshkeyExpire),
+                    signingCredentials:credentials
+                    
             );
 
             var token = new JwtSecurityTokenHandler().WriteToken(createToken);
@@ -53,7 +54,7 @@ namespace Domain.Untils
             return token;
         }
 
-        public static bool ValidateRefreshToken(string token,IOptionsMonitor<JwtOption> options,out ClaimsPrincipal claims)
+        public static bool ValidateRefreshToken(string token,IOptionsMonitor<JwtOption> options,out bool expire,out ClaimsPrincipal claims)
         {
 
             try
@@ -67,6 +68,7 @@ namespace Domain.Untils
                     ValidateIssuer = true,
                     ValidateAudience = true,
                     ValidateIssuerSigningKey = true,
+                    
                 };
 
 
@@ -76,11 +78,23 @@ namespace Domain.Untils
 
                 claims = tokenCliams;
 
+                expire=false;
+
                 return true;
             }
-            catch (Exception)
+            catch (SecurityTokenExpiredException)
+            {
+                claims=new ClaimsPrincipal();
+
+                expire=true;
+
+                return false;
+            }
+            catch (Exception )
             {
                 claims = new ClaimsPrincipal();
+
+                expire = false;
 
                 return false;
 

@@ -11,7 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Infrastructure.Infrastructure_Extensions
+namespace Infrastructure
 {
     public static class InjectServiceExtension
     {
@@ -31,7 +31,7 @@ namespace Infrastructure.Infrastructure_Extensions
 
             service.AddScoped<IUnitOfWork, UnitOfWork>();
 
-            service.AddScoped<IMailerService,MailerService>();
+            service.AddScoped<IMailerService, MailerService>();
 
             return service;
         }

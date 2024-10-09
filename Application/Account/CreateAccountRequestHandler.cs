@@ -1,6 +1,10 @@
-﻿using ApplicationCore.Errors;
+﻿
 using ApplicationCore.Untils;
 using Domain.Entities;
+using Domain.Errors;
+using Domain.Errors.UnionError.AccountUnion;
+using Domain.Errors.UnionErrorImplement.AccountUnionImplemnt;
+using Domain.Untils;
 using HotChocolate;
 using Infrastructure.Services.UnitOfWorkService;
 using MediatR;
@@ -12,7 +16,7 @@ using System.Threading.Tasks;
 
 namespace Application.Account
 {
-    public class CreateAccountRequestHandler : IRequestHandler<CreateAccountRequest, CreateAccountRequest>
+    public class CreateAccountRequestHandler : IRequestHandler<CreateAccountRequest, MutationPayload<CreateAccountRequest,CreateAccountError>>
     {
         private readonly IUnitOfWork _unitOfWork;
 
@@ -21,17 +25,26 @@ namespace Application.Account
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<CreateAccountRequest> Handle(CreateAccountRequest request, CancellationToken cancellationToken)
+        public async Task<MutationPayload<CreateAccountRequest, CreateAccountError>> Handle(CreateAccountRequest request, CancellationToken cancellationToken)
         {
             var transaction = await _unitOfWork.BeginTransactionAsync();
 
+            
+
             try
             {
+                var erros = new List<CreateAccountError>();
+
                 var checkEmail = _unitOfWork.accountRepository.CheckEmail(request.Email!);
 
                 if (checkEmail)
                 {
-                    throw new GraphQLException(AccountErrors.AccountAlreadyExist());
+                    erros.Add(new AccountExist());
+
+                    return new MutationPayload<CreateAccountRequest, CreateAccountError>
+                    {
+                        errors = erros
+                    };
                 }
 
                 var account = new AccountEntity
@@ -58,11 +71,14 @@ namespace Application.Account
                 await _unitOfWork.userRepository.AddOneAsync(user);
 
 
-                await _unitOfWork.SaveChanges();
+                await _unitOfWork.SaveChangesAsync(cancellationToken);
 
                 await transaction.CommitAsync(cancellationToken);
 
-                return request;
+                return new MutationPayload<CreateAccountRequest, CreateAccountError>
+                {
+                    payload = request
+                };
 
             }
             catch (Exception)

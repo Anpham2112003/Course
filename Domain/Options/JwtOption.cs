@@ -14,7 +14,7 @@ namespace Domain.Options
         public string? Accesskey {  get; set; }
         public string? Refreshkey {  get; set; }
         public int AccesskeyExprire {  get; set; }
-        public int RefreshkeyExprire { get; set; }
+        public int RefreshkeyExpire { get; set; }
 
     }
 }

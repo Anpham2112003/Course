@@ -1,7 +1,10 @@
-﻿using ApplicationCore.Errors;
+﻿
 using ApplicationCore.Untils;
 using Domain.DTOs;
 using Domain.Entities;
+using Domain.Errors;
+using Domain.Errors.UnionError.AccountUnion;
+using Domain.Errors.UnionErrorImplement.AccountUnionImplemnt;
 using Domain.Options;
 using Domain.Untils;
 using HotChocolate;
@@ -20,7 +23,7 @@ using System.Threading.Tasks;
 
 namespace Application.Account
 {
-    public class LoginAccountRequestHandler : IRequestHandler<LoginAccountRequest, LoginResponse>
+    public class LoginAccountRequestHandler : IRequestHandler<LoginAccountRequest, MutationPayload<LoginResponse,LoginAccountError>>
     {
         private readonly IUnitOfWork _unitOfWork;
 
@@ -32,15 +35,37 @@ namespace Application.Account
             _options = options;
         }
 
-        public async Task<LoginResponse> Handle(LoginAccountRequest request, CancellationToken cancellationToken)
+        public async Task<MutationPayload<LoginResponse, LoginAccountError>> Handle(LoginAccountRequest request, CancellationToken cancellationToken)
         {
             try
             {
+                var errors = new List<LoginAccountError>();
+
                 var account = await _unitOfWork.accountRepository.FindAccountAndRoleAsync(x=>x.Email==request.Email);
+
+                
 
                 if (account is null || Hash.VerifyHash(account.HashPassword!, request.Password!) is false)
                 {
-                    throw new GraphQLException(AccountErrors.AccountOrPassowrdError());
+                    errors.Add(new AccountOrPasswordError());
+
+
+                    return new MutationPayload<LoginResponse, LoginAccountError>
+                    {
+                        payload = null,
+                        errors = errors
+                    };
+                }
+
+                if (account.IsDeleted)
+                {
+                    errors.Add(new AccountHasDeleted());
+
+                    return new MutationPayload<LoginResponse, LoginAccountError>
+                    {
+                        
+                        errors = errors
+                    };
                 }
 
                 var permissions = account.roleEntity!.permissionEntities.Select(x=> new
@@ -67,13 +92,17 @@ namespace Application.Account
 
                 _unitOfWork.accountRepository.UpdateOne(account);
 
-                await _unitOfWork.SaveChanges(cancellationToken);
+                await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-                return new LoginResponse
+                return new MutationPayload<LoginResponse, LoginAccountError>
                 {
-                    Id = account.Id,
-                    Accesstoken = accesstoken,
-                    Refreshtoken = refreshtoken,
+                    payload = new LoginResponse
+                    {
+                        Id = account.Id,
+                        Accesstoken = accesstoken,
+                        Refreshtoken = refreshtoken,
+                    },
+                    errors = errors
                 };
                
             }

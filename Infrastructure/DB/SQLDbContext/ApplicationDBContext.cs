@@ -47,7 +47,46 @@ namespace Infrastructure.DB.SQLDbContext
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(AccountEntityConfig).Assembly);
         }
 
-        
+
+        public override async Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess, CancellationToken cancellationToken = default)
+        {
+            var entries = ChangeTracker.Entries()
+                .Where(x =>
+                    (x.Entity is ICreated || x.Entity is IUpdated || x is ISoftDeleted)
+                                     && (x.State == EntityState.Added || x.State == EntityState.Modified));
+
+
+            foreach (var entity in entries)
+            {
+                if (entity.State == EntityState.Added)
+                {
+                    if (entity is ICreated)
+                    {
+                        ((ICreated)entity.Entity).CreatedAt = DateTime.UtcNow;
+                    }
+                }
+
+
+                if (entity.State == EntityState.Modified)
+                {
+                    if (entity is IUpdated)
+                    {
+                        ((IUpdated)entity.Entity).UpdatedAt = DateTime.UtcNow;
+                    }
+
+                    if (entity is ISoftDeleted)
+                    {
+                        ((ISoftDeleted)entity.Entity).IsDeleted = true;
+                        ((ISoftDeleted)entity.Entity).DeletedAt = DateTime.UtcNow;
+                    }
+                }
+
+            }
+            return await base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
+        }
+
+
+
 
         public override int SaveChanges()
         {

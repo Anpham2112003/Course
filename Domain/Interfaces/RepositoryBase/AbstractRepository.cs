@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -58,6 +59,10 @@ namespace ApplicationCore.Interfaces.RepositoryBase
             return  dBContext.Set<TEntity>().Find(id);
         }
 
+        public async Task<TEntity?> FirstAsync(Expression<Func<TEntity,bool>> expression,CancellationToken cancellation=default)
+        {
+            return await dBContext.Set<TEntity>().FirstOrDefaultAsync(expression,cancellation);
+        }
 
         public async Task<TEntity?> FindOneAsync<Id>(Id id) 
         {
@@ -70,6 +75,8 @@ namespace ApplicationCore.Interfaces.RepositoryBase
         {
             return await dBContext.Set<TEntity>().FindAsync(keys);
         }
+
+
 
         public void UpdateOne(TEntity entity)
         {
