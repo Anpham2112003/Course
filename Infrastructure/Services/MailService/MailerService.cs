@@ -1,4 +1,5 @@
-﻿using Domain.Options;
+﻿using Domain.Interfaces.Mailer;
+using Domain.Options;
 using MailKit.Net.Smtp;
 using Microsoft.Extensions.Options;
 using MimeKit;
@@ -20,7 +21,7 @@ namespace Infrastructure.Services.MailService
             _options = options;
         }
 
-        public async Task SendMailAsync(MailObject mail, CancellationToken cancellationToken = default)
+        public async Task SendMailAsync(IMailObject mail, CancellationToken cancellationToken = default)
         {
             try
             {

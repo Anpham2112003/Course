@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.Xml;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -119,6 +120,12 @@ namespace Infrastructure.DB.Configurations
                     .IsRequired();
 
             builder.HasMany(x=>x.messageEntities)
+                    .WithOne(x=>x.userEntity)
+                    .HasForeignKey(x=>x.UserId)
+                    .OnDelete(DeleteBehavior.NoAction)
+                    .IsRequired();
+
+            builder.HasMany(x => x.feedbackEntities)
                     .WithOne(x=>x.userEntity)
                     .HasForeignKey(x=>x.UserId)
                     .OnDelete(DeleteBehavior.NoAction)

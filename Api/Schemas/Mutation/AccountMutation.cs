@@ -1,9 +1,7 @@
-﻿using Application.Account;
-
-using ApplicationCore.Untils;
+﻿using Application.MediaR.Comands.Account;
 using Domain.DTOs;
 using Domain.Entities;
-using Domain.Errors.UnionError.AccountUnion;
+using Domain.Types.ErrorTypes.BaseError.AccountUnion;
 using Domain.Untils;
 using HotChocolate;
 using HotChocolate.Language;
@@ -14,7 +12,6 @@ using MediatR;
 namespace Api.Schemas.Mutation
 {
     [ExtendObjectType(typeof(Mutations))]
-
     public class AccountMutation
     {
         public async Task<MutationPayload<CreateAccountRequest, CreateAccountError>> createAccount([Service] IMediator mediator, CreateAccountRequest input, CancellationToken cancellation)

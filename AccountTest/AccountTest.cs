@@ -1,9 +1,7 @@
 ﻿using Api.Schemas.Mutation;
 using Api.Schemas.Query;
-using Application.Account;
-using Domain.Errors.UnionError;
-using Domain.Errors.UnionError.AccountUnion;
-using Domain.Errors.UnionErrorImplement.AccountUnionImplemnt;
+using Application.MediaR.Comands.Account;
+using Domain.Types.ErrorTypes.ErrorImplement.AccountErrors;
 using Domain.Untils;
 using GreenDonut;
 using HotChocolate;
@@ -18,6 +16,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.VisualStudio.TestPlatform.TestHost;
+using MyTest;
 using Snapshooter;
 using Snapshooter.Xunit;
 using System;
@@ -27,15 +26,17 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace AccountTest
 {
-    public class AccountTest : IClassFixture<WebApplicationFactory<Program>>
+    public class AccountTest : IClassFixture<CustomWebAppicationFactory<Program>>
     {
-        private readonly WebApplicationFactory<Program> webApplicationFactory;
+        private readonly CustomWebAppicationFactory<Program> webApplicationFactory;
 
-        public AccountTest(WebApplicationFactory<Program> webApplicationFactory)
+        public AccountTest ( CustomWebAppicationFactory<Program> webApplicationFactory)
         {
             this.webApplicationFactory = webApplicationFactory;
         }
@@ -72,8 +73,16 @@ namespace AccountTest
 
            var result = await executor.ExecuteAsync(quey);
 
-           
-            
+            var ex = result.ExpectQueryResult();
+
+            var Json = JsonSerializer.Serialize(ex.Data);
+
+            var ob = JsonSerializer.Deserialize<MutationPayload<LoginAccountRequest, AccountOrPasswordError>>(Json, new JsonSerializerOptions
+            {
+                ReferenceHandler = ReferenceHandler.Preserve
+            });
+
+
 
           
 

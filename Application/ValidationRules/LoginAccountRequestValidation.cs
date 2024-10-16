@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Application.Account;
+using Application.MediaR.Comands.Account;
 
 namespace Application.ValidationRules
 {

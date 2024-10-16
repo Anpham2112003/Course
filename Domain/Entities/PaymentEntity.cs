@@ -1,5 +1,5 @@
-﻿using Domain.Enums;
-using Domain.Interfaces.EntityBase;
+﻿using Domain.Interfaces.EntityBase;
+using Domain.Types.EnumTypes;
 using System;
 using System.Collections.Generic;
 using System.Linq;

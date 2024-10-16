@@ -37,8 +37,9 @@ namespace Domain.Entities
         public List<TagEntity> tagEntities { get; set; } = new List<TagEntity>();
         public List<CourseTag> courseTags { get; set; } = new List<CourseTag>();
         public List<CartEntity> cartEntities { get; set; } = new List<CartEntity>();
-        public List<CommentEntity> commentEntities { get; set; } =new List<CommentEntity>();
         public List<PaymentEntity> paymentEntities { get; set; } = new List<PaymentEntity>();
-        public List<PurchaseEntity> purchaseEntities { get; }= new List<PurchaseEntity>();
+        public List<PurchaseEntity> purchaseEntities { get; set; } = new List<PurchaseEntity>();
+        public List<FeedbackEntity> feedbackEntities { get; set; }=new List<FeedbackEntity>();
+
     }
 }

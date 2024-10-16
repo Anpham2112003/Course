@@ -1,6 +1,8 @@
-using Api.Extension;
-using Application.Account;
-using Domain.Errors;
+using Api.Extensions;
+using Application.Maper;
+using Application.MediaR.Comands.Account;
+using CloudinaryDotNet;
+using dotenv.net;
 using HotChocolate;
 using HotChocolate.Execution;
 using Infrastructure;
@@ -38,6 +40,10 @@ builder.Services.AddMediatR(config =>
 
     config.NotificationPublisherType=typeof(TaskWhenAllPublisher);
 });
+
+builder.Services.AddAutoMapper(typeof(MapData).Assembly);
+
+builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddAuthentication()
     .AddJwtBearer(config =>
@@ -82,6 +88,9 @@ app.MapGraphQL().WithOptions(new HotChocolate.AspNetCore.GraphQLServerOptions
 {
     EnableBatching = true,
 });
+
+
+
 
 app.Run();
 

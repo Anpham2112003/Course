@@ -5,7 +5,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ApplicationCore.Untils
+namespace Domain.Untils
 {
     public static class Hash
     {

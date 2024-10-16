@@ -1,4 +1,4 @@
-﻿using Domain.Enums;
+﻿
 using Domain.Interfaces.EntityBase;
 using System;
 using System.Collections.Generic;
@@ -15,6 +15,7 @@ namespace Domain.Entities
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
         public string? FullName { get; set; }
+        public bool Gender {  get; set; }
         public string? Avatar { get; set; }
         public bool IsLecturer { get; set; }
         public string? Information {  get; set; }
@@ -40,6 +41,7 @@ namespace Domain.Entities
         public List<PaymentEntity> paymentEntities { get; set; } = new List<PaymentEntity>();
         public List<CategoryLessonEntity> categoryLessonsEntities { get; set; } = new List<CategoryLessonEntity>();
         public List<LessonEntity> lessonsEntities { get; set; } = new List<LessonEntity>();
-        public List<MessageEntity> messageEntities { get; } = new List<MessageEntity> ();
+        public List<MessageEntity> messageEntities { get; set; } = new List<MessageEntity> ();
+        public List<FeedbackEntity> feedbackEntities { get; set; }=new List<FeedbackEntity>();
     }
 }

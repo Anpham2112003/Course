@@ -20,9 +20,18 @@ namespace Infrastructure.DB.Configurations
             builder.Property(x => x.Content)
                    .HasMaxLength(255);
 
-     
+
 
             /////////////**********Index*********/////////
+            ///
+            //////////*******Navigation********////////
+
+            builder.HasOne<CommentEntity>()
+                .WithMany(x => x.comments)
+                .HasForeignKey(x => x.ReplyCommentId)
+                .IsRequired(false)
+                .OnDelete(DeleteBehavior.NoAction);
+
         }
     }
 }

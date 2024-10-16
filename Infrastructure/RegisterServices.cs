@@ -1,6 +1,10 @@
-﻿using Infrastructure.DB.SQLDbContext;
+﻿using Domain.Interfaces.Mailer;
+using Domain.Interfaces.UnitOfWork;
+using Domain.Interfaces.Upload;
+using Infrastructure.DB.SQLDbContext;
 using Infrastructure.Services.MailService;
 using Infrastructure.Services.UnitOfWorkService;
+using Infrastructure.Services.Upload;
 using MailKit;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -32,6 +36,8 @@ namespace Infrastructure
             service.AddScoped<IUnitOfWork, UnitOfWork>();
 
             service.AddScoped<IMailerService, MailerService>();
+
+            service.AddScoped<ICloudinaryUploadService, CloudinaryUploadService>();
 
             return service;
         }

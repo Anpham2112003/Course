@@ -69,11 +69,7 @@ namespace Infrastructure.DB.Configurations
                         r => r.HasOne(x => x.courseEntity).WithMany(x => x.courseTags).HasForeignKey(x => x.CourseId)
                     );
 
-            builder.HasMany(x => x.commentEntities)
-                   .WithOne(x => x.courseEntity)
-                   .HasForeignKey(x => x.CourseId)
-                   .IsRequired()
-                   .OnDelete(DeleteBehavior.Cascade);
+            
 
             builder.HasMany(x => x.paymentEntities)
                    .WithOne(x => x.courseEntity)
@@ -86,6 +82,12 @@ namespace Infrastructure.DB.Configurations
                     .HasForeignKey(x=>x.CourseId)
                     .OnDelete(DeleteBehavior.SetNull)
                     .IsRequired(false);
+
+            builder.HasMany(x=>x.feedbackEntities)
+                .WithOne(x=>x.courseEntity)
+                .HasForeignKey(x=> x.CourseId)
+                .OnDelete(DeleteBehavior.Cascade)
+                .IsRequired();
 
         }
     }

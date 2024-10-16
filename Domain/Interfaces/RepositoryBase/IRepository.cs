@@ -1,5 +1,4 @@
-﻿using ApplicationCore.Interfaces.EntityBase;
-using Domain.Interfaces.EntityBase;
+﻿using Domain.Interfaces.EntityBase;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,9 +6,9 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ApplicationCore.Interfaces.RepositoryBase
+namespace Domain.Interfaces.RepositoryBase
 {
-    public interface IRepository<TEntity> where TEntity : class,IEntity
+    public interface IRepository<TEntity> where TEntity : class, IEntity
     {
         /// <summary>
         /// Add one Entity to Database
@@ -99,7 +98,7 @@ namespace ApplicationCore.Interfaces.RepositoryBase
         /// </summary>
         /// <param name="keys"></param>
         /// <returns></returns>
-        public  Task<TEntity?> FindAsync(object[] keys);
+        public Task<TEntity?> FindAsync(object[] keys);
 
         /// <summary>
         /// Update one record in DataBase

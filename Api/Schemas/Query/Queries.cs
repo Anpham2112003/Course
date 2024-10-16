@@ -1,4 +1,5 @@
 ﻿using Domain.Entities;
+using Domain.Types.QueryTypes;
 using HotChocolate;
 using HotChocolate.Data;
 using HotChocolate.Types;
@@ -17,6 +18,6 @@ namespace Api.Schemas.Query
         //    return dBContext.Accounts;
         //}
 
-        public string Hello() => "Xin chao";
+        public User GetUsers() => new User();
     }
 }

@@ -1,5 +1,5 @@
-﻿using ApplicationCore.Interfaces.RepositoryBase;
-using Domain.Entities;
+﻿using Domain.Entities;
+using Domain.Interfaces.RepositoryBase;
 using Infrastructure.DB.SQLDbContext;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -17,9 +17,9 @@ namespace Infrastructure.Services.RepositoryService
         {
         }
 
-        public bool CheckEmail(string email)
+        public async Task<bool> CheckEmail(string email)
         {
-           return base.dBContext.Set<AccountEntity>().Any(x => x.Email == email);
+           return await base.dBContext.Set<AccountEntity>().AnyAsync(x => x.Email == email);
         }
 
         public async Task<AccountEntity?> FindAccountByEmailAsync(string email,CancellationToken cancellationToken=default )

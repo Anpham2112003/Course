@@ -149,9 +149,6 @@ namespace Infrastructure.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.Property<Guid>("CourseId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
@@ -161,7 +158,13 @@ namespace Infrastructure.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<int>("Rate")
+                    b.Property<Guid>("LessonId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("ReplyCommentId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("TotalReply")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("UpdatedAt")
@@ -172,7 +175,9 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CourseId");
+                    b.HasIndex("LessonId");
+
+                    b.HasIndex("ReplyCommentId");
 
                     b.HasIndex("UserId");
 
@@ -371,6 +376,48 @@ namespace Infrastructure.Migrations
                     b.ToTable("Exercises");
                 });
 
+            modelBuilder.Entity("Domain.Entities.FeedbackEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Content")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("CourseId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DeletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("Rate")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CourseId");
+
+                    b.HasIndex("Id")
+                        .IsUnique();
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Feedbacks");
+                });
+
             modelBuilder.Entity("Domain.Entities.LessonEntity", b =>
                 {
                     b.Property<Guid>("Id")
@@ -426,6 +473,9 @@ namespace Infrastructure.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
+                    b.Property<string>("ContentReply")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<Guid>("ConversationId")
                         .HasColumnType("uniqueidentifier");
 
@@ -441,6 +491,12 @@ namespace Infrastructure.Migrations
                     b.Property<int>("MessageType")
                         .HasColumnType("int");
 
+                    b.Property<Guid>("ReplyMessageId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("SeenAt")
+                        .HasColumnType("datetime2");
+
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
@@ -453,6 +509,8 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("Id")
                         .IsUnique();
+
+                    b.HasIndex("ReplyMessageId");
 
                     b.HasIndex("UserId");
 
@@ -727,6 +785,9 @@ namespace Infrastructure.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
+                    b.Property<bool>("Gender")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Information")
                         .HasColumnType("nvarchar(max)");
 
@@ -805,11 +866,16 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.CommentEntity", b =>
                 {
-                    b.HasOne("Domain.Entities.CourseEntity", "courseEntity")
+                    b.HasOne("Domain.Entities.LessonEntity", "lessonEntity")
                         .WithMany("commentEntities")
-                        .HasForeignKey("CourseId")
+                        .HasForeignKey("LessonId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("Domain.Entities.CommentEntity", null)
+                        .WithMany("comments")
+                        .HasForeignKey("ReplyCommentId")
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.HasOne("Domain.Entities.UserEntity", "userEntity")
                         .WithMany("commentEntities")
@@ -817,7 +883,7 @@ namespace Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.Navigation("courseEntity");
+                    b.Navigation("lessonEntity");
 
                     b.Navigation("userEntity");
                 });
@@ -909,6 +975,25 @@ namespace Infrastructure.Migrations
                     b.Navigation("userEntity");
                 });
 
+            modelBuilder.Entity("Domain.Entities.FeedbackEntity", b =>
+                {
+                    b.HasOne("Domain.Entities.CourseEntity", "courseEntity")
+                        .WithMany("feedbackEntities")
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.UserEntity", "userEntity")
+                        .WithMany("feedbackEntities")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("courseEntity");
+
+                    b.Navigation("userEntity");
+                });
+
             modelBuilder.Entity("Domain.Entities.LessonEntity", b =>
                 {
                     b.HasOne("Domain.Entities.CategoryLessonEntity", "categoryLesson")
@@ -935,6 +1020,11 @@ namespace Infrastructure.Migrations
                         .HasForeignKey("ConversationId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("Domain.Entities.MessageEntity", null)
+                        .WithMany("messages")
+                        .HasForeignKey("ReplyMessageId")
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.HasOne("Domain.Entities.UserEntity", "userEntity")
                         .WithMany("messageEntities")
@@ -1072,6 +1162,11 @@ namespace Infrastructure.Migrations
                     b.Navigation("lessonEntities");
                 });
 
+            modelBuilder.Entity("Domain.Entities.CommentEntity", b =>
+                {
+                    b.Navigation("comments");
+                });
+
             modelBuilder.Entity("Domain.Entities.ConversationEntity", b =>
                 {
                     b.Navigation("messageEntities");
@@ -1085,13 +1180,13 @@ namespace Infrastructure.Migrations
 
                     b.Navigation("categoryLessons");
 
-                    b.Navigation("commentEntities");
-
                     b.Navigation("courseTags");
 
                     b.Navigation("courseTopics");
 
                     b.Navigation("documentEntities");
+
+                    b.Navigation("feedbackEntities");
 
                     b.Navigation("paymentEntities");
 
@@ -1100,9 +1195,16 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.LessonEntity", b =>
                 {
+                    b.Navigation("commentEntities");
+
                     b.Navigation("exerciseEntities");
 
                     b.Navigation("reportEntities");
+                });
+
+            modelBuilder.Entity("Domain.Entities.MessageEntity", b =>
+                {
+                    b.Navigation("messages");
                 });
 
             modelBuilder.Entity("Domain.Entities.PermissionEntity", b =>
@@ -1140,6 +1242,8 @@ namespace Infrastructure.Migrations
                     b.Navigation("documentEntities");
 
                     b.Navigation("exerciseEntities");
+
+                    b.Navigation("feedbackEntities");
 
                     b.Navigation("lessonsEntities");
 

@@ -11,9 +11,10 @@ namespace Domain.Entities
     {
         public Guid Id { get; set; }
         public Guid UserId { get; set; }
-        public Guid CourseId { get; set; }
-        public int Rate { get; set; }
+        public Guid? ReplyCommentId { get; set; }
+        public Guid LessonId { get; set; }
         public string? Content {  get; set; }
+        public int TotalReply {  get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
         public bool IsDeleted { get; set; }
@@ -21,7 +22,7 @@ namespace Domain.Entities
 
         /////////////////////////////////////////
         public UserEntity? userEntity { get; set; }
-        public CourseEntity? courseEntity { get; set; }
-
+        public LessonEntity? lessonEntity { get; set; }
+        public List<CommentEntity> comments { get; set; }=new List<CommentEntity>();
     }
 }

@@ -1,4 +1,4 @@
-﻿using ApplicationCore.Interfaces.EntityBase;
+﻿using Domain.Interfaces.EntityBase;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -7,9 +7,9 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ApplicationCore.Interfaces.RepositoryBase
+namespace Domain.Interfaces.RepositoryBase
 {
-    public abstract class AbstractRepository<TEntity,TDBContext>:IRepository<TEntity> where TEntity : class,IEntity where TDBContext : DbContext
+    public abstract class AbstractRepository<TEntity, TDBContext> : IRepository<TEntity> where TEntity : class, IEntity where TDBContext : DbContext
     {
         protected readonly TDBContext dBContext;
 
@@ -19,7 +19,7 @@ namespace ApplicationCore.Interfaces.RepositoryBase
         }
 
 
-        
+
         public void AddOne(TEntity entity)
         {
             dBContext.Set<TEntity>().Add(entity);
@@ -46,30 +46,30 @@ namespace ApplicationCore.Interfaces.RepositoryBase
         }
 
 
-        public async Task AddManyAsync(ICollection<TEntity> entities,CancellationToken cancellationToken)
+        public async Task AddManyAsync(ICollection<TEntity> entities, CancellationToken cancellationToken)
         {
-           await dBContext.Set<IEntity>().AddRangeAsync(entities , cancellationToken);
+            await dBContext.Set<IEntity>().AddRangeAsync(entities, cancellationToken);
         }
-        
-        
 
-        
+
+
+
         public TEntity? FindOne<Id>(Id id)
         {
-            return  dBContext.Set<TEntity>().Find(id);
+            return dBContext.Set<TEntity>().Find(id);
         }
 
-        public async Task<TEntity?> FirstAsync(Expression<Func<TEntity,bool>> expression,CancellationToken cancellation=default)
+        public async Task<TEntity?> FirstAsync(Expression<Func<TEntity, bool>> expression, CancellationToken cancellation = default)
         {
-            return await dBContext.Set<TEntity>().FirstOrDefaultAsync(expression,cancellation);
+            return await dBContext.Set<TEntity>().FirstOrDefaultAsync(expression, cancellation);
         }
 
-        public async Task<TEntity?> FindOneAsync<Id>(Id id) 
+        public async Task<TEntity?> FindOneAsync<Id>(Id id)
         {
             return await dBContext.Set<TEntity>().FindAsync(id);
         }
 
-       
+
 
         public async Task<TEntity?> FindAsync(object[] keys)
         {
@@ -87,7 +87,7 @@ namespace ApplicationCore.Interfaces.RepositoryBase
         {
             dBContext.Set<TEntity>().UpdateRange(entities);
         }
-        
+
 
         public void DeleteOne(TEntity entity)
         {

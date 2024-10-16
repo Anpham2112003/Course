@@ -1,6 +1,7 @@
-﻿using ApplicationCore.Interfaces.RepositoryBase;
-using Domain.Entities;
+﻿using Domain.Entities;
+using Domain.Interfaces.RepositoryBase;
 using Infrastructure.DB.SQLDbContext;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,11 @@ namespace Infrastructure.Services.RepositoryService
     {
         public UserRepository(ApplicationDBContext dBContext) : base(dBContext)
         {
+        }
+
+        public async Task<UserEntity?> FindUserByAccountIdAsync(Guid accountId)
+        {
+            return await dBContext.Set<UserEntity>().FirstOrDefaultAsync(x => x.AccountId == accountId);
         }
     }
 }

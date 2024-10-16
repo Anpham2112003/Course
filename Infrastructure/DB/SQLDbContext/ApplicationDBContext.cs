@@ -40,7 +40,7 @@ namespace Infrastructure.DB.SQLDbContext
         public DbSet<TopicEntity> Topics { get; set; }
         public DbSet<UserEntity> Users { get; set; }
         public DbSet<ReportEntity> Reports { get; set; }
-
+        public DbSet<FeedbackEntity> Feedbacks { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -74,10 +74,12 @@ namespace Infrastructure.DB.SQLDbContext
                         ((IUpdated)entity.Entity).UpdatedAt = DateTime.UtcNow;
                     }
 
-                    if (entity is ISoftDeleted)
+                    if (entity is ISoftDeleted softDeleted)
                     {
-                        ((ISoftDeleted)entity.Entity).IsDeleted = true;
-                        ((ISoftDeleted)entity.Entity).DeletedAt = DateTime.UtcNow;
+                        if (softDeleted.IsDeleted)
+                        {
+                            ((ISoftDeleted)entity.Entity).DeletedAt = DateTime.UtcNow;
+                        }
                     }
                 }
 
@@ -114,10 +116,13 @@ namespace Infrastructure.DB.SQLDbContext
                         ((IUpdated) entity.Entity).UpdatedAt = DateTime.UtcNow;
                     }
 
-                    if(entity is ISoftDeleted)
+                    if(entity is ISoftDeleted deleted)
                     {
-                        ((ISoftDeleted)entity.Entity).IsDeleted = true;
-                        ((ISoftDeleted) entity.Entity).DeletedAt = DateTime.UtcNow;
+                        if (deleted.IsDeleted) {
+
+                            ((ISoftDeleted)entity.Entity).DeletedAt = DateTime.UtcNow;
+                        }
+                       
                     }
                 }
                 
