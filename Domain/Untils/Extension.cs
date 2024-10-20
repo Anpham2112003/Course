@@ -14,6 +14,7 @@ namespace Domain.Untils
         {
 			try
 			{
+
                 var id = httpContext.HttpContext!.User.FindFirstValue(ClaimTypes.PrimarySid);
 
                 return Guid.Parse(id);

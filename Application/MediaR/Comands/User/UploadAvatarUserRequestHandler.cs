@@ -31,6 +31,8 @@ namespace Application.MediaR.Comands.User
 
         public async Task<MutationPayload<string, UploadAvatarUserError>> Handle(UploadAvatarUserRequest request, CancellationToken cancellationToken)
         {
+            var transaction = await _unitOfWork.BeginTransactionAsync(cancellationToken);
+
             try
             {
                 var errors = new List<UploadAvatarUserError>();
@@ -61,13 +63,27 @@ namespace Application.MediaR.Comands.User
 
                 var upload = await _uploadService.UploadImageAsync(request.File!, cancellationToken);
 
-               
+                if (upload.StatusCode != System.Net.HttpStatusCode.OK)
+                {
+                    throw new Exception("upload false!");
+                }
 
-                 
+                user.Avatar = upload.Url.ToString();
 
+                _unitOfWork.userRepository.UpdateOne(user);
+
+                await _unitOfWork.SaveChangesAsync(cancellationToken);
+
+                await transaction.CommitAsync(cancellationToken);
+
+                return new MutationPayload<string, UploadAvatarUserError>
+                {
+                    payload = upload.Url.ToString(),
+                };
             }
             catch (Exception)
             {
+                await transaction.RollbackAsync(cancellationToken);
 
                 throw;
             }

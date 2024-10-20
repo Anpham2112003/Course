@@ -2,12 +2,14 @@
 using Domain.Types.ErrorTypes.BaseError.UserUnion;
 using Domain.Untils;
 using HotChocolate;
+using HotChocolate.Authorization;
 using HotChocolate.Types;
 using MediatR;
 
 namespace Api.Schemas.Mutation
 {
     [ExtendObjectType(typeof(Mutations))]
+    
     public class UserMutation
     {
         public async Task<MutationPayload<UpdateProfileUserRequest,UpdateProfileUserError>> updateProfile([Service] IMediator mediator, UpdateProfileUserRequest input, CancellationToken cancellationToken)
@@ -23,6 +25,22 @@ namespace Api.Schemas.Mutation
         {
             var result = await mediator.Send(input, cancellationToken);
             
+            return result;
+        }
+
+        [Authorize()]
+        public async Task<MutationPayload<string,UploadAvatarUserError>> uploadAvatar([Service] IMediator mediator, UploadAvatarUserRequest input,CancellationToken cancellationToken)
+        {
+            var result = await mediator.Send(input, cancellationToken);
+
+            return result;
+        }
+
+        [Authorize()]
+        public async Task<MutationPayload<string,DeleteAvatarUserError>> deleteAvatar([Service] IMediator mediator, DeleteAvatarUserRequest input, CancellationToken cancellationToken)
+        {
+            var result = await mediator.Send(input, cancellationToken);
+
             return result;
         }
     }

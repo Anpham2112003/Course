@@ -27,26 +27,45 @@ namespace Infrastructure.Services.Upload
             cloudinary = new Cloudinary(optionsMonitor.CurrentValue.CLOUDINARY_URL);
         }
 
-        public async Task<ImageUploadResult> UploadImageAsync(IFormFile file, CancellationToken cancellation = default)
+        public async Task<ImageUploadResult> UploadImageAsync(IFile file, CancellationToken cancellation = default)
         {
             try
             {
+                
                 var result = await cloudinary.UploadAsync(new ImageUploadParams
                 {
                     AssetFolder = _optionsMonitor.CurrentValue.AssetImage,
 
-                    File=new FileDescription
+                    UniqueFilename = true,
+
+                    File = new FileDescription
                     {
-                        Stream=file.OpenReadStream(),
+                        FileName=Guid.NewGuid().ToString(),
+                        Stream = file.OpenReadStream(),
                     },
 
-                    Signature= GenerateSgnature()
-                    
-                },cancellation);
+                   
+
+                }, cancellation);
 
 
                 return result;
 
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public async Task<DeletionResult> DeleteImageByPublicId(string publib_id)
+        {
+            try
+            {
+                var result = await cloudinary.DestroyAsync(new DeletionParams(publib_id));
+
+                return result;
             }
             catch (Exception)
             {

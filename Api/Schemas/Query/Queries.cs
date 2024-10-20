@@ -1,6 +1,7 @@
 ﻿using Domain.Entities;
 using Domain.Types.QueryTypes;
 using HotChocolate;
+using HotChocolate.Authorization;
 using HotChocolate.Data;
 using HotChocolate.Types;
 using Infrastructure.DB.SQLDbContext;
@@ -18,6 +19,7 @@ namespace Api.Schemas.Query
         //    return dBContext.Accounts;
         //}
 
+        [Authorize(ApplyPolicy.BeforeResolver,Policy ="test")]
         public User GetUsers() => new User();
     }
 }

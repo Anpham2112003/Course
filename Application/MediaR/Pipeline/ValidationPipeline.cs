@@ -4,12 +4,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
+using FluentValidation.Results;
 using FluentValidation;
-using ValidationException = System.ComponentModel.DataAnnotations.ValidationException;
 
 namespace Application.MediaR.Pipeline
 {
-    public class ValidationPipeline<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : IRequest where TResponse : class
+    public class ValidationPipeline<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> 
     {
         private readonly IValidator<TRequest> _validator;
 
@@ -20,25 +21,20 @@ namespace Application.MediaR.Pipeline
 
         public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
         {
-            try
-            {
+           
                 var result = await _validator.ValidateAsync(request, cancellationToken);
 
                 if (result.IsValid)
                 {
-                    return await next();
+                   return await next();
                 }
                 else
                 {
-                    throw new FluentValidation.ValidationException(result.Errors);
+                    throw new ValidationException(result.Errors);
                 }
 
             }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                throw;
-            }
-        }
+           
+        
     }
 }

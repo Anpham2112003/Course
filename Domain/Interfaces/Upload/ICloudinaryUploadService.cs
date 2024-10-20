@@ -10,6 +10,8 @@ namespace Domain.Interfaces.Upload
 {
     public interface ICloudinaryUploadService : IUploadService
     {
-        public Task<ImageUploadResult> UploadImageAsync(IFormFile file ,CancellationToken cancellation=default);
+        public Task<ImageUploadResult> UploadImageAsync(IFile file ,CancellationToken cancellation=default);
+
+        public  Task<DeletionResult> DeleteImageByPublicId(string publib_id);
     }
 }

@@ -8,6 +8,7 @@ using Infrastructure.DB.SQLDbContext;
 using System.Diagnostics;
 using System.Reflection;
 using Domain.Types.ErrorTypes.BaseError;
+using Application.MediaR.Comands.User;
 
 namespace Api.Extensions
 {
@@ -27,14 +28,16 @@ namespace Api.Extensions
 
                 .RegisterDbContext<ApplicationDBContext>()
                 .AddQueryType<Queries>()
-
                 .AddMutationType<Mutations>()
                 .AddTypeExtension<AccountMutation>()
                 .AddTypeExtension<UserMutation>()
+                .AddType<UploadType>()
 
                 .AddTypes(Errors)
                 .AddProjections()
                 .AddFiltering();
+                
+                       
 
 
 

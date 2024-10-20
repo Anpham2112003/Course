@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Types.ErrorTypes.ErrorImplement.UserErors
 {
-    public class UserNotPermissionError : UpdateProfileUserError, UpdateInformationUserError,UploadAvatarUserError
+    public class UserNotPermissionError : UpdateProfileUserError, UpdateInformationUserError,UploadAvatarUserError,DeleteAvatarUserError
     {
         public string? code { get; set; } = nameof(UserNotPermissionError);
         public string? message { get; set; } = "You have not permission!";

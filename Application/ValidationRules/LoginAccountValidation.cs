@@ -8,9 +8,9 @@ using Application.MediaR.Comands.Account;
 
 namespace Application.ValidationRules
 {
-    public class LoginAccountRequestValidation:AbstractValidator<LoginAccountRequest>
+    public class LoginAccountValidation:AbstractValidator<LoginAccountRequest>
     {
-        public LoginAccountRequestValidation()
+        public LoginAccountValidation()
         {
             RuleFor(x => x.Email)
                 .NotNull()

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Domain.Types.ErrorTypes.BaseError.UserUnion
 {
     [UnionType]
-    public interface UploadAvatarUserError:BaseUnionError
+    public interface DeleteAvatarUserError:BaseUnionError
     {
     }
 }

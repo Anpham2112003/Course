@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Types.ErrorTypes.ErrorImplement.UserErors
 {
-    public class UserNotFoundError : UpdateProfileUserError, UpdateInformationUserError,UploadAvatarUserError
+    public class UserNotFoundError : UpdateProfileUserError, UpdateInformationUserError,UploadAvatarUserError,DeleteAvatarUserError
     {
         public string? code { get; set; } = nameof(UserNotFoundError);
         public string? message { get; set; } = "User not found!";
