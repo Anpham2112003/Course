@@ -31,6 +31,7 @@ namespace Api.Extensions
                 .AddMutationType<Mutations>()
                 .AddTypeExtension<AccountMutation>()
                 .AddTypeExtension<UserMutation>()
+                .AddTypeExtension<CourseMutation>()
                 .AddType<UploadType>()
 
                 .AddTypes(Errors)

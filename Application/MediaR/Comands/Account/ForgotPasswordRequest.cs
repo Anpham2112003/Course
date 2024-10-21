@@ -1,4 +1,5 @@
-﻿using Domain.Types.ErrorTypes.BaseError.AccountUnion;
+﻿using Application.MediaR.Pipeline;
+using Domain.Types.ErrorTypes.BaseError.AccountUnion;
 using Domain.Untils;
 using MediatR;
 using System;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Application.MediaR.Comands.Account
 {
-    public class ForgotPasswordRequest : IRequest<MutationPayload<string, ForgetPassowordError>>
+    public class ForgotPasswordRequest : IRequest<MutationPayload<string, ForgetPassowordError>>, IRequireValidation
     {
         public string? Email { get; set; }
 

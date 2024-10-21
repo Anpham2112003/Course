@@ -7,8 +7,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Interfaces.RepositoryBase
 {
-    public interface IUserRepository<TEntity> : IRepository<TEntity> where TEntity : class, IEntity
+    public interface ICourseRepository<TEntity>:IRepository<TEntity> where TEntity : class, IEntity
     {
-        public Task<TEntity?> FindUserByAccountIdAsync(Guid accountId,CancellationToken cancellation=default);
     }
 }

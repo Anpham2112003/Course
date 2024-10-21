@@ -1,4 +1,5 @@
-﻿using Domain.Types.ErrorTypes.BaseError.UserUnion;
+﻿using Application.MediaR.Pipeline;
+using Domain.Types.ErrorTypes.BaseError.UserUnion;
 using Domain.Untils;
 using MediatR;
 using System;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Application.MediaR.Comands.User
 {
-    public class UpdateInformationUserRequest : IRequest<MutationPayload<UpdateInformationUserRequest, UpdateInformationUserError>>
+    public class UpdateInformationUserRequest : IRequest<MutationPayload<UpdateInformationUserRequest, UpdateInformationUserError>>, IRequireValidation
     {
         public Guid Id { get; set; }
         public string? Information { get; set; }

@@ -1,4 +1,5 @@
-﻿using Domain.DTOs;
+﻿using Application.MediaR.Pipeline;
+using Domain.DTOs;
 using Domain.Types.ErrorTypes.BaseError.AccountUnion;
 using Domain.Untils;
 using HotChocolate;
@@ -11,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Application.MediaR.Comands.Account
 {
-    public class LoginAccountRequest : IRequest<MutationPayload<LoginResponse, LoginAccountError>>
+    public class LoginAccountRequest : IRequest<MutationPayload<LoginResponse, LoginAccountError>>, IRequireValidation
     {
 
         public string? Email { get; set; }

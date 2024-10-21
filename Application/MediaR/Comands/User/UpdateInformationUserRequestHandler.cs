@@ -32,9 +32,8 @@ namespace Application.MediaR.Comands.User
             {
                 var errors = new List<UpdateInformationUserError>();
 
-                var accountId = _httpContext.GetId();
 
-                var user = await _unitOfWork.userRepository.FindUserByAccountIdAsync(accountId);
+                var user = await _unitOfWork.userRepository.FindUserByAccountIdAsync(_httpContext.GetId());
 
                 if (user is null || user.IsDeleted)
                 {

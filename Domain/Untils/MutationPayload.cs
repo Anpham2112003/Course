@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Untils
 {
-    public sealed class MutationPayload<TReult, TError> where TReult : class
+    public sealed class MutationPayload<TReult, TError> 
     {
         public TReult? payload { get; set; }
 

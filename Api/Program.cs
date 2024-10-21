@@ -1,5 +1,4 @@
 using Api.Extensions;
-using Api.Middleware;
 using Application.Maper;
 using Application.MediaR.Comands.Account;
 using Application.MediaR.Pipeline;

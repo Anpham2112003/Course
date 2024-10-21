@@ -16,7 +16,7 @@ namespace Infrastructure.Services.RepositoryService
         {
         }
 
-        public async Task<UserEntity?> FindUserByAccountIdAsync(Guid accountId)
+        public async Task<UserEntity?> FindUserByAccountIdAsync(Guid accountId, CancellationToken cancellation = default)
         {
             return await dBContext.Set<UserEntity>().FirstOrDefaultAsync(x => x.AccountId == accountId);
         }

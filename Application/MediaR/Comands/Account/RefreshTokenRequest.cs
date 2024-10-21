@@ -1,4 +1,5 @@
-﻿using Domain.DTOs;
+﻿using Application.MediaR.Pipeline;
+using Domain.DTOs;
 using Domain.Types.ErrorTypes.BaseError.AccountUnion;
 using Domain.Untils;
 using MediatR;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Application.MediaR.Comands.Account
 {
-    public class RefreshTokenRequest : IRequest<MutationPayload<LoginResponse, RefreshTokenError>>
+    public class RefreshTokenRequest : IRequest<MutationPayload<LoginResponse, RefreshTokenError>>, IRequireValidation
     {
         public string? Refreshtoken { get; set; }
 

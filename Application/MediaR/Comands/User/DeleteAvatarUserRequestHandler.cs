@@ -38,9 +38,7 @@ namespace Application.MediaR.Comands.User
             {
                 var errors = new List<DeleteAvatarUserError>();
 
-                var accountId = _contextAccessor.GetId();
-
-                var user = await _unitOfWork.userRepository.FindUserByAccountIdAsync(accountId);
+                var user = await _unitOfWork.userRepository.FindUserByAccountIdAsync(_contextAccessor.GetId());
 
                 if(user is null || user.IsDeleted)
                 {
@@ -52,7 +50,7 @@ namespace Application.MediaR.Comands.User
                     };
                 }
 
-                if(user.AccountId.Equals(accountId) is false)
+                if(user.AccountId.Equals(request.Id) is false)
                 {
                     errors.Add(new UserNotPermissionError());
 
@@ -91,7 +89,7 @@ namespace Application.MediaR.Comands.User
             }
             catch (Exception)
             {
-                await trans.RollbackAsync(cancellationToken);
+                await trans.RollbackAsync();
 
                 throw;
             }

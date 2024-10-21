@@ -22,5 +22,6 @@ namespace Domain.Interfaces.UnitOfWork
 
         public IAccountRepository<AccountEntity> accountRepository { get; }
         public IUserRepository<UserEntity> userRepository { get; }
+        public ICourseRepository<CourseEntity> courseRepository { get; }
     }
 }

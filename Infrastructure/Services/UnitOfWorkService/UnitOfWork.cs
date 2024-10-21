@@ -68,5 +68,8 @@ namespace Infrastructure.Services.UnitOfWorkService
         public IUserRepository<UserEntity> userRepository
 
             => new UserRepository(_dbContext);
+
+        public ICourseRepository<CourseEntity> courseRepository
+            => new CourseRepository(_dbContext);
     }
 }

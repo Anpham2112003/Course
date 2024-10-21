@@ -37,7 +37,7 @@ namespace Infrastructure.Services.Upload
                     AssetFolder = _optionsMonitor.CurrentValue.AssetImage,
 
                     UniqueFilename = true,
-
+              
                     File = new FileDescription
                     {
                         FileName=Guid.NewGuid().ToString(),
@@ -63,7 +63,7 @@ namespace Infrastructure.Services.Upload
         {
             try
             {
-                var result = await cloudinary.DestroyAsync(new DeletionParams(publib_id));
+                var result = await cloudinary.DestroyAsync(new DeletionParams(publib_id) );
 
                 return result;
             }

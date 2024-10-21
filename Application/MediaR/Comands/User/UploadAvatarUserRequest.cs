@@ -1,4 +1,5 @@
-﻿using Domain.Types.ErrorTypes.BaseError.UserUnion;
+﻿using Application.MediaR.Pipeline;
+using Domain.Types.ErrorTypes.BaseError.UserUnion;
 using Domain.Untils;
 using HotChocolate;
 using HotChocolate.Types;
@@ -12,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Application.MediaR.Comands.User
 {
-    public class UploadAvatarUserRequest:IRequest<MutationPayload<string,UploadAvatarUserError>>
+    public class UploadAvatarUserRequest:IRequest<MutationPayload<string,UploadAvatarUserError>>, IRequireValidation
     {
         [GraphQLType(typeof(StringType))]
         public Guid Id { get; set; }
