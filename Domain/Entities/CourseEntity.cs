@@ -4,13 +4,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using HotChocolate.ApolloFederation;
 
 namespace Domain.Entities
 {
     public class CourseEntity : BaseEntity<Guid>,ICreated,IUpdated,ISoftDeleted
     {
+        
         public Guid Id { get; set; }
-        public Guid UserId { get; set; }
+        public Guid AuthorId { get; set; }
         public string? Name { get; set; }
         public int Purchase { get; set; }
         public float Price { get; set; }
@@ -21,6 +23,7 @@ namespace Domain.Entities
         public float Rating { get; set; }
         public float Duration { get; set; }
         public string? Thumbnail {  get; set; }
+        public bool IsPublish {  get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
         public bool IsDeleted { get; set; }
@@ -40,6 +43,11 @@ namespace Domain.Entities
         public List<PaymentEntity> paymentEntities { get; set; } = new List<PaymentEntity>();
         public List<PurchaseEntity> purchaseEntities { get; set; } = new List<PurchaseEntity>();
         public List<FeedbackEntity> feedbackEntities { get; set; }=new List<FeedbackEntity>();
+
+
+        
+
+       
 
     }
 }

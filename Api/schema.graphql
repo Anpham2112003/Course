@@ -1,0 +1,1247 @@
+﻿schema {
+  query: Queries
+  mutation: Mutations
+}
+
+type AccountEntity {
+  id: UUID!
+  roleId: Int!
+  email: String
+  hashPassword: String
+  phoneNumber: String
+  refreshToken: String
+  loginType: EnumLogin!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  isDeleted: Boolean!
+  deletedAt: DateTime!
+  userEntity: UserEntity
+  roleEntity: RoleEntity
+}
+
+type AccountExist {
+  code: String
+  message: String
+}
+
+type AccountHasDeleted {
+  code: String
+  message: String
+}
+
+type AccountNotFound {
+  code: String
+  message: String
+}
+
+type AccountOrPasswordError {
+  code: String
+  message: String
+}
+
+type AvatarHasDeletedError {
+  code: String
+  message: String
+}
+
+type CantFeedbackError {
+  code: String
+  message: String
+}
+
+type Cart @key(fields: "id") {
+  course: Course
+  id: UUID!
+  userId: UUID!
+  couresId: UUID!
+  createdAt: DateTime!
+}
+
+type CartEntity {
+  id: UUID!
+  userId: UUID!
+  couresId: UUID!
+  createdAt: DateTime!
+  userEntity: UserEntity
+  courseEntity: CourseEntity
+}
+
+type CartNotFoundError {
+  code: String
+  message: String
+}
+
+type CategoryLessonEntity {
+  id: UUID!
+  userId: UUID!
+  courseId: UUID!
+  name: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  isDeleted: Boolean!
+  deletedAt: DateTime!
+  userEntity: UserEntity
+  courseEntity: CourseEntity
+  lessonEntities: [LessonEntity!]
+}
+
+type CategoryLessonNotFoundErorr {
+  code: String
+  message: String
+}
+
+"Information about the offset pagination."
+type CollectionSegmentInfo {
+  "Indicates whether more items exist following the set defined by the clients arguments."
+  hasNextPage: Boolean!
+  "Indicates whether more items exist prior the set defined by the clients arguments."
+  hasPreviousPage: Boolean!
+}
+
+type CommentEntity {
+  id: UUID!
+  userId: UUID!
+  replyCommentId: UUID
+  lessonId: UUID!
+  content: String
+  totalReply: Int!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  isDeleted: Boolean!
+  deletedAt: DateTime!
+  userEntity: UserEntity
+  lessonEntity: LessonEntity
+  comments: [CommentEntity!]!
+}
+
+type ConversationEntity {
+  id: UUID!
+  createdAt: DateTime!
+  isDeleted: Boolean!
+  deletedAt: DateTime!
+  messageEntities: [MessageEntity!]!
+  userConversations: [UserConversation!]!
+  userEntities: [UserEntity!]!
+}
+
+type Course @key(fields: "id") {
+  author: User
+  feedBacks(skip: Int! limit: Int!): [FeedBack!]!
+  id: UUID!
+  authorId: UUID!
+  name: String
+  purchase: Int!
+  price: Float!
+  isSale: Boolean!
+  sale: Int!
+  expired: DateTime!
+  description: String
+  rating: Float!
+  duration: Float!
+  thumbnail: String
+  isPublish: Boolean!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type CourseEntity {
+  id: UUID!
+  authorId: UUID!
+  name: String
+  purchase: Int!
+  price: Float!
+  isSale: Boolean!
+  sale: Int!
+  expired: DateTime!
+  description: String
+  rating: Float!
+  duration: Float!
+  thumbnail: String
+  isPublish: Boolean!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  isDeleted: Boolean!
+  deletedAt: DateTime!
+  userEntity: UserEntity
+  categoryLessons: [CategoryLessonEntity!]!
+  documentEntities: [DocumentEntity!]!
+  topicEntities: [TopicEntity!]!
+  courseTopics: [CourseTopic!]!
+  tagEntities: [TagEntity!]!
+  courseTags: [CourseTag!]!
+  cartEntities: [CartEntity!]!
+  paymentEntities: [PaymentEntity!]!
+  purchaseEntities: [PurchaseEntity!]!
+  feedbackEntities: [FeedbackEntity!]!
+}
+
+type CourseNotFoundError {
+  code: String
+  message: String
+}
+
+type CourseTag {
+  courseId: UUID!
+  tagId: Int!
+  courseEntity: CourseEntity
+  tagEntity: TagEntity
+}
+
+type CourseTopic {
+  courseId: UUID!
+  topicId: Int!
+  courseEntity: CourseEntity
+  topicEntity: TopicEntity
+}
+
+"A segment of a collection."
+type CoursesCollectionSegment {
+  "Information to aid in pagination."
+  pageInfo: CollectionSegmentInfo!
+  "A flattened list of the items."
+  items: [Course!]
+}
+
+type CreateAccountRequest {
+  id: UUID!
+  firstName: String
+  lastName: String
+  email: String
+  password: String
+}
+
+type CreateCartRequest {
+  id: UUID!
+  courseId: UUID!
+}
+
+type CreateCategoryLessonRequest {
+  id: UUID!
+  courseId: UUID!
+  name: String
+}
+
+type CreateFeedbackRequest {
+  id: UUID!
+  courseId: UUID!
+  rate: Int!
+  content: String
+}
+
+type CreateLessonRequest {
+  id: UUID!
+  userId: UUID!
+  categoryLessonId: UUID!
+  title: String
+  duration: Float!
+  url: String
+}
+
+type CreateTagRequest {
+  name: String
+}
+
+type CreateTopicRequest {
+  name: String
+}
+
+type DeleteFeedbackRequest {
+  id: UUID!
+}
+
+type DeleteTopicRequest {
+  id: Int!
+}
+
+type DocumentEntity {
+  id: UUID!
+  courseId: UUID!
+  userId: UUID!
+  title: String
+  url: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  userEntity: UserEntity
+  courseEntity: CourseEntity
+}
+
+type FeedBack @key(fields: "id") {
+  user: User!
+  course: Course!
+  id: UUID!
+  userId: UUID!
+  courseId: UUID!
+  rate: Int!
+  content: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type FeedbackEntity {
+  id: UUID!
+  userId: UUID!
+  courseId: UUID!
+  rate: Int!
+  content: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  isDeleted: Boolean!
+  deletedAt: DateTime!
+  userEntity: UserEntity
+  courseEntity: CourseEntity
+}
+
+type FeedbackNotFoundError {
+  code: String
+  message: String
+}
+
+"A segment of a collection."
+type GetCoursesCollectionSegment {
+  "Information to aid in pagination."
+  pageInfo: CollectionSegmentInfo!
+  "A flattened list of the items."
+  items: [Course!]
+}
+
+type HasFeedbackError {
+  code: String
+  message: String
+}
+
+type LessonEntity {
+  id: UUID!
+  userId: UUID!
+  categoryLessonId: UUID!
+  title: String
+  url: String
+  duration: Float!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  isDeleted: Boolean!
+  deletedAt: DateTime!
+  userEntity: UserEntity
+  categoryLesson: CategoryLessonEntity
+  reportEntities: [ReportEntity!]!
+  commentEntities: [CommentEntity!]!
+}
+
+type LessonNotFoundError {
+  code: String
+  message: String
+}
+
+type LoginResponse {
+  id: UUID!
+  accesstoken: String
+  refreshtoken: String
+}
+
+type MessageEntity {
+  id: UUID!
+  senderId: UUID!
+  replyMessageId: UUID!
+  conversationId: UUID!
+  content: String
+  contentReply: String
+  messageType: EnumMessage!
+  seenAt: DateTime!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  isDeleted: Boolean!
+  deletedAt: DateTime!
+  userEntity: UserEntity
+  conversationEntity: ConversationEntity
+  messages: [MessageEntity!]
+}
+
+type MutationPayloadOfCourseEntityAndCreateCourseError {
+  payload: CourseEntity
+  errors: [CreateCourseError!]!
+}
+
+type MutationPayloadOfCreateAccountRequestAndCreateAccountError {
+  payload: CreateAccountRequest
+  errors: [CreateAccountError!]!
+}
+
+type MutationPayloadOfCreateCartRequestAndCreateCartError {
+  payload: CreateCartRequest
+  errors: [CreateCartError!]!
+}
+
+type MutationPayloadOfCreateCategoryLessonRequestAndCreateCategoryLessonError {
+  payload: CreateCategoryLessonRequest
+  errors: [CreateCategoryLessonError!]!
+}
+
+type MutationPayloadOfCreateFeedbackRequestAndCreateFeedbackError {
+  payload: CreateFeedbackRequest
+  errors: [CreateFeedbackError!]!
+}
+
+type MutationPayloadOfCreateLessonRequestAndCreateLessonError {
+  payload: CreateLessonRequest
+  errors: [CreateLessonError!]!
+}
+
+type MutationPayloadOfCreateTagRequestAndCreateTagError {
+  payload: CreateTagRequest
+  errors: [CreateTagError!]!
+}
+
+type MutationPayloadOfCreateTopicRequestAndCreateTopicError {
+  payload: CreateTopicRequest
+  errors: [CreateTopicError!]!
+}
+
+type MutationPayloadOfDeleteFeedbackRequestAndDeleteFeedbackError {
+  payload: DeleteFeedbackRequest
+  errors: [DeleteFeedbackError!]!
+}
+
+type MutationPayloadOfDeleteTopicRequestAndDeleteTopicError {
+  payload: DeleteTopicRequest
+  errors: [DeleteTopicError!]!
+}
+
+type MutationPayloadOfGuidAndDeleteCartError {
+  payload: UUID!
+  errors: [DeleteCartError!]!
+}
+
+type MutationPayloadOfGuidAndDeleteCategoryLessonError {
+  payload: UUID!
+  errors: [DeleteCategoryLessonError!]!
+}
+
+type MutationPayloadOfGuidAndDeleteLessonError {
+  payload: UUID!
+  errors: [DeleteLessonError!]!
+}
+
+type MutationPayloadOfGuidAndPublishCourseError {
+  payload: UUID!
+  errors: [PublishCourseError!]!
+}
+
+type MutationPayloadOfLoginResponseAndLoginAccountError {
+  payload: LoginResponse
+  errors: [LoginAccountError!]!
+}
+
+type MutationPayloadOfLoginResponseAndRefreshTokenError {
+  payload: LoginResponse
+  errors: [RefreshTokenError!]!
+}
+
+type MutationPayloadOfResetPasswordRequestAndResetPasswordError {
+  payload: ResetPasswordRequest
+  errors: [ResetPasswordError!]!
+}
+
+type MutationPayloadOfStringAndDeleteAccountError {
+  payload: String
+  errors: [DeleteAccountError!]!
+}
+
+type MutationPayloadOfStringAndDeleteAvatarUserError {
+  payload: String
+  errors: [DeleteAvatarUserError!]!
+}
+
+type MutationPayloadOfStringAndForgetPassowordError {
+  payload: String
+  errors: [ForgetPassowordError!]!
+}
+
+type MutationPayloadOfStringAndUpdateThumbnailCourseError {
+  payload: String
+  errors: [UpdateThumbnailCourseError!]!
+}
+
+type MutationPayloadOfStringAndUploadAvatarUserError {
+  payload: String
+  errors: [UploadAvatarUserError!]!
+}
+
+type MutationPayloadOfUpdateCategoryLessonRequestAndUpdateCategoryLessonError {
+  payload: UpdateCategoryLessonRequest
+  errors: [UpdateCategoryLessonError!]!
+}
+
+type MutationPayloadOfUpdateCourseRequestAndUpdateCourseError {
+  payload: UpdateCourseRequest
+  errors: [UpdateCourseError!]!
+}
+
+type MutationPayloadOfUpdateFeedbackRequestAndUpdateFeedbackError {
+  payload: UpdateFeedbackRequest
+  errors: [UpdateFeedbackError!]!
+}
+
+type MutationPayloadOfUpdateInformationUserRequestAndUpdateInformationUserError {
+  payload: UpdateInformationUserRequest
+  errors: [UpdateInformationUserError!]!
+}
+
+type MutationPayloadOfUpdateLessonRequestAndUpdateLessonError {
+  payload: UpdateLessonRequest
+  errors: [UpdateLessonError!]!
+}
+
+type MutationPayloadOfUpdateProfileUserRequestAndUpdateProfileUserError {
+  payload: UpdateProfileUserRequest
+  errors: [UpdateProfileUserError!]!
+}
+
+type MutationPayloadOfUpdateTagRequestAndUpdateTagError {
+  payload: UpdateTagRequest
+  errors: [UpdateTagError!]!
+}
+
+type MutationPayloadOfUpdateTopicRequestAndUpdateTopicError {
+  payload: UpdateTopicRequest
+  errors: [UpdateTopicError!]!
+}
+
+type Mutations {
+  createAccount(input: CreateAccountRequestInput!): MutationPayloadOfCreateAccountRequestAndCreateAccountError!
+  loginAccount(input: LoginAccountRequestInput!): MutationPayloadOfLoginResponseAndLoginAccountError!
+  refreshToken(input: RefreshTokenRequestInput!): MutationPayloadOfLoginResponseAndRefreshTokenError!
+  forgetPassword(input: ForgotPasswordRequestInput!): MutationPayloadOfStringAndForgetPassowordError!
+  resetPassowrd(input: ResetPasswordRequestInput!): MutationPayloadOfResetPasswordRequestAndResetPasswordError!
+  deleteAccount(input: DeleteAccountRequestInput!): MutationPayloadOfStringAndDeleteAccountError!
+  updateProfile(input: UpdateProfileUserRequestInput!): MutationPayloadOfUpdateProfileUserRequestAndUpdateProfileUserError!
+  updateInformation(input: UpdateInformationUserRequestInput!): MutationPayloadOfUpdateInformationUserRequestAndUpdateInformationUserError!
+  uploadAvatar(input: UploadAvatarUserRequestInput!): MutationPayloadOfStringAndUploadAvatarUserError! @authorize
+  deleteAvatar(input: DeleteAvatarUserRequestInput!): MutationPayloadOfStringAndDeleteAvatarUserError! @authorize
+  createCategoryLesson(input: CreateCategoryLessonRequestInput!): MutationPayloadOfCreateCategoryLessonRequestAndCreateCategoryLessonError!
+  updateCategoryLesson(input: UpdateCategoryLessonRequestInput!): MutationPayloadOfUpdateCategoryLessonRequestAndUpdateCategoryLessonError!
+  deleteCategoryLesson(input: DeleteCategoryLessonRequestInput!): MutationPayloadOfGuidAndDeleteCategoryLessonError!
+  createCourse(input: CreateCourseRequestInput!): MutationPayloadOfCourseEntityAndCreateCourseError! @authorize
+  updateCourse(input: UpdateCourseRequestInput!): MutationPayloadOfUpdateCourseRequestAndUpdateCourseError!
+  updateThumbnailCourse(input: UpdateThumbnailCourseRequestInput!): MutationPayloadOfStringAndUpdateThumbnailCourseError!
+  publishCourse(input: PublishCourseRequestInput!): MutationPayloadOfGuidAndPublishCourseError!
+  createTag(input: CreateTagRequestInput!): MutationPayloadOfCreateTagRequestAndCreateTagError!
+  updateTag(input: UpdateTagRequestInput!): MutationPayloadOfUpdateTagRequestAndUpdateTagError!
+  createFeedback(input: CreateFeedbackRequestInput!): MutationPayloadOfCreateFeedbackRequestAndCreateFeedbackError!
+  updateFeedback(input: UpdateFeedbackRequestInput!): MutationPayloadOfUpdateFeedbackRequestAndUpdateFeedbackError!
+  deleteFeedback(input: DeleteFeedbackRequestInput!): MutationPayloadOfDeleteFeedbackRequestAndDeleteFeedbackError!
+  createLesson(input: CreateLessonRequestInput!): MutationPayloadOfCreateLessonRequestAndCreateLessonError!
+  updateLesson(input: UpdateLessonRequestInput!): MutationPayloadOfUpdateLessonRequestAndUpdateLessonError!
+  deleteLesson(input: DeleteLessonRequestInput!): MutationPayloadOfGuidAndDeleteLessonError!
+  createCart(input: CreateCartRequestInput!): MutationPayloadOfCreateCartRequestAndCreateCartError!
+  deleteCart(input: DeleteCartRequestInput!): MutationPayloadOfGuidAndDeleteCartError!
+  createTopic(input: CreateTopicRequestInput!): MutationPayloadOfCreateTopicRequestAndCreateTopicError!
+  updateTopic(input: UpdateTopicRequestInput!): MutationPayloadOfUpdateTopicRequestAndUpdateTopicError!
+  deleteTopic(input: DeleteTopicRequestInput!): MutationPayloadOfDeleteTopicRequestAndDeleteTopicError!
+}
+
+type NotificationEntity {
+  id: UUID!
+  senderId: UUID!
+  toId: UUID!
+  content: String
+  createdAt: DateTime!
+  fromUserEntity: UserEntity
+}
+
+type OwnerError {
+  code: String
+  message: String
+}
+
+type PaymentEntity {
+  id: UUID!
+  userId: UUID!
+  courseId: UUID
+  amount: Float!
+  bankTransactionId: String
+  paymentMethod: EnumPaymentMethod!
+  createdAt: DateTime!
+  userEntity: UserEntity
+  courseEntity: CourseEntity
+}
+
+type PermissionEntity {
+  id: Int!
+  route: String
+  state: Boolean!
+  roleEntities: [RoleEntity!]!
+  rolePermissions: [RolePermission!]!
+}
+
+type PublishedError {
+  code: String
+  message: String
+}
+
+type Purchase @key(fields: "id") {
+  course: Course
+  id: UUID!
+  userId: UUID!
+  courseId: UUID!
+  createdAt: DateTime!
+}
+
+type PurchaseEntity {
+  id: UUID!
+  userId: UUID!
+  courseId: UUID
+  createdAt: DateTime!
+  userEntity: UserEntity
+  courseEntity: CourseEntity
+}
+
+type PurchasedError {
+  code: String
+  message: String
+}
+
+type Queries {
+  getUserById(id: UUID!): User!
+  getCourseById(id: UUID!): Course!
+  getCourses(skip: Int take: Int limit: Int! where: CourseFilterInput order: [CourseSortInput!]): GetCoursesCollectionSegment
+  _service: _Service!
+  _entities(representations: [_Any!]!): [_Entity]!
+}
+
+type ReportEntity {
+  id: UUID!
+  userId: UUID!
+  lessonId: UUID
+  description: String
+  createdAt: DateTime!
+  userEntity: UserEntity
+  lessonEntity: LessonEntity
+}
+
+type ResetPasswordRequest {
+  email: String
+  oldPassword: String
+  newPassword: String
+}
+
+type RoleEntity {
+  id: Int!
+  roleName: String
+  accountEntities: [AccountEntity!]!
+  permissionEntities: [PermissionEntity!]!
+  rolePermission: [RolePermission!]
+}
+
+type RolePermission {
+  roleId: Int!
+  permissionId: Int!
+  roleEntity: RoleEntity
+  permissionEntity: PermissionEntity
+}
+
+type Tag @key(fields: "id") {
+  courses(skip: Int! limit: Int!): [Course!]!
+  totalCourse: Int!
+  id: Int!
+  name: String
+}
+
+type TagEntity {
+  id: Int!
+  name: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  isDeleted: Boolean!
+  deletedAt: DateTime!
+  courseEntities: [CourseEntity!]!
+  courseTags: [CourseTag!]!
+}
+
+type TagNameExistError {
+  code: String
+  message: String
+}
+
+type TagNotFoundError {
+  code: String
+  message: String
+}
+
+type TokenExpireError {
+  code: String
+  message: String
+}
+
+type TokenInvalidError {
+  code: String
+  message: String
+}
+
+type Topic @key(fields: "id") {
+  totalCourse: Int!
+  courses(skip: Int take: Int): CoursesCollectionSegment
+  id: Int!
+  name: String
+}
+
+type TopicCourseExistError {
+  code: String
+  message: String
+}
+
+type TopicEntity {
+  id: Int!
+  name: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  isDeleted: Boolean!
+  deletedAt: DateTime!
+  courseEntities: [CourseEntity!]!
+  courseTopics: [CourseTopic!]!
+}
+
+type TopicNameExistError {
+  code: String
+  message: String
+}
+
+type TopicNotFoundError {
+  code: String
+  message: String
+}
+
+type TopicOrCourseNotFoundError {
+  code: String
+  message: String
+}
+
+type UnAuthorError {
+  code: String
+  message: String
+}
+
+type UnPermssionFeedbackError {
+  code: String
+  message: String
+}
+
+type UpdateCategoryLessonRequest {
+  id: UUID!
+  name: String
+}
+
+type UpdateCourseRequest {
+  id: UUID!
+  name: String
+  price: Float!
+  isSale: Boolean!
+  sale: Int!
+  description: String
+}
+
+type UpdateFeedbackRequest {
+  id: UUID!
+  content: String
+}
+
+type UpdateInformationUserRequest {
+  id: UUID!
+  information: String
+}
+
+type UpdateLessonRequest {
+  id: UUID!
+  title: String
+  url: String
+  duration: Float
+}
+
+type UpdateProfileUserRequest {
+  id: UUID!
+  firstName: String
+  lastName: String
+  fullName: String
+  gender: Boolean!
+}
+
+type UpdateTagRequest {
+  id: Int!
+  name: String
+}
+
+type UpdateTopicRequest {
+  id: Int!
+  name: String
+}
+
+type User @key(fields: "id") {
+  courses(skip: Int! limit: Int!): [Course!]!
+  carts(skip: Int! limit: Int!): [Cart!]!
+  id: UUID!
+  firstName: String
+  lastName: String
+  fullName: String
+  gender: Boolean!
+  avatar: String
+  isLecturer: Boolean!
+  information: String
+  updatedAt: DateTime!
+}
+
+type UserConversation {
+  id: UUID!
+  userId: UUID!
+  conversationId: UUID!
+  inboxId: UUID!
+  isDeleted: Boolean!
+  deletedAt: DateTime!
+  userEntity: UserEntity
+  conversationEntity: ConversationEntity
+}
+
+type UserEntity {
+  id: UUID!
+  accountId: UUID!
+  firstName: String
+  lastName: String
+  fullName: String
+  gender: Boolean!
+  avatar: String
+  isLecturer: Boolean!
+  information: String
+  updatedAt: DateTime!
+  isDeleted: Boolean!
+  deletedAt: DateTime!
+  accountEntity: AccountEntity
+  courseEntities: [CourseEntity!]!
+  purchaseEntities: [PurchaseEntity!]!
+  documentEntities: [DocumentEntity!]!
+  notificationEntities: [NotificationEntity!]!
+  cartEntities: [CartEntity!]!
+  reportEntities: [ReportEntity!]!
+  commentEntities: [CommentEntity!]!
+  paymentEntities: [PaymentEntity!]!
+  categoryLessonsEntities: [CategoryLessonEntity!]!
+  lessonsEntities: [LessonEntity!]!
+  messageEntities: [MessageEntity!]!
+  feedbackEntities: [FeedbackEntity!]!
+  userConversations: [UserConversation!]!
+  conversationEntities: [ConversationEntity!]!
+}
+
+type UserNotFoundError {
+  code: String
+  message: String
+}
+
+type UserNotPermissionError {
+  code: String
+  message: String
+}
+
+"This type provides a field named sdl: String! which exposes the SDL of the service's schema. This SDL (schema definition language) is a printed version of the service's schema including the annotations of federation directives. This SDL does not include the additions of the federation spec."
+type _Service {
+  sdl: String!
+}
+
+union AddTopicToCourseError = TopicCourseExistError | TopicOrCourseNotFoundError | UnAuthorError
+
+union CreateAccountError = AccountExist
+
+union CreateCartError = PurchasedError | CourseNotFoundError
+
+union CreateCategoryLessonError = CourseNotFoundError | UnAuthorError
+
+union CreateCourseError = UnAuthorError
+
+union CreateFeedbackError = CantFeedbackError | HasFeedbackError
+
+union CreateLessonError = UnAuthorError | CategoryLessonNotFoundErorr
+
+union CreateTagError = TagNameExistError
+
+union CreateTopicError = TopicNameExistError
+
+union DeleteAccountError = AccountHasDeleted | AccountOrPasswordError
+
+union DeleteAvatarUserError = AvatarHasDeletedError | UserNotFoundError | UserNotPermissionError
+
+union DeleteCartError = CartNotFoundError | OwnerError
+
+union DeleteCategoryLessonError = UnAuthorError | CategoryLessonNotFoundErorr
+
+union DeleteCourseError = CourseNotFoundError | UnAuthorError
+
+union DeleteFeedbackError = FeedbackNotFoundError | UnPermssionFeedbackError
+
+union DeleteLessonError = LessonNotFoundError | UnAuthorError
+
+union DeleteTagError = TagNotFoundError
+
+union DeleteTopicError = TopicNotFoundError
+
+union ForgetPassowordError = AccountHasDeleted | AccountNotFound
+
+union GetUserError = UserNotFoundError
+
+union LoginAccountError = AccountHasDeleted | AccountOrPasswordError
+
+union PaymentError = CourseNotFoundError | CartNotFoundError | OwnerError
+
+union PublishCourseError = CourseNotFoundError | PublishedError | UnAuthorError
+
+union RefreshTokenError = AccountHasDeleted | TokenExpireError | TokenInvalidError
+
+union ResetPasswordError = AccountHasDeleted | AccountOrPasswordError
+
+union UpdateCategoryLessonError = UnAuthorError | CategoryLessonNotFoundErorr
+
+union UpdateCourseError = CourseNotFoundError | UnAuthorError
+
+union UpdateFeedbackError = FeedbackNotFoundError | UnPermssionFeedbackError
+
+union UpdateInformationUserError = UserNotFoundError | UserNotPermissionError
+
+union UpdateLessonError = LessonNotFoundError | UnAuthorError
+
+union UpdateProfileUserError = UserNotFoundError | UserNotPermissionError
+
+union UpdateTagError = TagNameExistError | TagNotFoundError
+
+union UpdateThumbnailCourseError = CourseNotFoundError | UnAuthorError
+
+union UpdateTopicError = TopicNameExistError | TopicNotFoundError
+
+union UploadAvatarUserError = UserNotFoundError | UserNotPermissionError
+
+"Union of all types that key directive applied. This information is needed by the Apollo federation gateway."
+union _Entity = User | Course | FeedBack | Cart | Purchase | Tag | Topic
+
+input BooleanOperationFilterInput {
+  eq: Boolean
+  neq: Boolean
+}
+
+input CourseFilterInput {
+  and: [CourseFilterInput!]
+  or: [CourseFilterInput!]
+  id: UuidOperationFilterInput
+  authorId: UuidOperationFilterInput
+  name: StringOperationFilterInput
+  purchase: IntOperationFilterInput
+  price: FloatOperationFilterInput
+  isSale: BooleanOperationFilterInput
+  sale: IntOperationFilterInput
+  expired: DateTimeOperationFilterInput
+  description: StringOperationFilterInput
+  rating: FloatOperationFilterInput
+  duration: FloatOperationFilterInput
+  thumbnail: StringOperationFilterInput
+  isPublish: BooleanOperationFilterInput
+  createdAt: DateTimeOperationFilterInput
+  updatedAt: DateTimeOperationFilterInput
+}
+
+input CourseSortInput {
+  id: SortEnumType
+  authorId: SortEnumType
+  name: SortEnumType
+  purchase: SortEnumType
+  price: SortEnumType
+  isSale: SortEnumType
+  sale: SortEnumType
+  expired: SortEnumType
+  description: SortEnumType
+  rating: SortEnumType
+  duration: SortEnumType
+  thumbnail: SortEnumType
+  isPublish: SortEnumType
+  createdAt: SortEnumType
+  updatedAt: SortEnumType
+}
+
+input CreateAccountRequestInput {
+  id: UUID!
+  firstName: String
+  lastName: String
+  email: String
+  password: String
+}
+
+input CreateCartRequestInput {
+  id: UUID!
+  courseId: UUID!
+}
+
+input CreateCategoryLessonRequestInput {
+  id: UUID!
+  courseId: UUID!
+  name: String
+}
+
+input CreateCourseRequestInput {
+  id: UUID!
+  name: String
+  price: Float!
+  description: String
+  file: Upload
+}
+
+input CreateFeedbackRequestInput {
+  id: UUID!
+  courseId: UUID!
+  rate: Int!
+  content: String
+}
+
+input CreateLessonRequestInput {
+  id: UUID!
+  userId: UUID!
+  categoryLessonId: UUID!
+  title: String
+  duration: Float!
+  url: String
+}
+
+input CreateTagRequestInput {
+  name: String
+}
+
+input CreateTopicRequestInput {
+  name: String
+}
+
+input DateTimeOperationFilterInput {
+  eq: DateTime
+  neq: DateTime
+  in: [DateTime]
+  nin: [DateTime]
+  gt: DateTime
+  ngt: DateTime
+  gte: DateTime
+  ngte: DateTime
+  lt: DateTime
+  nlt: DateTime
+  lte: DateTime
+  nlte: DateTime
+}
+
+input DeleteAccountRequestInput {
+  email: String
+  password: String
+}
+
+input DeleteAvatarUserRequestInput {
+  id: UUID!
+}
+
+input DeleteCartRequestInput {
+  id: UUID!
+}
+
+input DeleteCategoryLessonRequestInput {
+  id: UUID!
+}
+
+input DeleteFeedbackRequestInput {
+  id: UUID!
+}
+
+input DeleteLessonRequestInput {
+  id: UUID!
+}
+
+input DeleteTopicRequestInput {
+  id: Int!
+}
+
+input FloatOperationFilterInput {
+  eq: Float
+  neq: Float
+  in: [Float]
+  nin: [Float]
+  gt: Float
+  ngt: Float
+  gte: Float
+  ngte: Float
+  lt: Float
+  nlt: Float
+  lte: Float
+  nlte: Float
+}
+
+input ForgotPasswordRequestInput {
+  email: String
+}
+
+input IntOperationFilterInput {
+  eq: Int
+  neq: Int
+  in: [Int]
+  nin: [Int]
+  gt: Int
+  ngt: Int
+  gte: Int
+  ngte: Int
+  lt: Int
+  nlt: Int
+  lte: Int
+  nlte: Int
+}
+
+input LoginAccountRequestInput {
+  email: String
+  password: String
+}
+
+input PublishCourseRequestInput {
+  id: UUID!
+}
+
+input RefreshTokenRequestInput {
+  refreshtoken: String
+}
+
+input ResetPasswordRequestInput {
+  email: String
+  oldPassword: String
+  newPassword: String
+}
+
+input StringOperationFilterInput {
+  and: [StringOperationFilterInput!]
+  or: [StringOperationFilterInput!]
+  eq: String
+  neq: String
+  contains: String
+  ncontains: String
+  in: [String]
+  nin: [String]
+  startsWith: String
+  nstartsWith: String
+  endsWith: String
+  nendsWith: String
+}
+
+input UpdateCategoryLessonRequestInput {
+  id: UUID!
+  name: String
+}
+
+input UpdateCourseRequestInput {
+  id: UUID!
+  name: String
+  price: Float!
+  isSale: Boolean!
+  sale: Int!
+  description: String
+}
+
+input UpdateFeedbackRequestInput {
+  id: UUID!
+  content: String
+}
+
+input UpdateInformationUserRequestInput {
+  id: UUID!
+  information: String
+}
+
+input UpdateLessonRequestInput {
+  id: UUID!
+  title: String
+  url: String
+  duration: Float
+}
+
+input UpdateProfileUserRequestInput {
+  id: UUID!
+  firstName: String
+  lastName: String
+  fullName: String
+  gender: Boolean!
+}
+
+input UpdateTagRequestInput {
+  id: Int!
+  name: String
+}
+
+input UpdateThumbnailCourseRequestInput {
+  id: UUID!
+  file: Upload
+}
+
+input UpdateTopicRequestInput {
+  id: Int!
+  name: String
+}
+
+input UploadAvatarUserRequestInput {
+  id: String
+  file: Upload
+}
+
+input UuidOperationFilterInput {
+  eq: UUID
+  neq: UUID
+  in: [UUID]
+  nin: [UUID]
+  gt: UUID
+  ngt: UUID
+  gte: UUID
+  ngte: UUID
+  lt: UUID
+  nlt: UUID
+  lte: UUID
+  nlte: UUID
+}
+
+enum ApplyPolicy {
+  BEFORE_RESOLVER
+  AFTER_RESOLVER
+  VALIDATION
+}
+
+enum EnumLogin {
+  NONE
+  GOOGLE
+  FACE_BOOK
+  TIK_TOK
+}
+
+enum EnumMessage {
+  NONE
+  REPLY
+  FILE
+  IMAGE
+  VIDEO
+}
+
+enum EnumPaymentMethod {
+  VN_PAY
+  STRIPE
+}
+
+enum SortEnumType {
+  ASC
+  DESC
+}
+
+directive @authorize("The name of the authorization policy that determines access to the annotated resource." policy: String "Roles that are allowed to access the annotated resource." roles: [String!] "Defines when when the authorize directive shall be applied.By default the authorize directives are applied during the validation phase." apply: ApplyPolicy! = BEFORE_RESOLVER) repeatable on OBJECT | FIELD_DEFINITION
+
+"Used to indicate a combination of fields that can be used to uniquely identify and fetch an object or interface."
+directive @key(fields: _FieldSet!) repeatable on OBJECT | INTERFACE
+
+"The `DateTime` scalar represents an ISO-8601 compliant date time type."
+scalar DateTime @specifiedBy(url: "https:\/\/www.graphql-scalars.com\/date-time")
+
+scalar UUID @specifiedBy(url: "https:\/\/tools.ietf.org\/html\/rfc4122")
+
+"The `Upload` scalar type represents a file upload."
+scalar Upload
+
+"The _Any scalar is used to pass representations of entities from external services into the root _entities field for execution. Validation of the _Any scalar is done by matching the __typename and @external fields defined in the schema."
+scalar _Any
+
+"Scalar representing a set of fields."
+scalar _FieldSet

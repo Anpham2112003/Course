@@ -1,0 +1,9 @@
+federation_version: =2.5.0
+subgraphs:
+  MyCourse: # Subgraph running locally, using introspection to retrieve schema
+    schema:
+      subgraph_url: https://localhost:7217/graphql
+  course: # Schema downloaded from GraphOS registry
+    schema:
+      graphref: Course-u961x8@current
+      subgraph: course

@@ -55,20 +55,20 @@ namespace Infrastructure.DB.Configurations
 
             builder.HasMany(x=>x.courseEntities)
                     .WithOne(x=>x.userEntity)
-                    .HasForeignKey(x => x.UserId)
+                    .HasForeignKey(x => x.AuthorId)
                     .OnDelete(DeleteBehavior.NoAction)
                     .IsRequired();
 
             builder.HasMany(x => x.conversationEntities)
-                    .WithMany(x => x.userEntities)
-                    .UsingEntity<UserConversation>(
-                        l => l.HasOne(x => x.conversationEntity).WithMany(x => x.userConversations).HasForeignKey(x => x.ConversationId),
-                        r => r.HasOne(x => x.userEntity).WithMany(x => x.userConversations).HasForeignKey(x => x.UserId)
-                    );
+                 .WithMany(x => x.userEntities)
+                 .UsingEntity<UserConversation>(
+                    l => l.HasOne(x => x.conversationEntity).WithMany(x => x.userConversations).HasForeignKey(x => x.ConversationId),
+                    r => r.HasOne(x => x.userEntity).WithMany(x => x.userConversations).HasForeignKey(x => x.UserId)
+                );
 
             builder.HasMany(x=>x.notificationEntities)
                     .WithOne(x=>x.fromUserEntity)
-                    .HasForeignKey(x=>x.FromId)
+                    .HasForeignKey(x=>x.SenderId)
                     .IsRequired();
 
             builder.HasMany(x=>x.documentEntities)
@@ -77,11 +77,7 @@ namespace Infrastructure.DB.Configurations
                    .OnDelete(DeleteBehavior.NoAction)
                    .IsRequired();
 
-            builder.HasMany(x=>x.exerciseEntities)
-                    .WithOne(x=>x.userEntity)
-                    .HasForeignKey(x=>x.UserId)
-                    .OnDelete(DeleteBehavior.NoAction)
-                    .IsRequired();
+           
 
             builder.HasMany(x=>x.reportEntities)
                     .WithOne(x=>x.userEntity)
@@ -121,7 +117,7 @@ namespace Infrastructure.DB.Configurations
 
             builder.HasMany(x=>x.messageEntities)
                     .WithOne(x=>x.userEntity)
-                    .HasForeignKey(x=>x.UserId)
+                    .HasForeignKey(x=>x.SenderId)
                     .OnDelete(DeleteBehavior.NoAction)
                     .IsRequired();
 
@@ -130,6 +126,8 @@ namespace Infrastructure.DB.Configurations
                     .HasForeignKey(x=>x.UserId)
                     .OnDelete(DeleteBehavior.NoAction)
                     .IsRequired();
+
+          
         }
     }
 }

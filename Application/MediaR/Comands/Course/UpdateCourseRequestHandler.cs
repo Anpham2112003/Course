@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using Domain.Entities;
-using Domain.Interfaces.UnitOfWork;
-using Domain.Types.ErrorTypes.BaseError.CourseUnion;
-using Domain.Types.ErrorTypes.ErrorImplement.CourseErros;
+using Domain.Types.ErrorTypes.Erros.Course;
+using Domain.Types.ErrorTypes.Unions.Course;
 using Domain.Untils;
+using Infrastructure.Unit0fWork;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using System;
@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace Application.MediaR.Comands.Course
 {
-    public class UpdateCourseRequestHandler : IRequestHandler<UpdateCourseRequest, MutationPayload<CourseEntity, UpdateCourseError>>
+    public class UpdateCourseRequestHandler : IRequestHandler<UpdateCourseRequest, MutationPayload<UpdateCourseRequest, UpdateCourseError>>
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -27,23 +27,13 @@ namespace Application.MediaR.Comands.Course
             _contextAccessor = contextAccessor;
         }
 
-        public async Task<MutationPayload<CourseEntity, UpdateCourseError>> Handle(UpdateCourseRequest request, CancellationToken cancellationToken)
+        public async Task<MutationPayload<UpdateCourseRequest, UpdateCourseError>> Handle(UpdateCourseRequest request, CancellationToken cancellationToken)
         {
             try
             {
-                var errors = new List<UpdateCourseError>();      
+                var errors = new List<UpdateCourseError>();
 
-                var author = await _unitOfWork.userRepository.FindUserByAccountIdAsync(_contextAccessor.GetId());
-
-                if (author is null || author.IsDeleted)
-                {
-                    errors.Add(new AuthorNotFoundError());
-
-                    return new MutationPayload<CourseEntity, UpdateCourseError>
-                    {
-                        errors = errors
-                    };
-                }
+                var authorId = _contextAccessor.GetId();
 
                 var course = await _unitOfWork.courseRepository.FindOneAsync(request.Id);
 
@@ -51,17 +41,17 @@ namespace Application.MediaR.Comands.Course
                 {
                     errors.Add(new CourseNotFoundError());
 
-                    return new MutationPayload<CourseEntity, UpdateCourseError>
+                    return new MutationPayload<UpdateCourseRequest, UpdateCourseError>
                     {
                         errors = errors
                     };
                 }
 
-                if(course.UserId.Equals(author.Id) is false)
+                if(course.AuthorId.Equals(authorId) is false)
                 {
-                    errors.Add(new NotAuthorError());
+                    errors.Add(new UnAuthorError());
 
-                    return new MutationPayload<CourseEntity, UpdateCourseError>
+                    return new MutationPayload<UpdateCourseRequest, UpdateCourseError>
                     {
                         errors = errors
                     };
@@ -73,9 +63,9 @@ namespace Application.MediaR.Comands.Course
 
                 await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-                return new MutationPayload<CourseEntity, UpdateCourseError>
+                return new MutationPayload<UpdateCourseRequest, UpdateCourseError>
                 {
-                    payload = course,
+                    payload = request,
                 };
 
 

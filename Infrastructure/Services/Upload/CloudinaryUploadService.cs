@@ -82,5 +82,26 @@ namespace Infrastructure.Services.Upload
 
             });
         }
+
+
+        public async Task<RawUploadResult> ChuckUploadVideoAsync(string FileName,long Filesize,long CurrPos,IFile File, bool LastChuck = false,CancellationToken cancellation = default)
+        {
+            var rawUpload = new RawUploadParams
+            {
+
+                File = new FileDescription
+                {
+                    CurrPos = CurrPos,
+                    FileName = FileName,
+                    FileSize = Filesize,
+                    LastChunk=LastChuck,
+                    Stream = File.OpenReadStream(),
+                }
+            };
+
+            var result = await cloudinary.UploadChunkAsync(rawUpload, cancellation);
+
+            return result;
+        }
     }
 }

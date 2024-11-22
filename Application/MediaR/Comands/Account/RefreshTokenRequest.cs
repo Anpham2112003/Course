@@ -1,6 +1,6 @@
 ﻿using Application.MediaR.Pipeline;
 using Domain.DTOs;
-using Domain.Types.ErrorTypes.BaseError.AccountUnion;
+using Domain.Types.ErrorTypes.Unions.Account;
 using Domain.Untils;
 using MediatR;
 using System;

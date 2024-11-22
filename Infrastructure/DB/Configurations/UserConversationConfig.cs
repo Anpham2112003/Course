@@ -13,10 +13,9 @@ namespace Infrastructure.DB.Configurations
     {
         public void Configure(EntityTypeBuilder<UserConversation> builder)
         {
-            builder.HasKey(x => x.MegerId);
+            builder.HasKey(x => x.Id);
 
-            builder.HasIndex(x => x.MegerId)
-                   .IsUnique();
+            builder.HasIndex(x => x.Id).IsUnique();
 
         }
     }

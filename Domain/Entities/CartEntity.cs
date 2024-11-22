@@ -7,14 +7,16 @@ using System.Threading.Tasks;
 
 namespace Domain.Entities
 {
-    public class CartEntity : BaseEntity<Guid>
+    public class CartEntity : BaseEntity<Guid>,ICreated
     {
         public Guid Id { get; set; }
         public Guid UserId { get; set; }
         public Guid CouresId { get; set; }
+        public DateTime CreatedAt { get; set; }
 
         ////////////////////////////////////
         public UserEntity? userEntity { get; set; }
         public CourseEntity? courseEntity { get; set; }
+        
     }
 }

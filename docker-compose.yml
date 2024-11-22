@@ -1,0 +1,30 @@
+services:
+  api:
+    image: ${DOCKER_REGISTRY-}api
+    build:
+      context: .
+      dockerfile: Api/Dockerfile
+    ports:
+      - "8080:80"
+  sql:
+    container_name: "SqlServer"
+    image: b2761593c69305fb6e0fe9489be43a369c7aae434178f6d516aced84c41c7136
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: "Taolaso1@12"
+      MSSQL_PID: "Developer"
+      
+    ports:
+      - "1433:1433"
+      
+    
+      
+      
+  
+
+   
+  
+    
+    
+
+

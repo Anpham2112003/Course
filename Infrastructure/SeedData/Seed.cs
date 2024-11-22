@@ -25,7 +25,7 @@ namespace Infrastructure.SeedData
             _dbContext = dbContext;
         }
 
-        public   void RunSeed()
+        public   async void RunSeed()
         {
             if (!_dbContext.Roles.Any())
             {
@@ -33,6 +33,35 @@ namespace Infrastructure.SeedData
 
                 _dbContext.SaveChanges();
                 
+            }
+
+
+            var convsertions = new List<ConversationEntity>()
+            {
+                new ConversationEntity
+                {
+                    Id=Guid.Parse("4727A548-683A-48BF-9E44-DF357FE68675"),
+                    IsDeleted=false,
+                    CreatedAt=DateTime.Now,
+                    DeletedAt=DateTime.Now,
+                    
+                },
+
+                new ConversationEntity
+                {
+                    Id=Guid.Parse("4727A548-683A-48BF-9E44-DF357FE68674"),
+                    IsDeleted=false,
+                    CreatedAt=DateTime.Now,
+                    DeletedAt=DateTime.Now,
+
+                }
+            };
+
+            if (!_dbContext.Conversations.Any())
+            {
+                _dbContext.AddRange(convsertions);
+
+                _dbContext.SaveChanges();
             }
             
         }

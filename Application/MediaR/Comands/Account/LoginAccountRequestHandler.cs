@@ -1,11 +1,11 @@
 ﻿using Domain.DTOs;
 using Domain.Entities;
-using Domain.Interfaces.UnitOfWork;
 using Domain.Options;
-using Domain.Types.ErrorTypes.BaseError.AccountUnion;
-using Domain.Types.ErrorTypes.ErrorImplement.AccountErrors;
+using Domain.Types.ErrorTypes.Erros.Account;
+using Domain.Types.ErrorTypes.Unions.Account;
 using Domain.Untils;
 using HotChocolate;
+using Infrastructure.Unit0fWork;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -65,17 +65,17 @@ namespace Application.MediaR.Comands.Account
                     };
                 }
 
-                var permissions = account.roleEntity!.permissionEntities.Select(x => new
+                var permissions = account.roleEntity!.permissionEntities.Select(x => new PermissionDTO
                 {
-                    route = x.Route,
-                    state = x.State,
+                    Route = x.Route,
+                    State = x.State,
                 });
 
                 var jsonPermission = JsonSerializer.Serialize(permissions);
 
                 var Claims = new Claim[]
                 {
-                    new Claim(ClaimTypes.PrimarySid,account.Id.ToString()),
+                    new Claim(ClaimTypes.PrimarySid,account.userEntity!.Id.ToString()),
                     new Claim(ClaimTypes.Email,account.Email!),
                     new Claim(ClaimTypes.Role,account.roleEntity.RoleName!),
                     new Claim("permssions",jsonPermission)

@@ -1,12 +1,11 @@
 ﻿using Application.MediaR.Comands.Account;
 using Domain.DTOs;
 using Domain.Entities;
-using Domain.Types.ErrorTypes.BaseError.AccountUnion;
+using Domain.Types.ErrorTypes.Unions.Account;
 using Domain.Untils;
 using HotChocolate;
 using HotChocolate.Language;
 using HotChocolate.Types;
-using Infrastructure.Services.UnitOfWorkService;
 using MediatR;
 
 namespace Api.Schemas.Mutation

@@ -3,13 +3,18 @@ using Domain.Interfaces.EntityBase;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using HotChocolate.ApolloFederation;
 
 namespace Domain.Entities
 {
+    
     public class UserEntity : BaseEntity<Guid>,ISoftDeleted,IUpdated
     {
+        
+       
         public Guid Id { get; set; }
         public Guid AccountId { get; set; }
         public string? FirstName { get; set; }
@@ -30,10 +35,10 @@ namespace Domain.Entities
         public AccountEntity? accountEntity { get; set; }
         public List<CourseEntity> courseEntities { get; set; } = new List<CourseEntity>();
         public List<PurchaseEntity> purchaseEntities { get; set; } = new List<PurchaseEntity>();
-        public List<ConversationEntity> conversationEntities { get; set; } = new List<ConversationEntity>();
-        public List<UserConversation> userConversations { get; set; } = new List<UserConversation>();
+       
+
         public List<DocumentEntity> documentEntities { get; set; } = new List<DocumentEntity>();
-        public List<ExerciseEntity> exerciseEntities { get; set; } = new List<ExerciseEntity>();
+       
         public List<NotificationEntity> notificationEntities { get; set; } = new List<NotificationEntity>();     
         public List<CartEntity> cartEntities { get; set; } =new List<CartEntity>();
         public List<ReportEntity> reportEntities { get; set; } =new List<ReportEntity>();
@@ -43,5 +48,9 @@ namespace Domain.Entities
         public List<LessonEntity> lessonsEntities { get; set; } = new List<LessonEntity>();
         public List<MessageEntity> messageEntities { get; set; } = new List<MessageEntity> ();
         public List<FeedbackEntity> feedbackEntities { get; set; }=new List<FeedbackEntity>();
+        public List<UserConversation> userConversations { get; set; } = new List<UserConversation>();
+        public List<ConversationEntity> conversationEntities { get; set; } = new List<ConversationEntity>();
+        
+        
     }
 }

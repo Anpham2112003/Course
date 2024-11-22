@@ -10,7 +10,7 @@ using FluentValidation;
 
 namespace Application.MediaR.Pipeline
 {
-    public class ValidationPipeline<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest:IRequest<TResponse>,IRequireValidation
+    public class ValidationPipeline<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest:IRequireValidation
     {
         private readonly IValidator<TRequest> _validator;
 

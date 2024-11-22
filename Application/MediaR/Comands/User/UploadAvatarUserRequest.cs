@@ -1,5 +1,5 @@
 ﻿using Application.MediaR.Pipeline;
-using Domain.Types.ErrorTypes.BaseError.UserUnion;
+using Domain.Types.ErrorTypes.Unions.User;
 using Domain.Untils;
 using HotChocolate;
 using HotChocolate.Types;

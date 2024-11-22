@@ -11,7 +11,7 @@ namespace Domain.Entities
     public class MessageEntity : BaseEntity<Guid>,ICreated,IUpdated,ISoftDeleted
     {
         public Guid Id { get; set; }
-        public Guid UserId { get; set; }
+        public Guid SenderId { get; set; }
         public Guid ReplyMessageId { get; set; }
         public Guid ConversationId { get; set; }
         public string? Content { get; set; }

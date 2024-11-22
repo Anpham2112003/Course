@@ -13,6 +13,8 @@ namespace Domain.Types.EnumTypes
         Google = 1,
 
         FaceBook = 2,
+        
+        TikTok = 3
 
     }
 }

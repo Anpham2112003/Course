@@ -1,9 +1,7 @@
 ﻿using Domain.Interfaces.Mailer;
-using Domain.Interfaces.UnitOfWork;
 using Domain.Interfaces.Upload;
 using Infrastructure.DB.SQLDbContext;
 using Infrastructure.Services.MailService;
-using Infrastructure.Services.UnitOfWorkService;
 using Infrastructure.Services.Upload;
 using MailKit;
 using Microsoft.EntityFrameworkCore;
@@ -14,6 +12,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Domain.Interfaces.Payment;
+using Infrastructure.Services.PaymentService;
+using Infrastructure.Unit0fWork;
 
 namespace Infrastructure
 {
@@ -38,6 +39,8 @@ namespace Infrastructure
             service.AddScoped<IMailerService, MailerService>();
 
             service.AddScoped<ICloudinaryUploadService, CloudinaryUploadService>();
+
+            service.AddScoped<IStripService, StripeService>();
 
             return service;
         }

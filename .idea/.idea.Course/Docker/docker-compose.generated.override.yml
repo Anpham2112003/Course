@@ -1,0 +1,20 @@
+# This is a generated file. Not intended for manual editing.
+services:
+  api:
+    build:
+      context: "C:\\Users\\drago\\source\\repos\\Course"
+      dockerfile: "Api/Dockerfile"
+      target: "base"
+    command: []
+    entrypoint:
+    - "dotnet"
+    - "/app/bin/Debug/net6.0/Api.dll"
+    environment:
+      DOTNET_USE_POLLING_FILE_WATCHER: "true"
+    image: "api:dev"
+    ports: []
+    volumes:
+    - "C:\\Users\\drago\\.nuget\\packages:/root/.nuget/packages"
+    - "C:\\Users\\drago\\source\\repos\\Course\\Api:/app:rw"
+    - "C:\\Users\\drago\\source\\repos\\Course:/src:rw"
+    working_dir: "/app"

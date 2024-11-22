@@ -1,7 +1,6 @@
 ﻿using Application.MediaR.Pipeline;
 using Domain.Entities;
-using Domain.Types.ErrorTypes.BaseError.AccountUnion;
-using Domain.Types.ErrorTypes.BaseError.CourseUnion;
+using Domain.Types.ErrorTypes.Unions.Course;
 using Domain.Untils;
 using HotChocolate;
 using HotChocolate.Types;

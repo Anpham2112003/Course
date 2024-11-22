@@ -84,6 +84,9 @@ namespace Infrastructure.Migrations
                     b.Property<Guid>("CouresId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
@@ -213,6 +216,10 @@ namespace Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("AuthorId")
+                        .IsRequired()
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
@@ -231,6 +238,9 @@ namespace Infrastructure.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsPublish")
                         .HasColumnType("bit");
 
                     b.Property<bool>("IsSale")
@@ -260,17 +270,14 @@ namespace Infrastructure.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("Id");
+
+                    b.HasIndex("AuthorId");
 
                     b.HasIndex("Id")
                         .IsUnique();
 
                     b.HasIndex("Name");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Courses");
                 });
@@ -340,40 +347,6 @@ namespace Infrastructure.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Documents");
-                });
-
-            modelBuilder.Entity("Domain.Entities.ExerciseEntity", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("LessonId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Url")
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Id")
-                        .IsUnique();
-
-                    b.HasIndex("LessonId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Exercises");
                 });
 
             modelBuilder.Entity("Domain.Entities.FeedbackEntity", b =>
@@ -497,11 +470,11 @@ namespace Infrastructure.Migrations
                     b.Property<DateTime>("SeenAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<Guid>("SenderId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -512,7 +485,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("ReplyMessageId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("SenderId");
 
                     b.ToTable("Messages");
                 });
@@ -530,7 +503,7 @@ namespace Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("FromId")
+                    b.Property<Guid>("SenderId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("ToId")
@@ -538,10 +511,10 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("FromId");
-
                     b.HasIndex("Id")
                         .IsUnique();
+
+                    b.HasIndex("SenderId");
 
                     b.ToTable("Notifications");
                 });
@@ -701,6 +674,12 @@ namespace Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<DateTime>("DeletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
                         .HasMaxLength(64)
                         .HasColumnType("nvarchar(64)");
@@ -727,6 +706,12 @@ namespace Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<DateTime>("DeletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
@@ -741,25 +726,35 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.UserConversation", b =>
                 {
-                    b.Property<string>("MegerId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("ConversationId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<DateTime>("DeletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("InboxId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("MegerId");
+                    b.HasKey("Id");
 
                     b.HasIndex("ConversationId");
 
-                    b.HasIndex("MegerId")
+                    b.HasIndex("Id")
                         .IsUnique();
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserConversation");
+                    b.ToTable("UserConversations");
                 });
 
             modelBuilder.Entity("Domain.Entities.UserEntity", b =>
@@ -892,7 +887,7 @@ namespace Infrastructure.Migrations
                 {
                     b.HasOne("Domain.Entities.UserEntity", "userEntity")
                         .WithMany("courseEntities")
-                        .HasForeignKey("UserId")
+                        .HasForeignKey("AuthorId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
@@ -956,25 +951,6 @@ namespace Infrastructure.Migrations
                     b.Navigation("userEntity");
                 });
 
-            modelBuilder.Entity("Domain.Entities.ExerciseEntity", b =>
-                {
-                    b.HasOne("Domain.Entities.LessonEntity", "lessonEntity")
-                        .WithMany("exerciseEntities")
-                        .HasForeignKey("LessonId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Entities.UserEntity", "userEntity")
-                        .WithMany("exerciseEntities")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("lessonEntity");
-
-                    b.Navigation("userEntity");
-                });
-
             modelBuilder.Entity("Domain.Entities.FeedbackEntity", b =>
                 {
                     b.HasOne("Domain.Entities.CourseEntity", "courseEntity")
@@ -1028,7 +1004,7 @@ namespace Infrastructure.Migrations
 
                     b.HasOne("Domain.Entities.UserEntity", "userEntity")
                         .WithMany("messageEntities")
-                        .HasForeignKey("UserId")
+                        .HasForeignKey("SenderId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
@@ -1041,7 +1017,7 @@ namespace Infrastructure.Migrations
                 {
                     b.HasOne("Domain.Entities.UserEntity", "fromUserEntity")
                         .WithMany("notificationEntities")
-                        .HasForeignKey("FromId")
+                        .HasForeignKey("SenderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -1197,8 +1173,6 @@ namespace Infrastructure.Migrations
                 {
                     b.Navigation("commentEntities");
 
-                    b.Navigation("exerciseEntities");
-
                     b.Navigation("reportEntities");
                 });
 
@@ -1240,8 +1214,6 @@ namespace Infrastructure.Migrations
                     b.Navigation("courseEntities");
 
                     b.Navigation("documentEntities");
-
-                    b.Navigation("exerciseEntities");
 
                     b.Navigation("feedbackEntities");
 

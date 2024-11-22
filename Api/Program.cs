@@ -1,4 +1,5 @@
 using Api.Extensions;
+using Api.RestApi;
 using Application.Maper;
 using Application.MediaR.Comands.Account;
 using Application.MediaR.Pipeline;
@@ -19,6 +20,12 @@ using Microsoft.IdentityModel.Tokens;
 using System.Diagnostics;
 using System.Security.Claims;
 using System.Text;
+using Api.Schemas.Query;
+using Domain.Entities;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.Google;
+using Stripe;
+using Api.DataLoader;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -29,7 +36,18 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.InfrastructureInjectServices(builder.Configuration);
 
-
+builder
+    .Services
+    .AddCors(options =>
+    {
+        options.AddDefaultPolicy(builder =>
+        {
+            builder
+                .WithOrigins("https://studio.apollographql.com","http://studio.apollographql.com")
+                .AllowAnyHeader()
+                .AllowAnyMethod();
+        });
+    });
 
 //builder.Services.AddSingleton(cg => new RequestExecutorProxy(cg.GetRequiredService<IRequestExecutorResolver>(), Schema.DefaultName));
 
@@ -51,7 +69,6 @@ builder.Services.AddMediatR(config =>
 
 
 
-
 builder.Services.AddAutoMapper(typeof(MapData).Assembly);
 
 
@@ -62,11 +79,24 @@ builder.Services.AddHttpContextAccessor();
 
 var jwt = builder.Configuration.GetSection(Domain.Options.JwtOption.Jwt).Get<JwtOption>();
 
+var google = builder.Configuration.GetSection(GoogleOption.Google).Get<GoogleOption>();
+
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddCookie(op =>
+    {
+        op.Cookie.SameSite = SameSiteMode.None;
+    })
+    .AddGoogle(config =>
+    {
+        config.ClientId = google.Client_id!;
+        config.ClientSecret = google.Client_secret!;
+        config.CallbackPath = PathString.FromUriComponent(new Uri(google.Callback_path!));
+        config.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    })
     .AddJwtBearer(config =>
     {
-        config.IncludeErrorDetails=true;
-       
+        config.IncludeErrorDetails = true;
+
         config.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
         {
             ValidateLifetime = false,
@@ -75,17 +105,36 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidIssuer = jwt.Issuer,
             ValidAudience = jwt.Audience,
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwt.Accesskey!))
+
         };
     });
+    
 
-builder.Services.AddAuthorization();
 
 
 builder.Services
-   .AddGraphQLServer()
-   .AddAuthorization()
-   .AddGraphExtension();
-   
+    
+    .AddGraphQLServer()
+    .AddApolloFederation()
+    .AddSorting()
+    .AddFiltering()
+    .AddType<User>()
+    .AddType<Course>()
+    .AddType<FeedBack>()
+    .AddType<Cart>()
+    .AddType<Purchase>()
+    .AddType<Tag>()
+    .AddType<Topic>()
+    .AddDataLoader<GetUserDataLoader>()
+    .AddDataLoader<GetCourseDataLoader>()
+    .AddDataLoader<GetFeedBackDataLoader>()
+    .AddDataLoader<GetPurchaseDataLoader>()
+    .AddDataLoader<GetTagDataLoader>()
+    .AddDataLoader<GetTopicDataLoader>()
+    .AddGraphExtension()
+    .AddAuthorization();
+
+
 
 
 
@@ -93,10 +142,12 @@ builder.Services
 
 var app = builder.Build();
 
+app.AddRestApi();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
+    
     using (var scopeService = app.Services.CreateScope())
     {
         var service = scopeService.ServiceProvider.GetRequiredService<ApplicationDBContext>();
@@ -106,9 +157,12 @@ if (app.Environment.IsDevelopment())
         seed.RunSeed();
     }
 
-
+  
 
 }
+
+
+app.UseCors();
 
 app.UseHttpsRedirection();
 
@@ -122,6 +176,6 @@ app.MapGraphQL();
 
 
 
-app.Run();
+app.RunWithGraphQLCommands(args);
 
 public partial class Program { }

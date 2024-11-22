@@ -9,6 +9,6 @@ namespace Domain.Types.EnumTypes
     public enum EnumPaymentMethod
     {
         VnPay = 0,
-        Momo = 1
+        Stripe = 1
     }
 }

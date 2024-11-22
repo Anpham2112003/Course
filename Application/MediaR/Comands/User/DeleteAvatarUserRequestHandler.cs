@@ -1,9 +1,9 @@
-﻿using Domain.Interfaces.UnitOfWork;
+﻿
 using Domain.Interfaces.Upload;
-using Domain.Types.ErrorTypes.BaseError.AccountUnion;
-using Domain.Types.ErrorTypes.BaseError.UserUnion;
-using Domain.Types.ErrorTypes.ErrorImplement.UserErors;
+using Domain.Types.ErrorTypes.Erros.User;
+using Domain.Types.ErrorTypes.Unions.User;
 using Domain.Untils;
+using Infrastructure.Unit0fWork;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Tokens;
@@ -62,7 +62,7 @@ namespace Application.MediaR.Comands.User
 
                 if (user.Avatar.IsNullOrEmpty())
                 {
-                    errors.Add(new AvatarHasDeleted());
+                    errors.Add(new AvatarHasDeletedError());
 
                     return new MutationPayload<string, DeleteAvatarUserError>
                     {

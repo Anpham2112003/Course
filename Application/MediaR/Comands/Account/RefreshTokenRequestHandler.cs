@@ -1,10 +1,10 @@
 ﻿using Domain.DTOs;
-using Domain.Interfaces.UnitOfWork;
 using Domain.Options;
-using Domain.Types.ErrorTypes.BaseError.AccountUnion;
-using Domain.Types.ErrorTypes.ErrorImplement.AccountErrors;
+using Domain.Types.ErrorTypes.Erros.Account;
+using Domain.Types.ErrorTypes.Unions.Account;
 using Domain.Untils;
 using HotChocolate;
+using Infrastructure.Unit0fWork;
 using MediatR;
 using Microsoft.Extensions.Options;
 using System;

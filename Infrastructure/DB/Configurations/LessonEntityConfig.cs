@@ -40,11 +40,7 @@ namespace Infrastructure.DB.Configurations
                     .IsRequired()
                     .OnDelete(DeleteBehavior.Cascade);
 
-            builder.HasMany(x=>x.exerciseEntities)
-                    .WithOne(x=>x.lessonEntity)
-                    .HasForeignKey(x=>x.LessonId)
-                    .IsRequired()
-                    .OnDelete(DeleteBehavior.Cascade);
+           
 
             builder.HasMany(x=>x.commentEntities)
                 .WithOne(x=>x.lessonEntity)

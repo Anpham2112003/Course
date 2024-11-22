@@ -1,14 +1,13 @@
 ﻿using Api.Schemas.Mutation;
 using Api.Schemas.Query;
 using Application.MediaR.Comands.Account;
-using Domain.Types.ErrorTypes.ErrorImplement.AccountErrors;
+using Domain.Types.ErrorTypes.Erros.Account;
 using Domain.Untils;
 using GreenDonut;
 using HotChocolate;
 using HotChocolate.Execution;
 using HotChocolate.Fetching;
 using Infrastructure.DB.SQLDbContext;
-using Infrastructure.Services.UnitOfWorkService;
 using MediatR;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
@@ -16,7 +15,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.VisualStudio.TestPlatform.TestHost;
-using MyTest;
 using Snapshooter;
 using Snapshooter.Xunit;
 using System;
@@ -30,13 +28,13 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace AccountTest
+namespace MyTest
 {
     public class AccountTest : IClassFixture<CustomWebAppicationFactory<Program>>
     {
         private readonly CustomWebAppicationFactory<Program> webApplicationFactory;
 
-        public AccountTest ( CustomWebAppicationFactory<Program> webApplicationFactory)
+        public AccountTest(CustomWebAppicationFactory<Program> webApplicationFactory)
         {
             this.webApplicationFactory = webApplicationFactory;
         }
@@ -62,16 +60,16 @@ namespace AccountTest
                             }
                         }
                 }")
-                .AddVariableValue("input",new LoginAccountRequest
+                .AddVariableValue("input", new LoginAccountRequest
                 {
-                    Email="anpham2112003@gmail.com",
-                    Password="taolaso1"
+                    Email = "anpham2112003@gmail.com",
+                    Password = "taolaso1"
                 })
                 .Create();
 
-          
 
-           var result = await executor.ExecuteAsync(quey);
+
+            var result = await executor.ExecuteAsync(quey);
 
             var ex = result.ExpectQueryResult();
 
@@ -84,10 +82,10 @@ namespace AccountTest
 
 
 
-          
 
-            
-            
+
+
+
 
         }
     }

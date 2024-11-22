@@ -1,9 +1,10 @@
-﻿using Domain.Interfaces.UnitOfWork;
+﻿
 using Domain.Interfaces.Upload;
-using Domain.Types.ErrorTypes.BaseError.UserUnion;
-using Domain.Types.ErrorTypes.ErrorImplement.UserErors;
+using Domain.Types.ErrorTypes.Erros.User;
+using Domain.Types.ErrorTypes.Unions.User;
 using Domain.Untils;
 using HotChocolate.Types;
+using Infrastructure.Unit0fWork;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using System;

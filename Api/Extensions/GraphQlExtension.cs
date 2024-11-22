@@ -7,8 +7,8 @@ using HotChocolate.Utilities;
 using Infrastructure.DB.SQLDbContext;
 using System.Diagnostics;
 using System.Reflection;
-using Domain.Types.ErrorTypes.BaseError;
 using Application.MediaR.Comands.User;
+using Domain.Types.ErrorTypes.Unions;
 
 namespace Api.Extensions
 {
@@ -19,9 +19,10 @@ namespace Api.Extensions
             var baseErrorType = typeof(BaseUnionError);
 
 
-            var Errors = Assembly.Load("Domain").GetTypes()
+            var errors = Assembly.Load("Domain").GetTypes()
                 .Where(x => baseErrorType.IsAssignableFrom(x) && x.Name != baseErrorType.Name).ToArray();
-
+            
+           
 
 
             builder
@@ -31,19 +32,19 @@ namespace Api.Extensions
                 .AddMutationType<Mutations>()
                 .AddTypeExtension<AccountMutation>()
                 .AddTypeExtension<UserMutation>()
+                .AddTypeExtension<CategoryLessonMutation>()
                 .AddTypeExtension<CourseMutation>()
+                .AddTypeExtension<TagMutation>()
+                .AddTypeExtension<FeedbackMutation>()
+                .AddTypeExtension<LessonMutation>()
+                .AddTypeExtension<CartMutation>()
+                .AddTypeExtension<TopicMutation>()
                 .AddType<UploadType>()
-
-                .AddTypes(Errors)
+                .AddTypes(errors)
                 .AddProjections()
                 .AddFiltering();
                 
-                       
-
-
-
-
-
+            
             return builder;
         }
     }

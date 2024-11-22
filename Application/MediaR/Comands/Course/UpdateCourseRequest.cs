@@ -1,5 +1,5 @@
 ﻿using Domain.Entities;
-using Domain.Types.ErrorTypes.BaseError.CourseUnion;
+using Domain.Types.ErrorTypes.Unions.Course;
 using Domain.Untils;
 using MediatR;
 using System;
@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Application.MediaR.Comands.Course
 {
-    public class UpdateCourseRequest:IRequest<MutationPayload<CourseEntity,UpdateCourseError>>
+    public class UpdateCourseRequest:IRequest<MutationPayload<UpdateCourseRequest,UpdateCourseError>>
     {
         public Guid Id { get; set; }
         public string? Name { get; set; }

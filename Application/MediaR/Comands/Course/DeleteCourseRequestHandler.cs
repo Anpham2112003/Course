@@ -1,8 +1,9 @@
-﻿using Domain.Interfaces.UnitOfWork;
+﻿
 using Domain.Interfaces.Upload;
-using Domain.Types.ErrorTypes.BaseError.CourseUnion;
-using Domain.Types.ErrorTypes.ErrorImplement.CourseErros;
+using Domain.Types.ErrorTypes.Erros.Course;
+using Domain.Types.ErrorTypes.Unions.Course;
 using Domain.Untils;
+using Infrastructure.Unit0fWork;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using System;
@@ -32,17 +33,8 @@ namespace Application.MediaR.Comands.Course
             {
                 var errors = new List<DeleteCourseError>();
 
-                var author = await _unitOfWork.userRepository.FindOneAsync(_contextAccessor.GetId());
-
-                if (author is null || author.IsDeleted)
-                {
-                    errors.Add(new AuthorNotFoundError());
-
-                    return new MutationPayload<Guid, DeleteCourseError>
-                    {
-                        errors = errors
-                    };
-                }
+                var authorId = _contextAccessor.GetId();
+               
 
                 var course = await _unitOfWork.courseRepository.FindOneAsync(request.Id);
 
@@ -56,9 +48,9 @@ namespace Application.MediaR.Comands.Course
                     };
                 }
 
-                if(course.UserId.Equals(author.Id) is false)
+                if(course.AuthorId.Equals(authorId) is false)
                 {
-                    errors.Add(new NotAuthorError());
+                    errors.Add(new UnAuthorError());
 
                     return new MutationPayload<Guid, DeleteCourseError>
                     {

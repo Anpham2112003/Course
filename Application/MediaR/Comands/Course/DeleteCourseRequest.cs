@@ -1,4 +1,4 @@
-﻿using Domain.Types.ErrorTypes.BaseError.CourseUnion;
+﻿using Domain.Types.ErrorTypes.Unions.Course;
 using Domain.Untils;
 using MediatR;
 using System;
