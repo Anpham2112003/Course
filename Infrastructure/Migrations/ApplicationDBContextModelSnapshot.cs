@@ -167,9 +167,6 @@ namespace Infrastructure.Migrations
                     b.Property<Guid?>("ReplyCommentId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("TotalReply")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
@@ -179,8 +176,6 @@ namespace Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("LessonId");
-
-                    b.HasIndex("ReplyCommentId");
 
                     b.HasIndex("UserId");
 
@@ -216,8 +211,7 @@ namespace Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("AuthorId")
-                        .IsRequired()
+                    b.Property<Guid>("AuthorId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedAt")
@@ -254,9 +248,6 @@ namespace Infrastructure.Migrations
 
                     b.Property<float>("Price")
                         .HasColumnType("real");
-
-                    b.Property<int>("Purchase")
-                        .HasColumnType("int");
 
                     b.Property<float>("Rating")
                         .HasColumnType("real");
@@ -400,6 +391,9 @@ namespace Infrastructure.Migrations
                     b.Property<Guid>("CategoryLessonId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid>("CourseId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
@@ -410,9 +404,7 @@ namespace Infrastructure.Migrations
                         .HasColumnType("real");
 
                     b.Property<bool>("IsDeleted")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
+                        .HasColumnType("bit");
 
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
@@ -427,6 +419,10 @@ namespace Infrastructure.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CategoryLessonId");
+
+                    b.HasIndex("CourseId");
 
                     b.HasIndex("Id")
                         .IsUnique();
@@ -446,9 +442,6 @@ namespace Infrastructure.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.Property<string>("ContentReply")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<Guid>("ConversationId")
                         .HasColumnType("uniqueidentifier");
 
@@ -464,7 +457,7 @@ namespace Infrastructure.Migrations
                     b.Property<int>("MessageType")
                         .HasColumnType("int");
 
-                    b.Property<Guid>("ReplyMessageId")
+                    b.Property<Guid?>("ReplyMessageId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("SeenAt")
@@ -483,7 +476,9 @@ namespace Infrastructure.Migrations
                     b.HasIndex("Id")
                         .IsUnique();
 
-                    b.HasIndex("ReplyMessageId");
+                    b.HasIndex("ReplyMessageId")
+                        .IsUnique()
+                        .HasFilter("[ReplyMessageId] IS NOT NULL");
 
                     b.HasIndex("SenderId");
 
@@ -532,6 +527,7 @@ namespace Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid?>("CourseId")
+                        .IsRequired()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedAt")
@@ -582,6 +578,7 @@ namespace Infrastructure.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("CourseId")
+                        .IsRequired()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedAt")
@@ -815,7 +812,7 @@ namespace Infrastructure.Migrations
                     b.HasOne("Domain.Entities.RoleEntity", "roleEntity")
                         .WithMany("accountEntities")
                         .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("roleEntity");
@@ -826,13 +823,13 @@ namespace Infrastructure.Migrations
                     b.HasOne("Domain.Entities.CourseEntity", "courseEntity")
                         .WithMany("cartEntities")
                         .HasForeignKey("CouresId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Domain.Entities.UserEntity", "userEntity")
                         .WithMany("cartEntities")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("courseEntity");
@@ -845,13 +842,13 @@ namespace Infrastructure.Migrations
                     b.HasOne("Domain.Entities.CourseEntity", "courseEntity")
                         .WithMany("categoryLessons")
                         .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Domain.Entities.UserEntity", "userEntity")
                         .WithMany("categoryLessonsEntities")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("courseEntity");
@@ -864,18 +861,13 @@ namespace Infrastructure.Migrations
                     b.HasOne("Domain.Entities.LessonEntity", "lessonEntity")
                         .WithMany("commentEntities")
                         .HasForeignKey("LessonId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.HasOne("Domain.Entities.CommentEntity", null)
-                        .WithMany("comments")
-                        .HasForeignKey("ReplyCommentId")
-                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.HasOne("Domain.Entities.UserEntity", "userEntity")
                         .WithMany("commentEntities")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("lessonEntity");
@@ -888,7 +880,7 @@ namespace Infrastructure.Migrations
                     b.HasOne("Domain.Entities.UserEntity", "userEntity")
                         .WithMany("courseEntities")
                         .HasForeignKey("AuthorId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("userEntity");
@@ -899,13 +891,13 @@ namespace Infrastructure.Migrations
                     b.HasOne("Domain.Entities.CourseEntity", "courseEntity")
                         .WithMany("courseTags")
                         .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Domain.Entities.TagEntity", "tagEntity")
                         .WithMany("courseTags")
                         .HasForeignKey("TagId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("courseEntity");
@@ -918,13 +910,13 @@ namespace Infrastructure.Migrations
                     b.HasOne("Domain.Entities.CourseEntity", "courseEntity")
                         .WithMany("courseTopics")
                         .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Domain.Entities.TopicEntity", "topicEntity")
                         .WithMany("courseTopics")
                         .HasForeignKey("TopicId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("courseEntity");
@@ -937,13 +929,13 @@ namespace Infrastructure.Migrations
                     b.HasOne("Domain.Entities.CourseEntity", "courseEntity")
                         .WithMany("documentEntities")
                         .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Domain.Entities.UserEntity", "userEntity")
                         .WithMany("documentEntities")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("courseEntity");
@@ -956,13 +948,13 @@ namespace Infrastructure.Migrations
                     b.HasOne("Domain.Entities.CourseEntity", "courseEntity")
                         .WithMany("feedbackEntities")
                         .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Domain.Entities.UserEntity", "userEntity")
                         .WithMany("feedbackEntities")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("courseEntity");
@@ -974,17 +966,25 @@ namespace Infrastructure.Migrations
                 {
                     b.HasOne("Domain.Entities.CategoryLessonEntity", "categoryLesson")
                         .WithMany("lessonEntities")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .HasForeignKey("CategoryLessonId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.CourseEntity", "courseEntity")
+                        .WithMany("lessonsEntities")
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Domain.Entities.UserEntity", "userEntity")
                         .WithMany("lessonsEntities")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("categoryLesson");
+
+                    b.Navigation("courseEntity");
 
                     b.Navigation("userEntity");
                 });
@@ -994,21 +994,22 @@ namespace Infrastructure.Migrations
                     b.HasOne("Domain.Entities.ConversationEntity", "conversationEntity")
                         .WithMany("messageEntities")
                         .HasForeignKey("ConversationId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("Domain.Entities.MessageEntity", null)
-                        .WithMany("messages")
-                        .HasForeignKey("ReplyMessageId")
-                        .OnDelete(DeleteBehavior.NoAction);
+                    b.HasOne("Domain.Entities.MessageEntity", "replyMessage")
+                        .WithOne()
+                        .HasForeignKey("Domain.Entities.MessageEntity", "ReplyMessageId");
 
                     b.HasOne("Domain.Entities.UserEntity", "userEntity")
                         .WithMany("messageEntities")
                         .HasForeignKey("SenderId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("conversationEntity");
+
+                    b.Navigation("replyMessage");
 
                     b.Navigation("userEntity");
                 });
@@ -1018,7 +1019,7 @@ namespace Infrastructure.Migrations
                     b.HasOne("Domain.Entities.UserEntity", "fromUserEntity")
                         .WithMany("notificationEntities")
                         .HasForeignKey("SenderId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("fromUserEntity");
@@ -1029,12 +1030,13 @@ namespace Infrastructure.Migrations
                     b.HasOne("Domain.Entities.CourseEntity", "courseEntity")
                         .WithMany("paymentEntities")
                         .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("Domain.Entities.UserEntity", "userEntity")
                         .WithMany("paymentEntities")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("courseEntity");
@@ -1047,12 +1049,13 @@ namespace Infrastructure.Migrations
                     b.HasOne("Domain.Entities.CourseEntity", "courseEntity")
                         .WithMany("purchaseEntities")
                         .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("Domain.Entities.UserEntity", "userEntity")
                         .WithMany("purchaseEntities")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("courseEntity");
@@ -1065,13 +1068,13 @@ namespace Infrastructure.Migrations
                     b.HasOne("Domain.Entities.LessonEntity", "lessonEntity")
                         .WithMany("reportEntities")
                         .HasForeignKey("LessonId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Domain.Entities.UserEntity", "userEntity")
                         .WithMany("reportEntities")
                         .HasForeignKey("LessonId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("lessonEntity");
@@ -1084,13 +1087,13 @@ namespace Infrastructure.Migrations
                     b.HasOne("Domain.Entities.PermissionEntity", "permissionEntity")
                         .WithMany("rolePermissions")
                         .HasForeignKey("PermissionId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Domain.Entities.RoleEntity", "roleEntity")
                         .WithMany("rolePermission")
                         .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("permissionEntity");
@@ -1103,13 +1106,13 @@ namespace Infrastructure.Migrations
                     b.HasOne("Domain.Entities.ConversationEntity", "conversationEntity")
                         .WithMany("userConversations")
                         .HasForeignKey("ConversationId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Domain.Entities.UserEntity", "userEntity")
                         .WithMany("userConversations")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("conversationEntity");
@@ -1122,7 +1125,7 @@ namespace Infrastructure.Migrations
                     b.HasOne("Domain.Entities.AccountEntity", "accountEntity")
                         .WithOne("userEntity")
                         .HasForeignKey("Domain.Entities.UserEntity", "AccountId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("accountEntity");
@@ -1136,11 +1139,6 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Domain.Entities.CategoryLessonEntity", b =>
                 {
                     b.Navigation("lessonEntities");
-                });
-
-            modelBuilder.Entity("Domain.Entities.CommentEntity", b =>
-                {
-                    b.Navigation("comments");
                 });
 
             modelBuilder.Entity("Domain.Entities.ConversationEntity", b =>
@@ -1164,6 +1162,8 @@ namespace Infrastructure.Migrations
 
                     b.Navigation("feedbackEntities");
 
+                    b.Navigation("lessonsEntities");
+
                     b.Navigation("paymentEntities");
 
                     b.Navigation("purchaseEntities");
@@ -1174,11 +1174,6 @@ namespace Infrastructure.Migrations
                     b.Navigation("commentEntities");
 
                     b.Navigation("reportEntities");
-                });
-
-            modelBuilder.Entity("Domain.Entities.MessageEntity", b =>
-                {
-                    b.Navigation("messages");
                 });
 
             modelBuilder.Entity("Domain.Entities.PermissionEntity", b =>

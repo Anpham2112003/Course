@@ -38,6 +38,8 @@ namespace Application.MediaR.Comands.Lesson
 
                 var categoryLesson = await _unitOfWork.categoryLessonRepository.FindOneAsync(request.CategoryLessonId);
 
+
+
                 if(categoryLesson is null)
                 {
                     errors.Add(new CategoryLessonNotFoundErorr());
@@ -60,6 +62,8 @@ namespace Application.MediaR.Comands.Lesson
                 
 
                 var lesson = _mapper.Map<LessonEntity>(request);
+
+                lesson.CourseId=categoryLesson.CourseId;
 
                 await _unitOfWork.lessonRepository.AddOneAsync(lesson);
 

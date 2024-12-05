@@ -15,5 +15,6 @@ namespace Domain.Interfaces.Upload
         public  Task<DeletionResult> DeleteImageByPublicId(string publib_id);
 
         public  Task<RawUploadResult> ChuckUploadVideoAsync(string FileName, long Filesize, long CurrPos, IFile File, bool LastChuck = false, CancellationToken cancellation = default);
+        public  Task<VideoUploadResult> UploadVideoAsync(IFile file, CancellationToken cancellation=default);
     }
 }

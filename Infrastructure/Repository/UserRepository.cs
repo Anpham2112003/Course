@@ -16,25 +16,30 @@ namespace Infrastructure.Repository
 {
     public class UserRepository : AbstractRepository<UserEntity, ApplicationDBContext>, IUserRepository<UserEntity>
     {
-
-        public UserRepository(ApplicationDBContext dBContext) : base(dBContext)
+        public UserRepository(ApplicationDBContext dBContext, IMapper mapper) : base(dBContext, mapper)
         {
-
         }
 
         public async Task<UserEntity?> FindUserByAccountIdAsync(Guid accountId, CancellationToken cancellation = default)
         {
-            return await dBContext.Set<UserEntity>().FirstOrDefaultAsync(x => x.AccountId == accountId, cancellation);
+            return await dBContext.Set<UserEntity>()
+                .FirstOrDefaultAsync(x => x.AccountId == accountId, cancellation);
         }
 
         public async Task<IEnumerable<TUser>> GetUserByIds<TUser>(IReadOnlyList<Guid> keys, CancellationToken cancellation = default) where TUser:class,IUser
         {
-            var config = new MapperConfiguration(x => x.CreateProjection<UserEntity, TUser>());
-
+           
             return await dBContext.Set<UserEntity>().Where(x => keys.Contains(x.Id))
                 .AsNoTracking()
-                .ProjectTo<TUser>(config).ToListAsync(cancellation);
+                .ProjectTo<TUser>(_mapper.ConfigurationProvider).ToListAsync(cancellation);
         }
-       
+
+        public async Task<TUser?> GetUserById<TUser>(Guid id, CancellationToken cancellation) where TUser : class,IUser
+        {
+           
+            return await dBContext.Set<UserEntity>().Where(x=>x.Id==id)
+                .AsNoTracking()
+                .ProjectTo<TUser>(_mapper.ConfigurationProvider).FirstOrDefaultAsync(cancellation);
+        }
     }
 }

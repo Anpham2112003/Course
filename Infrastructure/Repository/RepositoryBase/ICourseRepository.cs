@@ -15,5 +15,7 @@ namespace Infrastructure.Repository.RepositoryBase
         public Task<IEnumerable<TTag>> GetTagsByCourseId<TTag>(Guid CourseId, CancellationToken cancellation=default) where TTag : class, ITag;
         public Task<IEnumerable<TTopic>> GetTopicsByCourseId<TTopic>(Guid CourseId, CancellationToken cancellation=default) where TTopic : class, ITopic;
         public Task<IEnumerable<TCourse>> GetCourseByIds<TCourse>(IReadOnlyList<Guid> keys, CancellationToken cancellationToken = default);
+        public IQueryable<TQuery> AsQueryableType<TQuery>() where TQuery : class, ICourse;
+
     }
 }

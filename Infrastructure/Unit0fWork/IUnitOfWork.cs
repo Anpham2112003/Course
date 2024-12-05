@@ -1,4 +1,5 @@
-﻿using Domain.Entities;
+﻿using AutoMapper;
+using Domain.Entities;
 using Infrastructure.Repository.RepositoryBase;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
@@ -18,6 +19,8 @@ namespace Infrastructure.Unit0fWork
         public Task<int> SaveChanges();
         public Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 
+        public IConfigurationProvider GetMapperConfiguration();
+
         public IQueryable<T> QueryableEntity<T>() where T:class;
 
 
@@ -34,5 +37,7 @@ namespace Infrastructure.Unit0fWork
         public ILessonRepository<LessonEntity> lessonRepository { get; }
         public ICartRepository<CartEntity> cartRepository { get; }
         public IPaymentRepository<PaymentEntity> paymentRepository { get; }
+        public IMessageRepository<MessageEntity> messageRepository { get; }
+        public ICommentRepository<CommentEntity> commentRepository { get; }
     }
 }

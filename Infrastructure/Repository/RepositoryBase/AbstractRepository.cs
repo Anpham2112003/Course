@@ -1,4 +1,8 @@
-﻿using Domain.Interfaces.EntityBase;
+﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using Domain.Entities;
+using Domain.Interfaces.EntityBase;
+using Domain.Schemas;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -13,9 +17,11 @@ namespace Infrastructure.Repository.RepositoryBase
     {
         protected readonly TDBContext dBContext;
 
-        protected AbstractRepository(TDBContext dBContext)
+        protected readonly IMapper _mapper;
+        protected AbstractRepository(TDBContext dBContext, IMapper mapper)
         {
             this.dBContext = dBContext;
+            _mapper = mapper;
         }
 
 
@@ -99,9 +105,6 @@ namespace Infrastructure.Repository.RepositoryBase
             dBContext.Set<TEntity>().RemoveRange(entities);
         }
 
-        public IQueryable<TEntity> EntityQueryable()
-        {
-            return dBContext.Set<TEntity>();
-        }
+        
     }
 }

@@ -26,12 +26,6 @@ namespace Infrastructure.DB.Configurations
             ///
             //////////*******Navigation********////////
 
-            builder.HasOne<CommentEntity>()
-                .WithMany(x => x.comments)
-                .HasForeignKey(x => x.ReplyCommentId)
-                .IsRequired(false)
-                .OnDelete(DeleteBehavior.NoAction);
-
         }
     }
 }

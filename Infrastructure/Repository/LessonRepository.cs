@@ -1,6 +1,10 @@
-﻿using Domain.Entities;
+﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using Domain.Entities;
+using Domain.Schemas;
 using Infrastructure.DB.SQLDbContext;
 using Infrastructure.Repository.RepositoryBase;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,8 +15,30 @@ namespace Infrastructure.Repository
 {
     public class LessonRepository : AbstractRepository<LessonEntity, ApplicationDBContext>, ILessonRepository<LessonEntity>
     {
-        public LessonRepository(ApplicationDBContext dBContext) : base(dBContext)
+        public LessonRepository(ApplicationDBContext dBContext, IMapper mapper) : base(dBContext, mapper)
         {
+        }
+
+        public async Task<IEnumerable<TLesson>>GetLessonByIds<TLesson>(IReadOnlyList<Guid> keys,CancellationToken cancellation) where TLesson : class, ILesson
+        {
+          
+
+            return await this.dBContext.Set<LessonEntity>()
+                .Where(x => keys.Contains(x.Id))
+                .AsNoTracking()
+                .ProjectTo<TLesson>(_mapper.ConfigurationProvider)
+                .ToListAsync(cancellation);
+        }
+
+        public async Task<IEnumerable<TLesson>> GetLessonByCategoryLessonId<TLesson>(Guid id, int skip,int limit, CancellationToken cancellation) where TLesson : class, ILesson
+        {
+
+            return await this.dBContext.Set<LessonEntity>()
+                .Where(x =>x.CategoryLessonId==id)
+                .AsNoTracking()
+                .ProjectTo<TLesson>(_mapper.ConfigurationProvider)
+                .Skip(skip).Take(limit)
+                .ToListAsync(cancellation);
         }
     }
 }

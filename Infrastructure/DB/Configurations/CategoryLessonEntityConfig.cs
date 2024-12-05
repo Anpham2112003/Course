@@ -30,9 +30,8 @@ namespace Infrastructure.DB.Configurations
             
             builder.HasMany(x=>x.lessonEntities)
                    .WithOne(x=>x.categoryLesson)
-                   .HasForeignKey(x=>x.UserId)
-                   .IsRequired()
-                   .OnDelete(DeleteBehavior.Cascade);
+                   .HasForeignKey(x=>x.CategoryLessonId)
+                   .IsRequired();
         }
     }
 }

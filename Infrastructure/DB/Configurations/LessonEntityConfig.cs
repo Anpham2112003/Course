@@ -17,10 +17,7 @@ namespace Infrastructure.DB.Configurations
             
             builder.HasKey(x=> x.Id);
 
-           
-
-            builder.Property(x => x.IsDeleted)
-                   .HasDefaultValue(false);
+          
 
             //////////*********Index**********/////////
             
@@ -32,21 +29,13 @@ namespace Infrastructure.DB.Configurations
             builder.HasMany(x => x.reportEntities)
                    .WithOne(x => x.lessonEntity)
                    .HasForeignKey(x => x.LessonId)
-                   .IsRequired(false);
-
-            builder.HasMany(x=>x.reportEntities)
-                    .WithOne(x=>x.lessonEntity)
-                    .HasForeignKey(x=>x.LessonId)
-                    .IsRequired()
-                    .OnDelete(DeleteBehavior.Cascade);
-
+                   .IsRequired();
            
 
             builder.HasMany(x=>x.commentEntities)
                 .WithOne(x=>x.lessonEntity)
                 .HasForeignKey(x=>x.LessonId)
-                .IsRequired()
-                .OnDelete(DeleteBehavior.Cascade);
+                .IsRequired();
         }
     }
 }

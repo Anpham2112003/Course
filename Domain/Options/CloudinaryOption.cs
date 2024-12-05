@@ -12,6 +12,7 @@ namespace Domain.Options
         public string? CLOUDINARY_URL {  get; set; }
         public string? AssetImage {  get; set; }
         public string? AssetVideo {  get; set; }
+        public string? AssetFile {  get; set; }
 
     }
 }

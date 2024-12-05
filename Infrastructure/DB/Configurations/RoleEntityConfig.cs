@@ -14,7 +14,7 @@ namespace Infrastructure.DB.Configurations
         public void Configure(EntityTypeBuilder<RoleEntity> builder)
         {
             /////////***************property***********/////////
-            
+
             builder.HasKey(x => x.Id);
 
 

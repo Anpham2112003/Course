@@ -59,6 +59,27 @@ namespace Infrastructure.Services.Upload
             }
         }
 
+
+        public async Task<VideoUploadResult> UploadVideoAsync(IFile file,CancellationToken cancellation)
+        {
+            var result = await cloudinary.UploadAsync(new VideoUploadParams
+            {
+                AssetFolder = _optionsMonitor.CurrentValue.AssetVideo,
+
+                UniqueFilename = true,
+
+                File = new FileDescription
+                {
+                    FileName = Guid.NewGuid().ToString(),
+                    Stream = file.OpenReadStream(),
+                },
+
+
+            }, cancellation);
+
+            return result;
+        }
+
         public async Task<DeletionResult> DeleteImageByPublicId(string publib_id)
         {
             try
@@ -74,14 +95,7 @@ namespace Infrastructure.Services.Upload
             }
         }
 
-        public string GenerateSgnature()
-        {
-            return cloudinary.Api.SignParameters(new Dictionary<string, object>
-            {
-                {"time",DateTime.UtcNow }
-
-            });
-        }
+       
 
 
         public async Task<RawUploadResult> ChuckUploadVideoAsync(string FileName,long Filesize,long CurrPos,IFile File, bool LastChuck = false,CancellationToken cancellation = default)

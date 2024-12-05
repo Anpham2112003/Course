@@ -16,7 +16,7 @@ namespace Infrastructure.Repository
 {
     public class TopicRepository : AbstractRepository<TopicEntity, ApplicationDBContext>, ITopicRepository<TopicEntity>
     {
-        public TopicRepository(ApplicationDBContext dBContext) : base(dBContext)
+        public TopicRepository(ApplicationDBContext dBContext, IMapper mapper) : base(dBContext, mapper)
         {
         }
 
@@ -46,7 +46,8 @@ namespace Infrastructure.Repository
 
         public async Task<CourseTopic?> FindTopicCourse(int ToppicId,Guid CourseId,CancellationToken cancellation=default)
         {
-            return await this.dBContext.Set<CourseTopic>().FirstOrDefaultAsync(x=>x.TopicId==ToppicId&&x.CourseId==CourseId,cancellation);
+            return await this.dBContext.Set<CourseTopic>()
+                .FirstOrDefaultAsync(x=>x.TopicId==ToppicId&&x.CourseId==CourseId,cancellation);
         }
 
         public void DeleteTopicCourse(CourseTopic courseTopic)
@@ -56,11 +57,12 @@ namespace Infrastructure.Repository
 
         public async Task<IEnumerable<TTopic>> GetTopicByIds<TTopic>(IReadOnlyList<int> keys, CancellationToken cancellation=default) where TTopic:class,ITopic
         {
-            var config = new MapperConfiguration(x => x.CreateProjection<TopicEntity, TTopic>());
+          
 
             return await this.dBContext.Set<TopicEntity>().Where(x=>keys.Contains(x.Id))
                 .AsNoTracking()
-                .ProjectTo<TTopic>(config).ToListAsync(cancellation);
+                .ProjectTo<TTopic>(_mapper.ConfigurationProvider)
+                .ToListAsync(cancellation);
         }
     }
 }

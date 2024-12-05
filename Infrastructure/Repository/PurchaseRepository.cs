@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using Domain.DTOs;
 using Domain.Entities;
 using Domain.Schemas;
 using HotChocolate.Data;
@@ -16,21 +17,50 @@ namespace Infrastructure.Repository
 {
     public class PurchaseRepository : AbstractRepository<PurchaseEntity, ApplicationDBContext>, IPurchaseRepository<PurchaseEntity>
     {
-        public PurchaseRepository(ApplicationDBContext dBContext) : base(dBContext)
+        public PurchaseRepository(ApplicationDBContext dBContext, IMapper mapper) : base(dBContext, mapper)
         {
         }
 
         public async Task<bool> CheckPurchaseCourse(Guid UserId, Guid CourseId)
         {
-            return await dBContext.Set<PurchaseEntity>().Where(x => x.UserId == UserId && x.CourseId == CourseId).AnyAsync();
+            return await dBContext.Set<PurchaseEntity>()
+                .Where(x => x.UserId == UserId && x.CourseId == CourseId)
+                .AnyAsync();
         }
 
         public async Task<IEnumerable<TPurchase>>  GetPurchaseByIds<TPurchase>(IReadOnlyList<Guid> keys , CancellationToken cancellation=default) where TPurchase:class,IPurchase
         {
-            var config = new MapperConfiguration(x=>x.CreateProjection<PurchaseEntity,TPurchase>());
             
-            return await dBContext.Set<PurchaseEntity>().Where(x=>keys.Contains(x.Id))
-                .AsNoTracking().ProjectTo<TPurchase>(config).ToListAsync(cancellation);
+            return await dBContext.Set<PurchaseEntity>()
+                .Where(x=>keys.Contains(x.Id))
+                .AsNoTracking()
+                .ProjectTo<TPurchase>(_mapper.ConfigurationProvider)
+                .ToListAsync(cancellation);
+        }
+
+        public async Task<IEnumerable<TPurchase>> GetPurchaseByUserId<TPurchase>(Guid id,int skip,int limit, CancellationToken cancellation = default) where TPurchase : class, IPurchase
+        {
+           
+            return await dBContext.Set<PurchaseEntity>()
+                .Where(x => x.UserId==id)
+                .AsNoTracking()
+                .ProjectTo<TPurchase>(_mapper.ConfigurationProvider)
+                .Skip(skip).Take(limit)
+                .ToListAsync(cancellation);
+        }
+
+        public async Task<bool> CheckPurchased(Guid userId,Guid courseId ,CancellationToken cancellation = default)
+        {
+            return await dBContext.Set<PurchaseEntity>()
+                .Where(x =>x.UserId==userId&&x.CourseId==courseId)
+                .AnyAsync(cancellation);
+        }
+
+        public async Task<int> GetTotalPurchaseByCourseId(Guid courseId, CancellationToken cancellation = default)
+        {
+            return await this.dBContext.Set<PurchaseEntity>()
+                .Where(x=>x.CourseId == courseId)
+                .CountAsync(cancellation);
         }
     }
 }

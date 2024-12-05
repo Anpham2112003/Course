@@ -9,6 +9,13 @@ namespace Infrastructure.SeedData
 {
     public static class PermissionData
     {
-        
+        public static readonly List<PermissionEntity> permissions = new List<PermissionEntity>
+        {
+            new PermissionEntity
+            {
+                Route="getUserById",
+                State=true,
+            }
+        };
     }
 }

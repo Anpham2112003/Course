@@ -39,6 +39,7 @@ namespace Api.Extensions
                 .AddTypeExtension<LessonMutation>()
                 .AddTypeExtension<CartMutation>()
                 .AddTypeExtension<TopicMutation>()
+                .AddTypeExtension<MessageMutation>()
                 .AddType<UploadType>()
                 .AddTypes(errors)
                 .AddProjections()

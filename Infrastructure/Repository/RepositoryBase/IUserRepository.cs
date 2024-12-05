@@ -17,7 +17,7 @@ namespace Infrastructure.Repository.RepositoryBase
         public Task<TEntity?> FindUserByAccountIdAsync(Guid accountId, CancellationToken cancellation = default);
 
         public Task<IEnumerable<TUser>> GetUserByIds<TUser>(IReadOnlyList<Guid> keys, CancellationToken cancellation = default) where TUser : class, IUser;
-
+        public Task<TUser?> GetUserById<TUser>(Guid id, CancellationToken cancellation = default) where TUser : class, IUser;
 
     }
 }

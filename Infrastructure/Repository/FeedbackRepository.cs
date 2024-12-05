@@ -16,19 +16,21 @@ namespace Infrastructure.Repository
 {
     public class FeedbackRepository : AbstractRepository<FeedbackEntity, ApplicationDBContext>, IFeedbackRepository<FeedbackEntity>
     {
-        public FeedbackRepository(ApplicationDBContext dBContext) : base(dBContext)
+        public FeedbackRepository(ApplicationDBContext dBContext, IMapper mapper) : base(dBContext, mapper)
         {
         }
 
         public async Task<bool> HasFeedback(Guid UserId, Guid CourseId)
         {
             return await dBContext.Set<FeedbackEntity>()
-                .Where(x => x.UserId == UserId && x.CourseId == CourseId && x.IsDeleted == false).AnyAsync();
+                .Where(x => x.UserId == UserId && x.CourseId == CourseId && x.IsDeleted == false)
+                .AnyAsync();
         }
 
         public async Task<AverageRate?> TotalRate(Guid CourseId)
         {
-            var result = await dBContext.Set<FeedbackEntity>().Where(x => x.CourseId == CourseId && x.IsDeleted == false)
+            var result = await dBContext.Set<FeedbackEntity>()
+                .Where(x => x.CourseId == CourseId && x.IsDeleted == false)
                 .GroupBy(x => x.UserId).Select(x => new AverageRate
                 {
                     TotalFeedback = x.Count(),
@@ -40,18 +42,21 @@ namespace Infrastructure.Repository
 
         public async Task<List<TFeedBack>> GetFeedBackByIds<TFeedBack>(IReadOnlyList<Guid> keys, CancellationToken cancellationToken) where TFeedBack : class, IFeedback
         {
-            var config = new MapperConfiguration(x => x.CreateProjection<FeedbackEntity, TFeedBack>());
 
-            return await dBContext.Set<FeedbackEntity>().Where(x=>keys.Contains(x.Id))
-                .ProjectTo<TFeedBack>(config).ToListAsync(cancellationToken);
+            return await dBContext.Set<FeedbackEntity>()
+                .Where(x=>keys.Contains(x.Id))
+                .ProjectTo<TFeedBack>(_mapper.ConfigurationProvider)
+                .ToListAsync(cancellationToken);
         }
 
         public async Task<List<TFeedBack>> GetFeedBackByCourseIds<TFeedBack>(Guid courseId,int skip,int limit, CancellationToken cancellationToken) where TFeedBack : class, IFeedback
         {
-            var config = new MapperConfiguration(x => x.CreateProjection<FeedbackEntity, TFeedBack>());
-            
-            return await dBContext.Set<FeedbackEntity>().Where(x=>x.CourseId==courseId)
-                .ProjectTo<TFeedBack>(config).Skip(skip).Take(limit).ToListAsync(cancellationToken);
+           
+            return await dBContext.Set<FeedbackEntity>()
+                .Where(x=>x.CourseId==courseId)
+                .ProjectTo<TFeedBack>(_mapper.ConfigurationProvider)
+                .Skip(skip).Take(limit)
+                .ToListAsync(cancellationToken);
         }
     }
 }

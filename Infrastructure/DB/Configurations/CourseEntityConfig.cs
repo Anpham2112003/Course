@@ -40,20 +40,17 @@ namespace Infrastructure.DB.Configurations
             builder.HasMany(x => x.categoryLessons)
                    .WithOne(x => x.courseEntity)
                    .HasForeignKey(x => x.CourseId)
-                   .IsRequired()
-                   .OnDelete(DeleteBehavior.Cascade);
+                   .IsRequired();
 
             builder.HasMany(x => x.documentEntities)
                    .WithOne(x => x.courseEntity)
                    .HasForeignKey(x => x.CourseId)
-                   .IsRequired()
-                   .OnDelete(DeleteBehavior.Cascade);
+                   .IsRequired();
 
            builder.HasMany(x=>x.cartEntities)    
                   .WithOne(x => x.courseEntity) 
                   .HasForeignKey(x=>x.CouresId)
-                  .IsRequired()
-                  .OnDelete(DeleteBehavior.Cascade);
+                  .IsRequired();
 
             builder.HasMany(x => x.topicEntities)
                    .WithMany(x => x.courseEntities)
@@ -74,19 +71,21 @@ namespace Infrastructure.DB.Configurations
             builder.HasMany(x => x.paymentEntities)
                    .WithOne(x => x.courseEntity)
                    .HasForeignKey(x => x.CourseId)
-                   .OnDelete(DeleteBehavior.SetNull)
-                   .IsRequired(false);
+                   .IsRequired();
             
             builder.HasMany(x=>x.purchaseEntities)
                     .WithOne(x=>x.courseEntity)
                     .HasForeignKey(x=>x.CourseId)
-                    .OnDelete(DeleteBehavior.SetNull)
-                    .IsRequired(false);
+                    .IsRequired();
 
             builder.HasMany(x=>x.feedbackEntities)
                 .WithOne(x=>x.courseEntity)
                 .HasForeignKey(x=> x.CourseId)
-                .OnDelete(DeleteBehavior.Cascade)
+                .IsRequired();
+
+            builder.HasMany(x=>x.lessonsEntities)
+                .WithOne(x=>x.courseEntity)
+                .HasForeignKey(x=>x.CourseId)
                 .IsRequired();
 
         }

@@ -65,6 +65,16 @@ namespace Infrastructure.SeedData
             }
             
         }
+
+        public void SeedPermission()
+        {
+            if(_dbContext.Set<PermissionEntity>().Any() is false)
+            {
+                _dbContext.Set<PermissionEntity>().AddRange(PermissionData.permissions);
+
+               _dbContext.SaveChanges();
+            }
+        }
     }
     
 }

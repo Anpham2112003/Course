@@ -1,4 +1,5 @@
 ﻿using Domain.Interfaces.EntityBase;
+using Domain.Types.EnumTypes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +15,6 @@ namespace Domain.Entities
         public Guid? ReplyCommentId { get; set; }
         public Guid LessonId { get; set; }
         public string? Content {  get; set; }
-        public int TotalReply {  get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
         public bool IsDeleted { get; set; }
@@ -23,6 +23,5 @@ namespace Domain.Entities
         /////////////////////////////////////////
         public UserEntity? userEntity { get; set; }
         public LessonEntity? lessonEntity { get; set; }
-        public List<CommentEntity> comments { get; set; }=new List<CommentEntity>();
     }
 }

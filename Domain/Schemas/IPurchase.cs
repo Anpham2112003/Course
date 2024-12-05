@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Schemas
 {
+    [UnionType]
     public interface IPurchase
     {
         public Guid Id { get; set; }

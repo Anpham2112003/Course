@@ -1,4 +1,5 @@
-﻿using Domain.Entities;
+﻿using AutoMapper;
+using Domain.Entities;
 using Infrastructure.DB.SQLDbContext;
 using Infrastructure.Repository.RepositoryBase;
 using System;
@@ -11,7 +12,7 @@ namespace Infrastructure.Repository
 {
     public class PaymentRepository : AbstractRepository<PaymentEntity, ApplicationDBContext>, IPaymentRepository<PaymentEntity>
     {
-        public PaymentRepository(ApplicationDBContext dBContext) : base(dBContext)
+        public PaymentRepository(ApplicationDBContext dBContext, IMapper mapper) : base(dBContext, mapper)
         {
         }
     }

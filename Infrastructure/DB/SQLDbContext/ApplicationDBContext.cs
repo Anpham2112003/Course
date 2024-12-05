@@ -45,6 +45,14 @@ namespace Infrastructure.DB.SQLDbContext
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(AccountEntityConfig).Assembly);
+
+            foreach (var entity in modelBuilder.Model.GetEntityTypes())
+            {
+                entity.GetForeignKeys()
+                    .Where(fk=>fk.IsRequired&&fk.DeleteBehavior==DeleteBehavior.Cascade)
+                    .ToList()
+                    .ForEach(x=>x.DeleteBehavior = DeleteBehavior.Restrict);
+            }
         }
 
 

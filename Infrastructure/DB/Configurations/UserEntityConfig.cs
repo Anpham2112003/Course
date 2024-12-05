@@ -44,19 +44,16 @@ namespace Infrastructure.DB.Configurations
             builder.HasMany(x => x.purchaseEntities)
                    .WithOne(x => x.userEntity)
                    .HasForeignKey(x => x.UserId)
-                   .OnDelete(DeleteBehavior.NoAction)
                    .IsRequired();
 
             builder.HasMany(x => x.cartEntities)
                     .WithOne(x => x.userEntity)
                     .HasForeignKey(x => x.UserId)
-                    .OnDelete(DeleteBehavior.NoAction)
                     .IsRequired();
 
             builder.HasMany(x=>x.courseEntities)
                     .WithOne(x=>x.userEntity)
                     .HasForeignKey(x => x.AuthorId)
-                    .OnDelete(DeleteBehavior.NoAction)
                     .IsRequired();
 
             builder.HasMany(x => x.conversationEntities)
@@ -74,7 +71,6 @@ namespace Infrastructure.DB.Configurations
             builder.HasMany(x=>x.documentEntities)
                    .WithOne(x=>x.userEntity)
                    .HasForeignKey(x=>x.UserId)
-                   .OnDelete(DeleteBehavior.NoAction)
                    .IsRequired();
 
            
@@ -82,49 +78,41 @@ namespace Infrastructure.DB.Configurations
             builder.HasMany(x=>x.reportEntities)
                     .WithOne(x=>x.userEntity)
                     .HasForeignKey(x=>x.LessonId)
-                    .OnDelete(DeleteBehavior.NoAction)
                     .IsRequired();
 
             builder.HasMany(x=>x.commentEntities)
                    .WithOne(x=>x.userEntity)
                    .HasForeignKey(x=>x.UserId)
-                   .OnDelete(DeleteBehavior.NoAction)
                    .IsRequired();
 
             builder.HasMany(x => x.paymentEntities)
                    .WithOne(x => x.userEntity)
                    .HasForeignKey(x => x.UserId)
-                   .OnDelete(DeleteBehavior.NoAction)
                    .IsRequired();
 
             builder.HasMany(x => x.lessonsEntities)
                     .WithOne(x => x.userEntity)
                     .HasForeignKey(x => x.UserId)
-                    .OnDelete(DeleteBehavior.NoAction)
                     .IsRequired();
 
             builder.HasMany(x => x.categoryLessonsEntities)
                     .WithOne(x => x.userEntity)
                     .HasForeignKey(x => x.UserId)
-                    .OnDelete(DeleteBehavior.NoAction)
                     .IsRequired();
 
             builder.HasMany(x=>x.commentEntities)
                     .WithOne(x=>x.userEntity)
                     .HasForeignKey(x=>x.UserId)
-                    .OnDelete(DeleteBehavior.NoAction)
                     .IsRequired();
 
             builder.HasMany(x=>x.messageEntities)
                     .WithOne(x=>x.userEntity)
                     .HasForeignKey(x=>x.SenderId)
-                    .OnDelete(DeleteBehavior.NoAction)
                     .IsRequired();
 
             builder.HasMany(x => x.feedbackEntities)
                     .WithOne(x=>x.userEntity)
                     .HasForeignKey(x=>x.UserId)
-                    .OnDelete(DeleteBehavior.NoAction)
                     .IsRequired();
 
           

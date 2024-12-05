@@ -15,31 +15,38 @@ namespace Infrastructure.Repository
 {
     public class CartRepository : AbstractRepository<CartEntity, ApplicationDBContext>, ICartRepository<CartEntity>
     {
-        public CartRepository(ApplicationDBContext dBContext) : base(dBContext)
+        public CartRepository(ApplicationDBContext dBContext, IMapper mapper) : base(dBContext, mapper)
         {
         }
 
         public async Task<CartEntity?> GetCartDetailAsync(Guid id)
         {
-            return await dBContext.Set<CartEntity>().Where(x => x.Id == id)
-                .Include(x => x.courseEntity).FirstOrDefaultAsync();
+            return await dBContext.Set<CartEntity>()
+                .Where(x => x.Id == id)
+                .Include(x => x.courseEntity)
+                .FirstOrDefaultAsync();
         }
 
         public async Task<TCart?> GetCartById<TCart>(Guid id,CancellationToken cancellation = default)
         {
-            var config = new MapperConfiguration(x=>x.CreateProjection<CartEntity,TCart>());
+            
 
-            return await dBContext.Set<CartEntity>().Where(x=>x.Id==id).AsNoTracking()
-                .ProjectTo<TCart>(config).FirstOrDefaultAsync( cancellation);
+            return await dBContext.Set<CartEntity>()
+                .Where(x=>x.Id==id)
+                .AsNoTracking()
+                .ProjectTo<TCart>(_mapper.ConfigurationProvider)
+                .FirstOrDefaultAsync( cancellation);
         }
 
         public async Task<IEnumerable<TCart>> GetCartsByUerId<TCart>(Guid Id,int skip,int limit,CancellationToken cancellation = default) where TCart : class, ICart
         {
-            var config = new MapperConfiguration(x => x.CreateProjection<CartEntity, TCart>());
-
+           
             return await this.dBContext.Set<CartEntity>()
-                .Where(x=>x.UserId == Id).AsNoTracking()
-                .ProjectTo<TCart>(config).Skip(skip).Take(limit).ToListAsync(cancellation);
+                .Where(x=>x.UserId == Id)
+                .AsNoTracking()
+                .ProjectTo<TCart>(_mapper.ConfigurationProvider)
+                .Skip(skip).Take(limit)
+                .ToListAsync(cancellation);
         }
         
     }

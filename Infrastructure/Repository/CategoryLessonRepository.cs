@@ -16,16 +16,28 @@ namespace Infrastructure.Repository
 {
     public class CategoryLessonRepository : AbstractRepository<CategoryLessonEntity, ApplicationDBContext>, ICategoryLessonRepository<CategoryLessonEntity>
     {
-        public CategoryLessonRepository(ApplicationDBContext dBContext) : base(dBContext)
+        public CategoryLessonRepository(ApplicationDBContext dBContext, IMapper mapper) : base(dBContext, mapper)
         {
         }
 
-        public async Task<TCategoryLesson?> GetCategoryLessonById<TCategoryLesson>(Guid Id ,CancellationToken cancellation=default) where TCategoryLesson : class, ICategoryLesson
+        public async Task<IEnumerable<TCategoryLesson>> GetCategoryLessonByIds<TCategoryLesson>(IReadOnlyList<Guid> keys ,CancellationToken cancellation=default) where TCategoryLesson : class, ICategoryLesson
         {
-            var config = new MapperConfiguration(x => x.CreateProjection<CategoryLessonEntity, TCategoryLesson>());
+            
 
-            return await this.dBContext.Set<CategoryLessonEntity>().Where(x => x.Id == Id).AsNoTracking()
-                .ProjectTo<TCategoryLesson>(config).FirstOrDefaultAsync(cancellation);
+            return await this.dBContext.Set<CategoryLessonEntity>()
+                .Where(x => keys.Contains(x.Id)).AsNoTracking()
+                .ProjectTo<TCategoryLesson>(_mapper.ConfigurationProvider)
+                .ToListAsync(cancellation);
+        }
+
+        public async Task<IEnumerable<TCategoryLesson>> GetCategoryLessonByCourseId<TCategoryLesson>(Guid id,int skip,int limit, CancellationToken cancellation = default) where TCategoryLesson : class, ICategoryLesson
+        {
+
+            return await this.dBContext.Set<CategoryLessonEntity>().Where(x =>x.CourseId==id)
+                .AsNoTracking()
+                .ProjectTo<TCategoryLesson>(_mapper.ConfigurationProvider)
+                .Skip(skip).Take(limit)
+                .ToListAsync(cancellation);
         }
     }
 }

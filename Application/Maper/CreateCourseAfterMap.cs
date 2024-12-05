@@ -27,8 +27,6 @@ namespace Application.Maper
 
             destination.Duration = 0;
 
-            destination.Purchase = 0;
-
             destination.IsSale = false;
 
             destination.Rating = 5;

@@ -29,11 +29,10 @@ namespace Infrastructure.DB.Configurations
 
             /////*****Navigation********/////////
 
-            builder.HasOne<MessageEntity>()
-                .WithMany(x => x.messages)
-                .HasForeignKey(x => x.ReplyMessageId)
-                .IsRequired(false)
-                .OnDelete(DeleteBehavior.NoAction);
+            builder.HasOne(x => x.replyMessage)
+                   .WithOne()
+                   .HasForeignKey<MessageEntity>(x => x.ReplyMessageId)
+                   .IsRequired(false);
 
         }
     }

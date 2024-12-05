@@ -85,11 +85,7 @@ namespace Infrastructure.Repository.RepositoryBase
         public Task<TEntity?> FindOneAsync<Id>(Id id);
 
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns>IQuryable</returns>
-        public IQueryable<TEntity> EntityQueryable();
+    
 
 
 

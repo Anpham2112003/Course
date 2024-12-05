@@ -2,6 +2,7 @@
 using Application.MediaR.Comands.Course;
 using Application.MediaR.Comands.FeedBack;
 using Application.MediaR.Comands.Lesson;
+using Application.MediaR.Comands.Message;
 using Application.MediaR.Comands.User;
 using AutoMapper;
 using Domain.DTOs;
@@ -44,7 +45,7 @@ namespace Application.Maper
                 .ForMember(x=>x.Thumbnail,x=>x.MapFrom(x=>x.courseEntity!.Thumbnail))
                 .AfterMap<CreateOrderAfterMap>();
 
-
+            CreateMap<CreateMessageRequest, MessageEntity>();
 
             
             

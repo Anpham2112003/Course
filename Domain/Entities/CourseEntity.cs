@@ -14,7 +14,6 @@ namespace Domain.Entities
         public Guid Id { get; set; }
         public Guid AuthorId { get; set; }
         public string? Name { get; set; }
-        public int Purchase { get; set; }
         public float Price { get; set; }
         public bool IsSale {  get; set; }
         public int Sale {  get; set; }
@@ -43,7 +42,7 @@ namespace Domain.Entities
         public List<PaymentEntity> paymentEntities { get; set; } = new List<PaymentEntity>();
         public List<PurchaseEntity> purchaseEntities { get; set; } = new List<PurchaseEntity>();
         public List<FeedbackEntity> feedbackEntities { get; set; }=new List<FeedbackEntity>();
-
+        public List<LessonEntity> lessonsEntities { get; set; }=new List<LessonEntity>();
 
         
 

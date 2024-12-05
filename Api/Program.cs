@@ -26,6 +26,9 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
 using Stripe;
 using Api.DataLoader;
+using Api.Graphql.Query;
+using Domain.Schemas;
+using Api.Projection;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -69,7 +72,7 @@ builder.Services.AddMediatR(config =>
 
 
 
-builder.Services.AddAutoMapper(typeof(MapData).Assembly);
+builder.Services.AddAutoMapper(typeof(MapData).Assembly,typeof(MapperProjection).Assembly);
 
 
 builder.Services.AddValidatorsFromAssembly(typeof(LoginAccountValidation).Assembly);
@@ -118,19 +121,28 @@ builder.Services
     .AddApolloFederation()
     .AddSorting()
     .AddFiltering()
-    .AddType<User>()
+    .AddType<PublicUser>()
+    .AddType<PrivateUser>()
     .AddType<Course>()
     .AddType<FeedBack>()
     .AddType<Cart>()
     .AddType<Purchase>()
     .AddType<Tag>()
     .AddType<Topic>()
-    .AddDataLoader<GetUserDataLoader>()
+    .AddType<CategoryLesson>()
+    .AddType<PrivateLesson>()
+    .AddType<PublicLesson>()
+    .AddType<Conversation>()
+    .AddType<Message>()
+    .AddDataLoader<GetPublicUserDataLoader>()
     .AddDataLoader<GetCourseDataLoader>()
     .AddDataLoader<GetFeedBackDataLoader>()
     .AddDataLoader<GetPurchaseDataLoader>()
     .AddDataLoader<GetTagDataLoader>()
     .AddDataLoader<GetTopicDataLoader>()
+    .AddDataLoader<GetCategoryLessonDataLoader>()
+    .AddDataLoader<GetLessonDataLoader>()
+
     .AddGraphExtension()
     .AddAuthorization();
 
@@ -155,6 +167,8 @@ if (app.Environment.IsDevelopment())
         var seed = new Seed(service);
 
         seed.RunSeed();
+
+        seed.SeedPermission();
     }
 
   

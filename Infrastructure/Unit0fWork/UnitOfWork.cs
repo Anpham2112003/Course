@@ -18,6 +18,7 @@ namespace Infrastructure.Unit0fWork
     public class UnitOfWork : IUnitOfWork
     {
         private readonly ApplicationDBContext _dbContext;
+
         private readonly IMapper _mapper;
         public UnitOfWork(ApplicationDBContext dbContext, IMapper mapper)
         {
@@ -64,6 +65,11 @@ namespace Infrastructure.Unit0fWork
             return _dbContext.Set<T>().AsQueryable();
         }
 
+        public IConfigurationProvider GetMapperConfiguration()
+        {
+            return this._mapper.ConfigurationProvider;
+        }
+
 
 
 
@@ -71,53 +77,62 @@ namespace Infrastructure.Unit0fWork
 
         public IAccountRepository<AccountEntity> accountRepository
 
-            => new AccountRepository(_dbContext);
+            => new AccountRepository(_dbContext,_mapper);
 
         public IUserRepository<UserEntity> userRepository
 
-            => new UserRepository(_dbContext);
+            => new UserRepository(_dbContext,_mapper);
 
         public IRoleRepository<RoleEntity> roleRepository
 
-            => new RoleRepository(_dbContext);
+            => new RoleRepository(_dbContext,_mapper);
 
         public ICourseRepository<CourseEntity> courseRepository
 
-            => new CourseRepository(_dbContext);
+            => new CourseRepository(_dbContext,_mapper);
 
         public ICategoryLessonRepository<CategoryLessonEntity> categoryLessonRepository
 
-            => new CategoryLessonRepository(_dbContext);
+            => new CategoryLessonRepository(_dbContext,_mapper);
 
         public ITagRepository<TagEntity> tagRepository
 
-            => new TagRepository(_dbContext);
+            => new TagRepository(_dbContext,_mapper);
 
         public IConversationRepository<ConversationEntity> conversationRepository
 
-            => new ConversationRepository(_dbContext);
+            => new ConversationRepository(_dbContext,_mapper);
 
         public ITopicRepository<TopicEntity> topicRepository
 
-            => new TopicRepository(_dbContext);
+            => new TopicRepository(_dbContext,_mapper);
 
         public IFeedbackRepository<FeedbackEntity> feedbackRepository
 
-            => new FeedbackRepository(_dbContext);
+            => new FeedbackRepository(_dbContext,_mapper);
 
         public IPurchaseRepository<PurchaseEntity> purchaseRepository
 
-            => new PurchaseRepository(_dbContext);
+            => new PurchaseRepository(_dbContext,_mapper);
 
         public ILessonRepository<LessonEntity> lessonRepository
 
-            => new LessonRepository(_dbContext);
+            => new LessonRepository(_dbContext,_mapper);
 
         public ICartRepository<CartEntity> cartRepository
 
-            => new CartRepository(_dbContext);
+            => new CartRepository(_dbContext,_mapper);
 
         public IPaymentRepository<PaymentEntity> paymentRepository
-            => new PaymentRepository(_dbContext);
+
+            => new PaymentRepository(_dbContext,_mapper);
+
+        public IMessageRepository<MessageEntity> messageRepository
+
+            => new MessageRepository(_dbContext,_mapper);
+
+        public ICommentRepository<CommentEntity> commentRepository 
+            
+            => new CommentRepository(_dbContext,_mapper);
     }
 }
