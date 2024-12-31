@@ -56,30 +56,13 @@ namespace Infrastructure.DB.Configurations
                     .HasForeignKey(x => x.AuthorId)
                     .IsRequired();
 
-            builder.HasMany(x => x.conversationEntities)
-                 .WithMany(x => x.userEntities)
-                 .UsingEntity<UserConversation>(
-                    l => l.HasOne(x => x.conversationEntity).WithMany(x => x.userConversations).HasForeignKey(x => x.ConversationId),
-                    r => r.HasOne(x => x.userEntity).WithMany(x => x.userConversations).HasForeignKey(x => x.UserId)
-                );
+         
 
-            builder.HasMany(x=>x.notificationEntities)
-                    .WithOne(x=>x.fromUserEntity)
-                    .HasForeignKey(x=>x.SenderId)
-                    .IsRequired();
 
-            builder.HasMany(x=>x.documentEntities)
-                   .WithOne(x=>x.userEntity)
-                   .HasForeignKey(x=>x.UserId)
-                   .IsRequired();
 
            
 
-            builder.HasMany(x=>x.reportEntities)
-                    .WithOne(x=>x.userEntity)
-                    .HasForeignKey(x=>x.LessonId)
-                    .IsRequired();
-
+          
             builder.HasMany(x=>x.commentEntities)
                    .WithOne(x=>x.userEntity)
                    .HasForeignKey(x=>x.UserId)
@@ -105,10 +88,7 @@ namespace Infrastructure.DB.Configurations
                     .HasForeignKey(x=>x.UserId)
                     .IsRequired();
 
-            builder.HasMany(x=>x.messageEntities)
-                    .WithOne(x=>x.userEntity)
-                    .HasForeignKey(x=>x.SenderId)
-                    .IsRequired();
+           
 
             builder.HasMany(x => x.feedbackEntities)
                     .WithOne(x=>x.userEntity)

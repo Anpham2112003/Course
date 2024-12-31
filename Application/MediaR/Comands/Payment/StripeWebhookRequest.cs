@@ -10,6 +10,7 @@ namespace Application.MediaR.Comands.Payment
     public class StripeWebhookRequest:IRequest
     {
         public string? BankTransationId { get; set; }
+        public string? Email { get; set; }
         public Guid UserId { get; set; }
         public Guid CartId { get; set; }
         public Guid CourseId { get; set; }

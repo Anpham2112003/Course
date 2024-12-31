@@ -56,6 +56,15 @@ namespace Application.MediaR.Comands.Lesson
                     };
                 }
 
+                var course = await _unitOfWork.courseRepository.FindOneAsync(lesson.CourseId);
+
+                if(course is not null)
+                {
+                    course.Duration=  (course.Duration-lesson.Duration) + request.Duration;
+
+                    _unitOfWork.courseRepository.UpdateOne(course);
+                }
+
                 _mapper.Map(request, lesson);
 
                 _unitOfWork.lessonRepository.UpdateOne(lesson);

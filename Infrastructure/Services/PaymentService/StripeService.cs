@@ -56,8 +56,8 @@ public class StripeService:IStripService
             {
                 {"userId",order.UserId.ToString()},
                 {"courseId",order.CourseId.ToString()},
-                {"cartId",order.Id.ToString() }
-                
+                {"cartId",order.Id.ToString() },
+                {"email",order.Email!},
             }
             
         };

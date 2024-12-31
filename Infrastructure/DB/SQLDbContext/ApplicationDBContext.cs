@@ -25,12 +25,9 @@ namespace Infrastructure.DB.SQLDbContext
         public DbSet<CartEntity> Carts { get; set; }
         public DbSet<CategoryLessonEntity> CategoriesLessons { get; set; }
         public DbSet<CommentEntity> Comments { get; set; }
-        public DbSet<ConversationEntity> Conversations { get; set; }
         public DbSet<CourseEntity> Courses { get; set; }
-        public DbSet<DocumentEntity> Documents {  get; set; }
         public DbSet<LessonEntity> Lessons {  get; set; }
-        public DbSet<MessageEntity> Messages { get; set; }
-        public DbSet<NotificationEntity> Notifications { get; set; }
+
         public DbSet<PaymentEntity> Payments { get; set; }
         public DbSet<PermissionEntity> Permissions { get; set; }
         public DbSet<PurchaseEntity> Purchases { get; set; }
@@ -38,9 +35,8 @@ namespace Infrastructure.DB.SQLDbContext
         public DbSet<TagEntity> Tags { get; set; }
         public DbSet<TopicEntity> Topics { get; set; }
         public DbSet<UserEntity> Users { get; set; }
-        public DbSet<ReportEntity> Reports { get; set; }
         public DbSet<FeedbackEntity> Feedbacks { get; set; }
-        public DbSet<UserConversation> UserConversations { get; set; }
+      
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

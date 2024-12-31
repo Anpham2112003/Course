@@ -38,7 +38,7 @@ namespace Application.MediaR.Comands.Account
             {
                 var errors = new List<LoginAccountError>();
 
-                var account = await _unitOfWork.accountRepository.FindAccountAndRoleAsync(x => x.Email == request.Email);
+                var account = await _unitOfWork.accountRepository.FindAccountAndRoleAsync(x => x.Email == request.Email,cancellationToken);
 
 
 
@@ -65,20 +65,14 @@ namespace Application.MediaR.Comands.Account
                     };
                 }
 
-                var permissions = account.roleEntity!.permissionEntities.Select(x => new PermissionDTO
-                {
-                    Route = x.Route,
-                    State = x.State,
-                });
-
-                var jsonPermission = JsonSerializer.Serialize(permissions);
+               
 
                 var Claims = new Claim[]
                 {
                     new Claim(ClaimTypes.PrimarySid,account.userEntity!.Id.ToString()),
                     new Claim(ClaimTypes.Email,account.Email!),
-                    new Claim(ClaimTypes.Role,account.roleEntity.RoleName!),
-                    new Claim("permssions",jsonPermission)
+                    new Claim(ClaimTypes.Role,account.roleEntity!.RoleName!),
+                    new Claim(ClaimTypes.NameIdentifier,account.userEntity!.Id.ToString()),
                 };
 
                 var accesstoken = Jwt.GenerateAccessToken(_options, Claims);

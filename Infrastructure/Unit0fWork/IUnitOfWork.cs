@@ -30,14 +30,13 @@ namespace Infrastructure.Unit0fWork
         public ICategoryLessonRepository<CategoryLessonEntity> categoryLessonRepository { get; }
         public ITagRepository<TagEntity> tagRepository { get; }
         public IRoleRepository<RoleEntity> roleRepository { get; }
-        public IConversationRepository<ConversationEntity> conversationRepository { get; }
         public ITopicRepository<TopicEntity> topicRepository { get; }
         public IFeedbackRepository<FeedbackEntity> feedbackRepository { get; }
         public IPurchaseRepository<PurchaseEntity> purchaseRepository { get; }
         public ILessonRepository<LessonEntity> lessonRepository { get; }
         public ICartRepository<CartEntity> cartRepository { get; }
         public IPaymentRepository<PaymentEntity> paymentRepository { get; }
-        public IMessageRepository<MessageEntity> messageRepository { get; }
         public ICommentRepository<CommentEntity> commentRepository { get; }
+        public IPermissionRepository<PermissionEntity> permissionRepository { get; }
     }
 }

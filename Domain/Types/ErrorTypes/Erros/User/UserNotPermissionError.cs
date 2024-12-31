@@ -1,5 +1,4 @@
 ﻿using Domain.Types.ErrorTypes.Unions.Comment;
-using Domain.Types.ErrorTypes.Unions.Message;
 using Domain.Types.ErrorTypes.Unions.User;
 using System;
 using System.Collections.Generic;
@@ -11,7 +10,7 @@ namespace Domain.Types.ErrorTypes.Erros.User
 {
     public class UserNotPermissionError : UpdateProfileUserError,
         UpdateInformationUserError, UploadAvatarUserError
-        , DeleteAvatarUserError,UpdateMessageError,DeleteMessageError,CreateCommentError
+        , DeleteAvatarUserError,CreateCommentError
     {
         public string? code { get; set; } = nameof(UserNotPermissionError);
         public string? message { get; set; } = "You have not permission!";

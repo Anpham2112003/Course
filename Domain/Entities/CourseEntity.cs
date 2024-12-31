@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using HotChocolate.ApolloFederation;
+
 
 namespace Domain.Entities
 {
@@ -17,7 +17,9 @@ namespace Domain.Entities
         public float Price { get; set; }
         public bool IsSale {  get; set; }
         public int Sale {  get; set; }
+        
         public DateTime Expired { get; set; }
+        
         public string? Description { get; set; }
         public float Rating { get; set; }
         public float Duration { get; set; }
@@ -33,7 +35,6 @@ namespace Domain.Entities
         ////////////////////////////////////////
         public UserEntity? userEntity { get; set; }
         public List<CategoryLessonEntity> categoryLessons { get; set; } =new List<CategoryLessonEntity>();
-        public List<DocumentEntity> documentEntities { get; set; } =new List<DocumentEntity>();
         public List<TopicEntity> topicEntities { get; set; } = new List<TopicEntity>();  
         public List<CourseTopic> courseTopics { get; set; } = new List<CourseTopic>();
         public List<TagEntity> tagEntities { get; set; } = new List<TagEntity>();

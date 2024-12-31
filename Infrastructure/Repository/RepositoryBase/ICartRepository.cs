@@ -13,7 +13,7 @@ namespace Infrastructure.Repository.RepositoryBase
     {
         public Task<CartEntity?> GetCartDetailAsync(Guid id);
         public  Task<TCart?> GetCartById<TCart>(Guid id, CancellationToken cancellation=default);
-        public  Task<IEnumerable<TCart>> GetCartsByUerId<TCart>(Guid Id, int skip, int limit, CancellationToken cancellation=default) where TCart : class, ICart;
+        public  IQueryable<TCart> GetCartsByUerId<TCart>(Guid Id) where TCart : class, ICart;
 
     }
 }

@@ -25,7 +25,6 @@ namespace Domain.Entities
         public UserEntity? userEntity { get; set; }
         public CourseEntity? courseEntity { get; set; }
         public CategoryLessonEntity? categoryLesson { get; set; }
-        public List<ReportEntity> reportEntities { get; set; } = new List<ReportEntity>();
         public List<CommentEntity> commentEntities { get; set; }=new List<CommentEntity>();
         
     }

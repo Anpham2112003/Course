@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Domain.Entities;
 using Domain.Schemas;
+using Domain.DTOs;
 
 
 namespace Infrastructure.Repository.RepositoryBase

@@ -26,11 +26,6 @@ namespace Infrastructure.DB.Configurations
 
             ///////////*********Navigation******//////////
 
-            builder.HasMany(x => x.reportEntities)
-                   .WithOne(x => x.lessonEntity)
-                   .HasForeignKey(x => x.LessonId)
-                   .IsRequired();
-           
 
             builder.HasMany(x=>x.commentEntities)
                 .WithOne(x=>x.lessonEntity)

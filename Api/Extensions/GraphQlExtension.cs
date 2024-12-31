@@ -9,6 +9,7 @@ using System.Diagnostics;
 using System.Reflection;
 using Application.MediaR.Comands.User;
 using Domain.Types.ErrorTypes.Unions;
+using Api.Graphql.Mutation;
 
 namespace Api.Extensions
 {
@@ -39,7 +40,8 @@ namespace Api.Extensions
                 .AddTypeExtension<LessonMutation>()
                 .AddTypeExtension<CartMutation>()
                 .AddTypeExtension<TopicMutation>()
-                .AddTypeExtension<MessageMutation>()
+                .AddTypeExtension<PermissionMutation>()
+                .AddTypeExtension<PermissionMutation>()
                 .AddType<UploadType>()
                 .AddTypes(errors)
                 .AddProjections()

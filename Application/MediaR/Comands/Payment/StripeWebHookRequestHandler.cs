@@ -6,6 +6,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Domain.Interfaces.Mailer;
+using Hangfire;
+using Infrastructure.Services.MailService;
 
 namespace Application.MediaR.Comands.Payment
 {
@@ -52,6 +55,13 @@ namespace Application.MediaR.Comands.Payment
                 await Task.WhenAll(tk, tk2);
 
                 await _unitOfWork.SaveChangesAsync();
+
+                BackgroundJob.Enqueue<IMailerService>( x => x.SendMailAsync(new MailObject
+                {
+                    To = request.Email,
+                    Subject = "Thank you purchased!",
+                    Body = "You have been purchased Course!",
+                },cancellationToken));
             }
             catch (Exception)
             {

@@ -12,7 +12,6 @@ namespace Domain.Entities
     {
         public Guid Id { get; set; }
         public Guid UserId { get; set; }
-        public Guid? ReplyCommentId { get; set; }
         public Guid LessonId { get; set; }
         public string? Content {  get; set; }
         public DateTime CreatedAt { get; set; }

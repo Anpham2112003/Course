@@ -27,7 +27,7 @@ namespace Infrastructure.Repository
                 .AnyAsync();
         }
 
-        public async Task<AverageRate?> TotalRate(Guid CourseId)
+        public async Task<AverageRate?> TotalRate(Guid CourseId,CancellationToken cancellation=default)
         {
             var result = await dBContext.Set<FeedbackEntity>()
                 .Where(x => x.CourseId == CourseId && x.IsDeleted == false)
@@ -35,7 +35,7 @@ namespace Infrastructure.Repository
                 {
                     TotalFeedback = x.Count(),
                     TotalRate = x.Sum(x => x.Rate)
-                }).FirstOrDefaultAsync();
+                }).FirstOrDefaultAsync(cancellation);
 
             return result;
         }
@@ -49,14 +49,12 @@ namespace Infrastructure.Repository
                 .ToListAsync(cancellationToken);
         }
 
-        public async Task<List<TFeedBack>> GetFeedBackByCourseIds<TFeedBack>(Guid courseId,int skip,int limit, CancellationToken cancellationToken) where TFeedBack : class, IFeedback
+        public IQueryable<TFeedBack> GetFeedBackByCourseIds<TFeedBack>(Guid courseId) where TFeedBack : class, IFeedback
         {
            
-            return await dBContext.Set<FeedbackEntity>()
+            return  dBContext.Set<FeedbackEntity>()
                 .Where(x=>x.CourseId==courseId)
-                .ProjectTo<TFeedBack>(_mapper.ConfigurationProvider)
-                .Skip(skip).Take(limit)
-                .ToListAsync(cancellationToken);
+                .ProjectTo<TFeedBack>(_mapper.ConfigurationProvider);
         }
     }
 }

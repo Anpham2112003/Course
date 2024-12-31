@@ -44,15 +44,13 @@ namespace Infrastructure.Repository
                 .ToListAsync(cancellationToken);
         }
 
-        public async Task<IEnumerable<TCourse>> GetCoursesByUserId<TCourse>(Guid Id, int skip,int take,CancellationToken cancellation=default) where TCourse : class,ICourse
+        public IQueryable<TCourse> GetCoursesByUserId<TCourse>(Guid Id) where TCourse : class,ICourse
         {
-           
-            return await this.dBContext.Set<CourseEntity>()
-                .Where(x=>x.AuthorId == Id)
+
+            return  this.dBContext.Set<CourseEntity>()
+                .Where(x => x.AuthorId == Id)
                 .AsNoTracking()
-                .ProjectTo<TCourse>(_mapper.ConfigurationProvider)
-                .Skip(skip).Take(take)
-                .ToListAsync(cancellation);
+                .ProjectTo<TCourse>(_mapper.ConfigurationProvider);
         }
 
         public async Task<IEnumerable<TTag>> GetTagsByCourseId<TTag>(Guid CourseId,CancellationToken cancellation=default) where TTag:class,ITag
@@ -75,6 +73,14 @@ namespace Infrastructure.Repository
                 .AsNoTracking()
                 .ProjectTo<TTopic>(_mapper.ConfigurationProvider)
                 .ToListAsync(cancellation);
+        }
+
+
+        public async Task<int> CountCourseByUserId(Guid Id,CancellationToken cancellation)
+        {
+            return await this.dBContext.Set<CourseEntity>()
+                .Where(x=>x.AuthorId == Id)
+                .CountAsync(cancellation);
         }
 
         

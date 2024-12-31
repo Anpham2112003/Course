@@ -1,0 +1,17 @@
+﻿using Application.MediaR.Pipeline;
+using Domain.Types.ErrorTypes.Unions.Permission;
+using Domain.Untils;
+using MediatR;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Application.MediaR.Comands.Permission
+{
+    public class DeletePermissionRequest:IRequest<MutationPayload<DeletePermissionRequest,DeletePermissionError>>,IRequireValidation
+    {
+        public int Id { get; set; }
+    }
+}

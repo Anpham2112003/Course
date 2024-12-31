@@ -64,20 +64,14 @@ public class GoogleLoginRequestHandler: IRequestHandler<GoogleLoginRequest,Login
                 
                 await transaction.CommitAsync(cancellationToken);
                 
-                var permissions = role.permissionEntities.Select(x => new PermissionDTO
-                {
-                    Route = x.Route,
-                    State = x.State
-                });
-                
-                var jsonPermissions = JsonConvert.SerializeObject(permissions);
-
+               
+             
                 var claims = new Claim[]
                 {
                     new Claim(ClaimTypes.Email, request.Email!),
                     new Claim(ClaimTypes.PrimarySid, createUser.Id.ToString()),
                     new Claim(ClaimTypes.Name, request.Name!),
-                    new Claim("permission", jsonPermissions)
+                    new Claim(ClaimTypes.NameIdentifier, createUser.Id.ToString()),
                 };
 
                 var accesstoken = Jwt.GenerateAccessToken(_options, claims);
@@ -95,20 +89,14 @@ public class GoogleLoginRequestHandler: IRequestHandler<GoogleLoginRequest,Login
             }
             else
             {
-                var permissions = account.roleEntity!.permissionEntities.Select(x => new PermissionDTO
-                {
-                    Route = x.Route,
-                    State = x.State
-                });
-                
-                var jsonPermissions = JsonConvert.SerializeObject(permissions);
+               
 
                 var claims = new Claim[]
                 {
                     new Claim(ClaimTypes.Email, request.Email!),
                     new Claim(ClaimTypes.PrimarySid, account.userEntity!.Id.ToString()),
                     new Claim(ClaimTypes.Name, request.Name!),
-                    new Claim("permission", jsonPermissions)
+                    new Claim(ClaimTypes.NameIdentifier, account.userEntity!.Id.ToString()),
                 };
 
                 var accesstoken = Jwt.GenerateAccessToken(_options, claims);

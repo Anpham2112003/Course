@@ -26,8 +26,7 @@ namespace Application.MediaR.Comands.Account
         public async Task<MutationPayload<CreateAccountRequest, CreateAccountError>> Handle(CreateAccountRequest request, CancellationToken cancellationToken)
         {
             var transaction = await _unitOfWork.BeginTransactionAsync();
-
-
+            
 
             try
             {
@@ -64,10 +63,11 @@ namespace Application.MediaR.Comands.Account
 
                 };
 
-                await _unitOfWork.accountRepository.AddOneAsync(account);
+                var tk1 = _unitOfWork.accountRepository.AddOneAsync(account,cancellationToken);
 
-                await _unitOfWork.userRepository.AddOneAsync(user);
-
+                var tk2 = _unitOfWork.userRepository.AddOneAsync(user,cancellationToken);
+                
+                await Task.WhenAll(tk1, tk2);
 
                 await _unitOfWork.SaveChangesAsync(cancellationToken);
 

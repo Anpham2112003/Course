@@ -1,4 +1,5 @@
-﻿using Domain.Types.ErrorTypes.Unions.Lesson;
+﻿using Application.MediaR.Pipeline;
+using Domain.Types.ErrorTypes.Unions.Lesson;
 using Domain.Untils;
 using HotChocolate.Types;
 using MediatR;
@@ -10,11 +11,10 @@ using System.Threading.Tasks;
 
 namespace Application.MediaR.Comands.Lesson
 {
-    public class CreateLessonRequest:IRequest<MutationPayload<CreateLessonRequest,CreateLessonError>>
+    public class CreateLessonRequest:IRequest<MutationPayload<CreateLessonRequest,CreateLessonError>>,IRequireValidation
     {
         public Guid Id { get; set; }
         public Guid CategoryLessonId { get; set; }
-        public Guid UserId { get; set; }
         public string? Title {  get; set; }
         public float Duration {  get; set; }
         public string? Url {  get; set; }

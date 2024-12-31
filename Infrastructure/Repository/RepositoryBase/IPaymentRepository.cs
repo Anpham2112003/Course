@@ -9,5 +9,6 @@ namespace Infrastructure.Repository.RepositoryBase
 {
     public interface IPaymentRepository<TEntity> : IRepository<TEntity> where TEntity : class, IEntity
     {
+        public IQueryable<TPayment> GetPaymentByUserId<TPayment>(Guid userId);
     }
 }

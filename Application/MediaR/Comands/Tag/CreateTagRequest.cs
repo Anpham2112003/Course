@@ -1,4 +1,5 @@
-﻿using Domain.Types.ErrorTypes.Unions.Tag;
+﻿using Application.MediaR.Pipeline;
+using Domain.Types.ErrorTypes.Unions.Tag;
 using Domain.Untils;
 using MediatR;
 using System;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Application.MediaR.Comands.Tag
 {
-    public class CreateTagRequest:IRequest<MutationPayload<CreateTagRequest,CreateTagError>>
+    public class CreateTagRequest:IRequest<MutationPayload<CreateTagRequest,CreateTagError>>,IRequireValidation
     {
         public string? Name { get; set; }
     }

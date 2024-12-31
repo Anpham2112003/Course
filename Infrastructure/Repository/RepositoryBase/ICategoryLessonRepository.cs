@@ -11,7 +11,7 @@ namespace Infrastructure.Repository.RepositoryBase
     public interface ICategoryLessonRepository<TEntity> : IRepository<TEntity> where TEntity : class, IEntity
     {
         public  Task<IEnumerable<TCategoryLesson>> GetCategoryLessonByIds<TCategoryLesson>(IReadOnlyList<Guid> keys, CancellationToken cancellation = default) where TCategoryLesson : class, ICategoryLesson;
-        public  Task<IEnumerable<TCategoryLesson>> GetCategoryLessonByCourseId<TCategoryLesson>(Guid id, int skip, int limit, CancellationToken cancellation = default) where TCategoryLesson : class, ICategoryLesson;
+        public IQueryable<TCategoryLesson> GetCategoryLessonByCourseId<TCategoryLesson>(Guid id) where TCategoryLesson : class, ICategoryLesson;
 
 
     }

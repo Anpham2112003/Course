@@ -12,7 +12,7 @@ namespace Infrastructure.Repository.RepositoryBase
     {
         public Task<bool> CheckPurchaseCourse(Guid UserId, Guid CourseId);
         public Task<IEnumerable<TPurchase>> GetPurchaseByIds<TPurchase>(IReadOnlyList<Guid> keys, CancellationToken cancellation=default) where TPurchase : class, IPurchase;
-        public Task<IEnumerable<TPurchase>> GetPurchaseByUserId<TPurchase>(Guid id, int skip, int limit, CancellationToken cancellation = default) where TPurchase : class, IPurchase;
+        public IQueryable<TPurchase> GetPurchaseByUserId<TPurchase>(Guid id) where TPurchase : class, IPurchase;
         public Task<bool> CheckPurchased(Guid userId, Guid courseId, CancellationToken cancellation = default);
 
         public Task<int> GetTotalPurchaseByCourseId(Guid courseId, CancellationToken cancellation = default);

@@ -1,4 +1,5 @@
-﻿using Domain.Types.ErrorTypes.Unions.CategoryLesson;
+﻿using Application.MediaR.Pipeline;
+using Domain.Types.ErrorTypes.Unions.CategoryLesson;
 using Domain.Untils;
 using MediatR;
 using System;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Application.MediaR.Comands.CategoryLesson
 {
-    public class CreateCategoryLessonRequest:IRequest<MutationPayload<CreateCategoryLessonRequest,CreateCategoryLessonError>>
+    public class CreateCategoryLessonRequest:IRequest<MutationPayload<CreateCategoryLessonRequest,CreateCategoryLessonError>>,IRequireValidation
     {
         public Guid Id { get; set; }
         public Guid CourseId { get; set; }

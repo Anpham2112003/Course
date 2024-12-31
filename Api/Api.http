@@ -1,0 +1,6 @@
+﻿@Api_HostAddress = https://localhost:7217
+
+@email="anpham2112003@gmail.com"
+POST {{Api_HostAddress}}/test?email={{email}}
+
+###

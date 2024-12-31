@@ -38,15 +38,13 @@ namespace Infrastructure.Repository
                 .FirstOrDefaultAsync( cancellation);
         }
 
-        public async Task<IEnumerable<TCart>> GetCartsByUerId<TCart>(Guid Id,int skip,int limit,CancellationToken cancellation = default) where TCart : class, ICart
+        public IQueryable<TCart> GetCartsByUerId<TCart>(Guid Id) where TCart : class, ICart
         {
            
-            return await this.dBContext.Set<CartEntity>()
+            return  this.dBContext.Set<CartEntity>()
                 .Where(x=>x.UserId == Id)
                 .AsNoTracking()
-                .ProjectTo<TCart>(_mapper.ConfigurationProvider)
-                .Skip(skip).Take(limit)
-                .ToListAsync(cancellation);
+                .ProjectTo<TCart>(_mapper.ConfigurationProvider);
         }
         
     }

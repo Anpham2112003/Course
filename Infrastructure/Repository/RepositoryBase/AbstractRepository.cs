@@ -3,6 +3,7 @@ using AutoMapper.QueryableExtensions;
 using Domain.Entities;
 using Domain.Interfaces.EntityBase;
 using Domain.Schemas;
+using HotChocolate.Data;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -103,6 +104,11 @@ namespace Infrastructure.Repository.RepositoryBase
         public void DeleteMany(ICollection<TEntity> entities)
         {
             dBContext.Set<TEntity>().RemoveRange(entities);
+        }
+
+        public IQueryable<Type> AsQueryType<Type>() where Type : class
+        {
+            return this.dBContext.Set<TEntity>().ProjectTo<Type>(_mapper.ConfigurationProvider);
         }
 
         

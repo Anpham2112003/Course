@@ -4,7 +4,11 @@ using System.Text;
 using Application.MediaR.Comands.Account;
 using Application.MediaR.Comands.Payment;
 using CloudinaryDotNet;
+using Domain.Interfaces.Mailer;
 using Domain.Options;
+using Hangfire;
+using Infrastructure.Services.MailService;
+using Infrastructure.Unit0fWork;
 using MediatR;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -31,6 +35,8 @@ namespace Api.RestApi
                  
                  
             });
+
+          
 
             builder.MapGet("api/google/callback",
                 async (IMediator mediator,IOptionsMonitor<GoogleOption> options, HttpContext context, CancellationToken cancellationToken) =>
@@ -117,10 +123,7 @@ namespace Api.RestApi
                 });
             });
 
-            builder.MapGet("hello", () =>
-            {
-                return Results.Ok("Ok");
-            });
+           
 
             builder.MapPost("webhook", async (IMediator mediator,IHttpContextAccessor httpContext) =>
             {
@@ -140,7 +143,8 @@ namespace Api.RestApi
                             CartId = Guid.Parse(session.Metadata["cartId"]),
                             Amount = (float)session.AmountTotal!,
                             CourseId = Guid.Parse(session.Metadata["courseId"]),
-                            UserId = Guid.Parse(session.Metadata["userId"])
+                            UserId = Guid.Parse(session.Metadata["userId"]),
+                            Email=session.Metadata["email"]
                         };
 
                         await mediator.Send(command);
@@ -155,7 +159,6 @@ namespace Api.RestApi
             
 
             
-           
 
 
             return builder;

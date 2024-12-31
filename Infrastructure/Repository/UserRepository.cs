@@ -12,6 +12,7 @@ using Infrastructure.Repository.RepositoryBase;
 
 
 using Domain.Schemas;
+using Domain.DTOs;
 namespace Infrastructure.Repository
 {
     public class UserRepository : AbstractRepository<UserEntity, ApplicationDBContext>, IUserRepository<UserEntity>
@@ -31,7 +32,8 @@ namespace Infrastructure.Repository
            
             return await dBContext.Set<UserEntity>().Where(x => keys.Contains(x.Id))
                 .AsNoTracking()
-                .ProjectTo<TUser>(_mapper.ConfigurationProvider).ToListAsync(cancellation);
+                .ProjectTo<TUser>(_mapper.ConfigurationProvider)
+                .ToListAsync(cancellation);
         }
 
         public async Task<TUser?> GetUserById<TUser>(Guid id, CancellationToken cancellation) where TUser : class,IUser
@@ -39,7 +41,8 @@ namespace Infrastructure.Repository
            
             return await dBContext.Set<UserEntity>().Where(x=>x.Id==id)
                 .AsNoTracking()
-                .ProjectTo<TUser>(_mapper.ConfigurationProvider).FirstOrDefaultAsync(cancellation);
+                .ProjectTo<TUser>(_mapper.ConfigurationProvider)
+                .FirstOrDefaultAsync(cancellation);
         }
     }
 }

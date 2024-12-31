@@ -38,15 +38,13 @@ namespace Infrastructure.Repository
                 .ToListAsync(cancellation);
         }
 
-        public async Task<IEnumerable<TPurchase>> GetPurchaseByUserId<TPurchase>(Guid id,int skip,int limit, CancellationToken cancellation = default) where TPurchase : class, IPurchase
+        public IQueryable<TPurchase> GetPurchaseByUserId<TPurchase>(Guid id) where TPurchase : class, IPurchase
         {
            
-            return await dBContext.Set<PurchaseEntity>()
+            return dBContext.Set<PurchaseEntity>()
                 .Where(x => x.UserId==id)
                 .AsNoTracking()
-                .ProjectTo<TPurchase>(_mapper.ConfigurationProvider)
-                .Skip(skip).Take(limit)
-                .ToListAsync(cancellation);
+                .ProjectTo<TPurchase>(_mapper.ConfigurationProvider);
         }
 
         public async Task<bool> CheckPurchased(Guid userId,Guid courseId ,CancellationToken cancellation = default)

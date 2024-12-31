@@ -1,7 +1,6 @@
 ﻿using Domain.Types.ErrorTypes.Unions.CategoryLesson;
 using Domain.Types.ErrorTypes.Unions.Course;
 using Domain.Types.ErrorTypes.Unions.Lesson;
-using Domain.Types.ErrorTypes.Unions.Message;
 using Domain.Types.ErrorTypes.Unions.Topic;
 using System;
 using System.Collections.Generic;

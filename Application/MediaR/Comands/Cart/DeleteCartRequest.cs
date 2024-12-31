@@ -1,4 +1,5 @@
-﻿using Domain.Types.ErrorTypes.Unions.Cart;
+﻿using Application.MediaR.Pipeline;
+using Domain.Types.ErrorTypes.Unions.Cart;
 using Domain.Untils;
 using MediatR;
 using System;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Application.MediaR.Comands.Cart
 {
-    public class DeleteCartRequest:IRequest<MutationPayload<Guid,DeleteCartError>>
+    public class DeleteCartRequest:IRequest<MutationPayload<Guid,DeleteCartError>>,IRequireValidation
     {
         public Guid Id { get; set; }
     }

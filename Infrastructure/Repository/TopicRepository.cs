@@ -47,7 +47,7 @@ namespace Infrastructure.Repository
         public async Task<CourseTopic?> FindTopicCourse(int ToppicId,Guid CourseId,CancellationToken cancellation=default)
         {
             return await this.dBContext.Set<CourseTopic>()
-                .FirstOrDefaultAsync(x=>x.TopicId==ToppicId&&x.CourseId==CourseId,cancellation);
+                .FirstOrDefaultAsync(x=>x.TopicId==ToppicId&&x.CourseId==CourseId);
         }
 
         public void DeleteTopicCourse(CourseTopic courseTopic)
@@ -63,6 +63,24 @@ namespace Infrastructure.Repository
                 .AsNoTracking()
                 .ProjectTo<TTopic>(_mapper.ConfigurationProvider)
                 .ToListAsync(cancellation);
+        }
+
+        public IQueryable<TCourse> GetCoursesByTopicId<TCourse>(int id) where TCourse : class, ICourse
+        {
+
+            return this.dBContext.Set<TopicEntity>()
+                .Include(x => x.courseEntities)
+                .SelectMany(x => x.courseEntities)
+                .AsNoTracking()
+                .ProjectTo<TCourse>(_mapper.ConfigurationProvider);
+        }
+
+        public async Task<IEnumerable<TTopic>> GetTopics<TTopic>(CancellationToken cancellation=default) where TTopic : class, ITopic
+        {
+
+            return await this.dBContext.Set<TopicEntity>()
+                .AsNoTracking()
+                .ProjectTo<TTopic>(_mapper.ConfigurationProvider).ToListAsync(cancellation);
         }
     }
 }

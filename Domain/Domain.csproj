@@ -11,8 +11,10 @@
     <PackageReference Include="CloudinaryDotNet" Version="1.26.2" />
     <PackageReference Include="dotenv.net" Version="3.2.1" />
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.10.0" />
+    <PackageReference Include="Hangfire.AspNetCore" Version="1.8.17" />
+    <PackageReference Include="Hangfire.Autofac" Version="2.6.0" />
+    <PackageReference Include="Hangfire.SqlServer" Version="1.8.17" />
     <PackageReference Include="HotChocolate.Abstractions" Version="13.9.14" />
-    <PackageReference Include="HotChocolate.ApolloFederation" Version="13.6.0" />
     <PackageReference Include="HotChocolate.AspNetCore" Version="13.9.14" />
     <PackageReference Include="HotChocolate.AspNetCore.Authorization" Version="13.9.14" />
     <PackageReference Include="HotChocolate.AspNetCore.CommandLine" Version="13.9.14" />
@@ -30,6 +32,10 @@
 
   <ItemGroup>
     <Folder Include="Types\ErrorTypes\Unions\Purchase\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Types\ErrorTypes\Unions\Permission\DeleteRolePermissionError.cs" />
   </ItemGroup>
 
 </Project>

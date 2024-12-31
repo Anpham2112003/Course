@@ -36,7 +36,6 @@ namespace Infrastructure.Repository
                 .Where(expression)
                 .Include(x => x.userEntity)
                 .Include(x => x.roleEntity)
-                .ThenInclude(x => x!.permissionEntities)
                 .FirstOrDefaultAsync(cancellationToken);
         }
     }

@@ -10,10 +10,4 @@
     <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="MediaR\Comands\Conversation\" />
-    <Folder Include="MediaR\Comands\Purchase\" />
-    <Folder Include="Hub\" />
-  </ItemGroup>
-
 </Project>

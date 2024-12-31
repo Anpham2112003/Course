@@ -1,4 +1,5 @@
-﻿using Domain.Types.ErrorTypes.Unions.Topic;
+﻿using Application.MediaR.Pipeline;
+using Domain.Types.ErrorTypes.Unions.Topic;
 using Domain.Untils;
 using MediatR;
 using System;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Application.MediaR.Comands.Topic
 {
-    public class CreateTopicRequest:IRequest<MutationPayload<CreateTopicRequest,CreateTopicError>>
+    public class CreateTopicRequest:IRequest<MutationPayload<CreateTopicRequest,CreateTopicError>>,IRequireValidation
     {
         public string? Name { get; set; }
     }

@@ -29,4 +29,13 @@ public class RoleRepository : AbstractRepository<RoleEntity, ApplicationDBContex
             .AsNoTracking()
             .ToListAsync();
     }
+
+    public async Task<bool> CheckDuplicateRole(string role,CancellationToken cancellationToken = default)
+    {
+        return await this.dBContext.Set<RoleEntity>()
+            .Where(x => x.RoleName!.Equals(role))
+            .AnyAsync(cancellationToken);
+    }
+
+    
 }

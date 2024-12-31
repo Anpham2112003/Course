@@ -1,4 +1,5 @@
-﻿using Domain.Types.ErrorTypes.Unions.Lesson;
+﻿using Application.MediaR.Pipeline;
+using Domain.Types.ErrorTypes.Unions.Lesson;
 using Domain.Untils;
 using MediatR;
 using System;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Application.MediaR.Comands.Lesson
 {
-    public class DeleteLessonRequest:IRequest<MutationPayload<Guid,DeleteLessonError>>
+    public class DeleteLessonRequest:IRequest<MutationPayload<Guid,DeleteLessonError>>,IRequireValidation
     {
         public Guid Id { get; set; }
     }

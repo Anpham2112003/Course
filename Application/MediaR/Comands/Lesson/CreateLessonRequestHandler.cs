@@ -65,6 +65,17 @@ namespace Application.MediaR.Comands.Lesson
 
                 lesson.CourseId=categoryLesson.CourseId;
 
+                lesson.UserId=categoryLesson.UserId;
+
+                var course = await _unitOfWork.courseRepository.FindOneAsync(categoryLesson.CourseId);
+
+                if(course is not null)
+                {
+                    course.Duration = course.Duration + request.Duration / 60;
+
+                    _unitOfWork.courseRepository.UpdateOne(course);
+                }
+
                 await _unitOfWork.lessonRepository.AddOneAsync(lesson);
 
                 await _unitOfWork.SaveChangesAsync(cancellationToken);

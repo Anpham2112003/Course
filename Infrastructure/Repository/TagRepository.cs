@@ -39,15 +39,14 @@ namespace Infrastructure.Repository
                 .CountAsync(x => x.TagId == tagId,cancellation);
         }
 
-        public async Task<IEnumerable<TCourse>> GetCoursesByTagId<TCourse>(int id, int skip, int limit,CancellationToken cancellation=default) where TCourse : class, ICourse
+        public IQueryable<TCourse> GetCoursesByTagId<TCourse>(int id) where TCourse : class, ICourse
         {
 
-            return await this.dBContext.Set<TagEntity>()
+            return  this.dBContext.Set<TagEntity>()
                 .Include(x=>x.courseEntities)
                 .SelectMany(x=>x.courseEntities)
                 .AsNoTracking()
-                .ProjectTo<TCourse>(_mapper.ConfigurationProvider)
-                .Skip(skip).Take(limit).ToListAsync(cancellation);
+                .ProjectTo<TCourse>(_mapper.ConfigurationProvider);
         }
 
         public async Task<IEnumerable<TTag>> GetTagByIds<TTag>(IReadOnlyList<int> keys, CancellationToken cancellation = default)
@@ -56,7 +55,17 @@ namespace Infrastructure.Repository
 
             return await this.dBContext.Set<TagEntity>()
                 .Where(x=>keys.Contains(x.Id)).AsNoTracking()
-                .ProjectTo<TTag>(_mapper.ConfigurationProvider).ToListAsync(cancellation);
+                .ProjectTo<TTag>(_mapper.ConfigurationProvider)
+                .ToListAsync(cancellation);
+        }
+
+        public async Task<IEnumerable<TTag>> GetTags<TTag>(CancellationToken cancellation=default) where TTag : ITag
+        {
+
+
+            return await this.dBContext.Set<TagEntity>()
+                .ProjectTo<TTag>(_mapper.ConfigurationProvider)
+                .ToListAsync(cancellation);
         }
     }
 }

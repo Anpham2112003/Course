@@ -1,4 +1,5 @@
-﻿using Domain.Types.ErrorTypes.Unions.Tag;
+﻿using Application.MediaR.Pipeline;
+using Domain.Types.ErrorTypes.Unions.Tag;
 using Domain.Untils;
 using MediatR;
 using System;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Application.MediaR.Comands.Tag
 {
-    public class DeleteTagRequest:IRequest<MutationPayload<DeleteTagRequest,DeleteTagError>>
+    public class DeleteTagRequest:IRequest<MutationPayload<DeleteTagRequest,DeleteTagError>>,IRequireValidation
     {
         public int Id { get; set; }
     }

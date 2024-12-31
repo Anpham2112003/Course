@@ -39,19 +39,14 @@ namespace Infrastructure.Services.MailService
 
                 message.Body = body.ToMessageBody();
 
-                Debug.WriteLine(Thread.CurrentThread.ManagedThreadId);
-
                 using (var smtp = new SmtpClient())
                 {
                     await smtp.ConnectAsync(_options.CurrentValue.Host, _options.CurrentValue.Port, false, cancellationToken);
 
                     await smtp.AuthenticateAsync(_options.CurrentValue.Account, _options.CurrentValue.Password, cancellationToken);
 
-                    await smtp.SendAsync(message);
-
-                    Debug.WriteLine(Thread.CurrentThread.ManagedThreadId);
-
-                    await smtp.DisconnectAsync(true);
+                    await smtp.SendAsync(message,cancellationToken);
+                    
                 }
             }
             catch (Exception)

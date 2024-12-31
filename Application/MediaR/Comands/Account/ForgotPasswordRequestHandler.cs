@@ -13,6 +13,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Hangfire;
 
 namespace Application.MediaR.Comands.Account
 {
@@ -21,12 +22,11 @@ namespace Application.MediaR.Comands.Account
         private readonly IUnitOfWork _unitOfWork;
 
         private readonly IMailerService _mailerService;
-        private readonly IPublisher publisher;
-        public ForgotPasswordRequestHandler(IUnitOfWork unitOfWork, IMailerService mailerService, IPublisher publisher)
+        public ForgotPasswordRequestHandler(IUnitOfWork unitOfWork, IMailerService mailerService)
         {
             _unitOfWork = unitOfWork;
             _mailerService = mailerService;
-            this.publisher = publisher;
+            
         }
 
         public async Task<MutationPayload<string, ForgetPassowordError>> Handle(ForgotPasswordRequest request, CancellationToken cancellationToken)
@@ -36,7 +36,7 @@ namespace Application.MediaR.Comands.Account
             {
                 var errors = new List<ForgetPassowordError>();
 
-                var account = await _unitOfWork.accountRepository.FindAccountByEmailAsync(request.Email!);
+                var account = await _unitOfWork.accountRepository.FindAccountByEmailAsync(request.Email!,cancellationToken);
 
                 if (account is null)
                 {
@@ -63,12 +63,12 @@ namespace Application.MediaR.Comands.Account
                 var hashpassword = Hash.GenerateHash(password);
 
 
-                var task = _mailerService.SendMailAsync(new MailObject
+                BackgroundJob.Enqueue<IMailerService>(x => x.SendMailAsync(new MailObject()
                 {
-                    To = request.Email,
-                    Body = password,
-                    Subject = "New Password"
-                }, cancellationToken);
+                    To = account.Email,
+                    Subject = "Password reset",
+                    Body = hashpassword,
+                }, cancellationToken));
 
                 account.HashPassword = hashpassword;
 

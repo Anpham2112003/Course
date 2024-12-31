@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Application.MediaR.Comands.Course
 {
-    public class CreateCourseRequest:IRequest<MutationPayload<CourseEntity,CreateCourseError>>
+    public class CreateCourseRequest:IRequest<MutationPayload<CourseEntity,CreateCourseError>>,IRequireValidation
     {
         public Guid Id { get; set; }
         public string? Name { get; set; }

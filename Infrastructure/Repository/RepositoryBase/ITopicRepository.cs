@@ -18,5 +18,7 @@ namespace Infrastructure.Repository.RepositoryBase
         public  Task<CourseTopic?> FindTopicCourse(int ToppicId, Guid CourseId,CancellationToken cancellation=default);
         public void DeleteTopicCourse(CourseTopic courseTopic);
         public  Task<IEnumerable<TTopic>> GetTopicByIds<TTopic>(IReadOnlyList<int> keys, CancellationToken cancellation = default) where TTopic : class, ITopic;
+        public IQueryable<TCourse> GetCoursesByTopicId<TCourse>(int id) where TCourse : class, ICourse;
+        public Task<IEnumerable<TTopic>> GetTopics<TTopic>(CancellationToken cancellation = default) where TTopic : class, ITopic;
     }
 }

@@ -1,4 +1,5 @@
-﻿using Domain.Types.ErrorTypes.Unions.Feedback;
+﻿using Application.MediaR.Pipeline;
+using Domain.Types.ErrorTypes.Unions.Feedback;
 using Domain.Untils;
 using MediatR;
 using System;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Application.MediaR.Comands.FeedBack
 {
-    public class CreateFeedbackRequest:IRequest<MutationPayload<CreateFeedbackRequest,CreateFeedbackError>>
+    public class CreateFeedbackRequest:IRequest<MutationPayload<CreateFeedbackRequest,CreateFeedbackError>>,IRequireValidation
     {
         public Guid Id { get; set; }
         public Guid CourseId { get; set; }

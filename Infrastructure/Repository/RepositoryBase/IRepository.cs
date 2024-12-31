@@ -120,5 +120,7 @@ namespace Infrastructure.Repository.RepositoryBase
         /// </summary>
         /// <param name="entities"></param>
         public void DeleteMany(ICollection<TEntity> entities);
+
+        public IQueryable<Type> AsQueryType<Type>() where Type : class;
     }
 }

@@ -30,15 +30,13 @@ namespace Infrastructure.Repository
                 .ToListAsync(cancellation);
         }
 
-        public async Task<IEnumerable<TLesson>> GetLessonByCategoryLessonId<TLesson>(Guid id, int skip,int limit, CancellationToken cancellation) where TLesson : class, ILesson
+        public IQueryable<TLesson> GetLessonByCategoryLessonId<TLesson>(Guid id) where TLesson : class, ILesson
         {
 
-            return await this.dBContext.Set<LessonEntity>()
+            return  this.dBContext.Set<LessonEntity>()
                 .Where(x =>x.CategoryLessonId==id)
                 .AsNoTracking()
-                .ProjectTo<TLesson>(_mapper.ConfigurationProvider)
-                .Skip(skip).Take(limit)
-                .ToListAsync(cancellation);
+                .ProjectTo<TLesson>(_mapper.ConfigurationProvider) ;
         }
     }
 }

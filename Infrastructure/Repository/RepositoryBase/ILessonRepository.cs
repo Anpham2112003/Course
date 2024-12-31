@@ -11,6 +11,6 @@ namespace Infrastructure.Repository.RepositoryBase
     public interface ILessonRepository<TEntity> : IRepository<TEntity> where TEntity : class, IEntity
     {
         public  Task<IEnumerable<TLesson>> GetLessonByIds<TLesson>(IReadOnlyList<Guid> keys, CancellationToken cancellation) where TLesson : class, ILesson;
-        public Task<IEnumerable<TLesson>> GetLessonByCategoryLessonId<TLesson>(Guid id, int skip, int limit, CancellationToken cancellation) where TLesson : class, ILesson;
+        public IQueryable<TLesson> GetLessonByCategoryLessonId<TLesson>(Guid id) where TLesson : class, ILesson;
     }
 }

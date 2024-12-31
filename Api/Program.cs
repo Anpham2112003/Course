@@ -1,3 +1,4 @@
+using System.Configuration;
 using Api.Extensions;
 using Api.RestApi;
 using Application.Maper;
@@ -29,7 +30,17 @@ using Api.DataLoader;
 using Api.Graphql.Query;
 using Domain.Schemas;
 using Api.Projection;
-
+using Autofac;
+using Hangfire;
+using Hangfire.SqlServer;
+using Infrastructure.Services.MailService;
+using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Options;
+using Domain.Interfaces.Mailer;
+using Hangfire.Common;
+using Infrastructure.Services.BackgroundService;
+using Microsoft.AspNetCore.SignalR;
+using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -46,7 +57,7 @@ builder
         options.AddDefaultPolicy(builder =>
         {
             builder
-                .WithOrigins("https://studio.apollographql.com","http://studio.apollographql.com")
+                .WithOrigins("https://studio.apollographql.com","http://studio.apollographql.com", "http://localhost:4200", "https://localhost:4200")
                 .AllowAnyHeader()
                 .AllowAnyMethod();
         });
@@ -110,15 +121,59 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwt.Accesskey!))
 
         };
+
+        config.Events = new JwtBearerEvents
+        {
+            OnMessageReceived = context =>
+            {
+                var accessToken = context.Request.Query["access_token"];
+                var path = context.HttpContext.Request.Path;
+                if (!string.IsNullOrEmpty(accessToken) &&
+                    (path.StartsWithSegments("/Chat")))
+                {
+                    // Read the token out of the query string
+                    context.Token = accessToken;
+                }
+
+                return Task.CompletedTask;
+            }
+        };
     });
+
+
+builder.Services.AddHangfire(x =>
+{
+    x.UseSqlServerStorage(builder.Configuration.GetConnectionString("Hangfire"),new SqlServerStorageOptions()
+    {
+        TryAutoDetectSchemaDependentOptions = false,
+        SqlClientFactory = Microsoft.Data.SqlClient.SqlClientFactory.Instance,
+        
+    });
+    x.UseRecommendedSerializerSettings();
     
+});
+
+builder.Services.AddHangfireServer(op =>
+{
+    op.WorkerThreadConfigurationAction = (worker) =>
+    {
+        worker.IsBackground = true;
+        worker.Name = "Background Thread!";
+        Console.WriteLine("Background Thread running...!"+worker.ManagedThreadId);
+    };
+    
+    op.WorkerCount = 4;
+
+  
+});
+
+
 
 
 
 builder.Services
-    
+
     .AddGraphQLServer()
-    .AddApolloFederation()
     .AddSorting()
     .AddFiltering()
     .AddType<PublicUser>()
@@ -132,8 +187,6 @@ builder.Services
     .AddType<CategoryLesson>()
     .AddType<PrivateLesson>()
     .AddType<PublicLesson>()
-    .AddType<Conversation>()
-    .AddType<Message>()
     .AddDataLoader<GetPublicUserDataLoader>()
     .AddDataLoader<GetCourseDataLoader>()
     .AddDataLoader<GetFeedBackDataLoader>()
@@ -144,9 +197,25 @@ builder.Services
     .AddDataLoader<GetLessonDataLoader>()
 
     .AddGraphExtension()
-    .AddAuthorization();
+    .AddAuthorization()
+    .AddErrorFilter(error =>
+    {
+    if (error.Exception is ValidationException ex)
+    {
+        var jsonError = JsonSerializer.Serialize(ex.Errors);
 
+            var errorBuilder = ErrorBuilder.New()
+            .SetCode("BAD_REQUEST")
+            .SetMessage(jsonError)
+            .Build();
 
+            return errorBuilder;
+        }
+
+        return error;
+    });
+
+builder.Services.AddSignalR();
 
 
 
@@ -169,11 +238,23 @@ if (app.Environment.IsDevelopment())
         seed.RunSeed();
 
         seed.SeedPermission();
+
+        seed.SeedTag();
+
+        var recurringJob = scopeService.ServiceProvider.GetRequiredService<IRecurringJobManager>();
+
+        //recurringJob.AddOrUpdate("addTagNew", Job.FromExpression<IBackgroundJob>(x=>x.AddTagNewToCourse()), Cron.Minutely());
+
+        //recurringJob.AddOrUpdate("addTagBestSell", Job.FromExpression<IBackgroundJob>(x => x.AddTagBestSellToCourse()), Cron.Minutely());
+
     }
 
-  
 
 }
+
+
+
+
 
 
 app.UseCors();
@@ -188,6 +269,8 @@ app.MapGraphQL();
 
 
 
+
+app.UseHangfireDashboard("/hangfire");
 
 
 app.RunWithGraphQLCommands(args);

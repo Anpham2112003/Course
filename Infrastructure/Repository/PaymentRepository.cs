@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper.QueryableExtensions;
+using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repository
 {
@@ -14,6 +16,14 @@ namespace Infrastructure.Repository
     {
         public PaymentRepository(ApplicationDBContext dBContext, IMapper mapper) : base(dBContext, mapper)
         {
+        }
+
+        public IQueryable<TPayment> GetPaymentByUserId<TPayment>(Guid userId)
+        {
+            return this.dBContext.Set<PaymentEntity>()
+                .Where(x=>x.UserId == userId)
+                .AsNoTracking()
+                .ProjectTo<TPayment>(_mapper.ConfigurationProvider);
         }
     }
 }

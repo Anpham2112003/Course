@@ -42,10 +42,6 @@ namespace Infrastructure.DB.Configurations
                    .HasForeignKey(x => x.CourseId)
                    .IsRequired();
 
-            builder.HasMany(x => x.documentEntities)
-                   .WithOne(x => x.courseEntity)
-                   .HasForeignKey(x => x.CourseId)
-                   .IsRequired();
 
            builder.HasMany(x=>x.cartEntities)    
                   .WithOne(x => x.courseEntity) 

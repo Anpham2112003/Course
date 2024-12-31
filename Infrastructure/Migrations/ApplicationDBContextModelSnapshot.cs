@@ -164,9 +164,6 @@ namespace Infrastructure.Migrations
                     b.Property<Guid>("LessonId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("ReplyCommentId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
@@ -180,29 +177,6 @@ namespace Infrastructure.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Comments");
-                });
-
-            modelBuilder.Entity("Domain.Entities.ConversationEntity", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("DeletedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Id")
-                        .IsUnique();
-
-                    b.ToTable("Conversations");
                 });
 
             modelBuilder.Entity("Domain.Entities.CourseEntity", b =>
@@ -303,43 +277,6 @@ namespace Infrastructure.Migrations
                     b.ToTable("CourseTopic");
                 });
 
-            modelBuilder.Entity("Domain.Entities.DocumentEntity", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("CourseId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Title")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Url")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CourseId");
-
-                    b.HasIndex("Id")
-                        .IsUnique();
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Documents");
-                });
-
             modelBuilder.Entity("Domain.Entities.FeedbackEntity", b =>
                 {
                     b.Property<Guid>("Id")
@@ -432,88 +369,6 @@ namespace Infrastructure.Migrations
                     b.ToTable("Lessons");
                 });
 
-            modelBuilder.Entity("Domain.Entities.MessageEntity", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Content")
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<Guid>("ConversationId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("DeletedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("MessageType")
-                        .HasColumnType("int");
-
-                    b.Property<Guid?>("ReplyMessageId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("SeenAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("SenderId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ConversationId");
-
-                    b.HasIndex("Id")
-                        .IsUnique();
-
-                    b.HasIndex("ReplyMessageId")
-                        .IsUnique()
-                        .HasFilter("[ReplyMessageId] IS NOT NULL");
-
-                    b.HasIndex("SenderId");
-
-                    b.ToTable("Messages");
-                });
-
-            modelBuilder.Entity("Domain.Entities.NotificationEntity", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Content")
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("SenderId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("ToId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Id")
-                        .IsUnique();
-
-                    b.HasIndex("SenderId");
-
-                    b.ToTable("Notifications");
-                });
-
             modelBuilder.Entity("Domain.Entities.PaymentEntity", b =>
                 {
                     b.Property<Guid>("Id")
@@ -526,8 +381,7 @@ namespace Infrastructure.Migrations
                     b.Property<string>("BankTransactionId")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<Guid?>("CourseId")
-                        .IsRequired()
+                    b.Property<Guid>("CourseId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedAt")
@@ -577,8 +431,7 @@ namespace Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("CourseId")
-                        .IsRequired()
+                    b.Property<Guid>("CourseId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedAt")
@@ -596,36 +449,6 @@ namespace Infrastructure.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Purchases");
-                });
-
-            modelBuilder.Entity("Domain.Entities.ReportEntity", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Description")
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.Property<Guid?>("LessonId")
-                        .IsRequired()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Id")
-                        .IsUnique();
-
-                    b.HasIndex("LessonId");
-
-                    b.ToTable("Reports");
                 });
 
             modelBuilder.Entity("Domain.Entities.RoleEntity", b =>
@@ -719,39 +542,6 @@ namespace Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Topics");
-                });
-
-            modelBuilder.Entity("Domain.Entities.UserConversation", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("ConversationId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("DeletedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("InboxId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ConversationId");
-
-                    b.HasIndex("Id")
-                        .IsUnique();
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("UserConversations");
                 });
 
             modelBuilder.Entity("Domain.Entities.UserEntity", b =>
@@ -924,25 +714,6 @@ namespace Infrastructure.Migrations
                     b.Navigation("topicEntity");
                 });
 
-            modelBuilder.Entity("Domain.Entities.DocumentEntity", b =>
-                {
-                    b.HasOne("Domain.Entities.CourseEntity", "courseEntity")
-                        .WithMany("documentEntities")
-                        .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Entities.UserEntity", "userEntity")
-                        .WithMany("documentEntities")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("courseEntity");
-
-                    b.Navigation("userEntity");
-                });
-
             modelBuilder.Entity("Domain.Entities.FeedbackEntity", b =>
                 {
                     b.HasOne("Domain.Entities.CourseEntity", "courseEntity")
@@ -989,42 +760,6 @@ namespace Infrastructure.Migrations
                     b.Navigation("userEntity");
                 });
 
-            modelBuilder.Entity("Domain.Entities.MessageEntity", b =>
-                {
-                    b.HasOne("Domain.Entities.ConversationEntity", "conversationEntity")
-                        .WithMany("messageEntities")
-                        .HasForeignKey("ConversationId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Entities.MessageEntity", "replyMessage")
-                        .WithOne()
-                        .HasForeignKey("Domain.Entities.MessageEntity", "ReplyMessageId");
-
-                    b.HasOne("Domain.Entities.UserEntity", "userEntity")
-                        .WithMany("messageEntities")
-                        .HasForeignKey("SenderId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("conversationEntity");
-
-                    b.Navigation("replyMessage");
-
-                    b.Navigation("userEntity");
-                });
-
-            modelBuilder.Entity("Domain.Entities.NotificationEntity", b =>
-                {
-                    b.HasOne("Domain.Entities.UserEntity", "fromUserEntity")
-                        .WithMany("notificationEntities")
-                        .HasForeignKey("SenderId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("fromUserEntity");
-                });
-
             modelBuilder.Entity("Domain.Entities.PaymentEntity", b =>
                 {
                     b.HasOne("Domain.Entities.CourseEntity", "courseEntity")
@@ -1063,25 +798,6 @@ namespace Infrastructure.Migrations
                     b.Navigation("userEntity");
                 });
 
-            modelBuilder.Entity("Domain.Entities.ReportEntity", b =>
-                {
-                    b.HasOne("Domain.Entities.LessonEntity", "lessonEntity")
-                        .WithMany("reportEntities")
-                        .HasForeignKey("LessonId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Entities.UserEntity", "userEntity")
-                        .WithMany("reportEntities")
-                        .HasForeignKey("LessonId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("lessonEntity");
-
-                    b.Navigation("userEntity");
-                });
-
             modelBuilder.Entity("Domain.Entities.RolePermission", b =>
                 {
                     b.HasOne("Domain.Entities.PermissionEntity", "permissionEntity")
@@ -1099,25 +815,6 @@ namespace Infrastructure.Migrations
                     b.Navigation("permissionEntity");
 
                     b.Navigation("roleEntity");
-                });
-
-            modelBuilder.Entity("Domain.Entities.UserConversation", b =>
-                {
-                    b.HasOne("Domain.Entities.ConversationEntity", "conversationEntity")
-                        .WithMany("userConversations")
-                        .HasForeignKey("ConversationId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("Domain.Entities.UserEntity", "userEntity")
-                        .WithMany("userConversations")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("conversationEntity");
-
-                    b.Navigation("userEntity");
                 });
 
             modelBuilder.Entity("Domain.Entities.UserEntity", b =>
@@ -1141,13 +838,6 @@ namespace Infrastructure.Migrations
                     b.Navigation("lessonEntities");
                 });
 
-            modelBuilder.Entity("Domain.Entities.ConversationEntity", b =>
-                {
-                    b.Navigation("messageEntities");
-
-                    b.Navigation("userConversations");
-                });
-
             modelBuilder.Entity("Domain.Entities.CourseEntity", b =>
                 {
                     b.Navigation("cartEntities");
@@ -1157,8 +847,6 @@ namespace Infrastructure.Migrations
                     b.Navigation("courseTags");
 
                     b.Navigation("courseTopics");
-
-                    b.Navigation("documentEntities");
 
                     b.Navigation("feedbackEntities");
 
@@ -1172,8 +860,6 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Domain.Entities.LessonEntity", b =>
                 {
                     b.Navigation("commentEntities");
-
-                    b.Navigation("reportEntities");
                 });
 
             modelBuilder.Entity("Domain.Entities.PermissionEntity", b =>
@@ -1208,23 +894,13 @@ namespace Infrastructure.Migrations
 
                     b.Navigation("courseEntities");
 
-                    b.Navigation("documentEntities");
-
                     b.Navigation("feedbackEntities");
 
                     b.Navigation("lessonsEntities");
 
-                    b.Navigation("messageEntities");
-
-                    b.Navigation("notificationEntities");
-
                     b.Navigation("paymentEntities");
 
                     b.Navigation("purchaseEntities");
-
-                    b.Navigation("reportEntities");
-
-                    b.Navigation("userConversations");
                 });
 #pragma warning restore 612, 618
         }

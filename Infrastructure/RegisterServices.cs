@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 using Domain.Interfaces.Payment;
 using Infrastructure.Services.PaymentService;
 using Infrastructure.Unit0fWork;
+using Infrastructure.Services.BackgroundService;
 
 namespace Infrastructure
 {
@@ -41,6 +42,8 @@ namespace Infrastructure
             service.AddScoped<ICloudinaryUploadService, CloudinaryUploadService>();
 
             service.AddScoped<IStripService, StripeService>();
+
+            service.AddScoped<IBackgroundJob, BackgroundJob>();
 
             return service;
         }

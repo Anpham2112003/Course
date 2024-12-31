@@ -1,6 +1,7 @@
 ﻿namespace Domain.Types.ErrorTypes.Unions.Permission;
 
-public class DeletePermissionError
+[UnionType]
+public interface DeletePermissionError:BaseUnionError
 {
     
 }

@@ -99,9 +99,7 @@ namespace Infrastructure.Unit0fWork
 
             => new TagRepository(_dbContext,_mapper);
 
-        public IConversationRepository<ConversationEntity> conversationRepository
-
-            => new ConversationRepository(_dbContext,_mapper);
+   
 
         public ITopicRepository<TopicEntity> topicRepository
 
@@ -127,12 +125,14 @@ namespace Infrastructure.Unit0fWork
 
             => new PaymentRepository(_dbContext,_mapper);
 
-        public IMessageRepository<MessageEntity> messageRepository
-
-            => new MessageRepository(_dbContext,_mapper);
+     
 
         public ICommentRepository<CommentEntity> commentRepository 
             
             => new CommentRepository(_dbContext,_mapper);
+
+        public IPermissionRepository<PermissionEntity> permissionRepository 
+            
+            => new PermissionRepository(_dbContext,_mapper);
     }
 }
